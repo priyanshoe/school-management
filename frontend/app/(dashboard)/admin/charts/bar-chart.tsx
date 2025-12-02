@@ -48,7 +48,7 @@ const chartConfig = {
 
 export function ChartBarMultiple() {
   return (
-        <ChartContainer config={chartConfig} className="w-full h-6/7">
+        <ChartContainer config={chartConfig} className="w-full min-w-60 h-50 min-h-6/7">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis

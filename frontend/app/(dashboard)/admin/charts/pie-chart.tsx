@@ -15,6 +15,8 @@ import {
 import {
   ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
@@ -61,7 +63,7 @@ export function ChartPieDonutText() {
   return (
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square  h-full w-full"
+          className="h-80 md:h-55 w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -75,12 +77,13 @@ export function ChartPieDonutText() {
               innerRadius={60}
               strokeWidth={5}
             >
+
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
                       <text
-                        x={viewBox.cx}
+                      x={viewBox.cx}
                         y={viewBox.cy}
                         textAnchor="middle"
                         dominantBaseline="middle"
@@ -88,7 +91,7 @@ export function ChartPieDonutText() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="text-3xl font-bold"
+                          className="text-3xl lg:text-xl font-bold"
                         >
                           {totalVisitors.toLocaleString()}
                         </tspan>
@@ -105,6 +108,7 @@ export function ChartPieDonutText() {
                 }}
               />
             </Pie>
+                    <ChartLegend className="" content={<ChartLegendContent />} />
           </PieChart>
         </ChartContainer>
   )
