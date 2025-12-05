@@ -1,55 +1,30 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { AdminBarChart } from "@/app/database/data"
 
-export const description = "A multiple bar chart"
-
-const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-    { month: "July", desktop: 250, mobile: 160 },
-    { month: "August", desktop: 290, mobile: 175 },
-    { month: "September", desktop: 270, mobile: 145 },
-    { month: "October", desktop: 320, mobile: 210 },
-    { month: "November", desktop: 340, mobile: 230 },
-    { month: "December", desktop: 380, mobile: 260 },
-]
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  present: {
+    label: "Present",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  absent: {
+    label: "Absent",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
 export function ChartBarMultiple() {
   return (
-        <ChartContainer config={chartConfig} className="w-full min-w-60 h-50 min-h-6/7">
-          <BarChart accessibilityLayer data={chartData}>
+        <ChartContainer config={chartConfig} className="w-full h-6/7">
+          <BarChart accessibilityLayer data={AdminBarChart}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -59,7 +34,7 @@ export function ChartBarMultiple() {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <YAxis
-              dataKey="desktop"
+              dataKey="present"
               tickLine={true}
               tickMargin={10}
               axisLine={false}
@@ -68,8 +43,8 @@ export function ChartBarMultiple() {
               cursor={true}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar dataKey="present" fill="var(--color-present)" radius={4} />
+            <Bar dataKey="absent" fill="var(--color-absent)" radius={4} />
           </BarChart>
         </ChartContainer>
   )

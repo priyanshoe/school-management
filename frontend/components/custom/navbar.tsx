@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function Navbar() {
     return (
-        <div className="w-full flex items-center justify-between mt-4 pr-4">
+        <div className="w-full h-14 flex items-center justify-between pr-4">
 
             <div className="flex gap-4 items-center">
             <SidebarTrigger />
@@ -13,7 +13,7 @@ export default function Navbar() {
 
             <div className="flex gap-2 items-center">
 
-                <div>
+                <div className="hidden md:block">
                     <h1>Priyansh</h1>
                     <h3>Admin</h3>
                 </div>

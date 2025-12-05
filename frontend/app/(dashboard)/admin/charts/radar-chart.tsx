@@ -1,16 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts"
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
@@ -19,42 +9,26 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-
-export const description = "A radar chart with a legend"
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-]
+import { AdminRadarChart } from "@/app/database/data"
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  admissions: {
+    label: "Admissions",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  withdrawals: {
+    label: "Withdrawals",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig
 
-export function ChartRadarLegend() {
+export function ChartRadar() {
   return (
         <ChartContainer
           config={chartConfig}
-          className="h-80 md:h-55 w-full"
+          className="h-6/7 min-h-60 w-full"
         >
-          <RadarChart
-            data={chartData}
-            margin={{
-              top: -40,
-              bottom: -10,
-            }}
-          >
+          <RadarChart data={AdminRadarChart}>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
@@ -62,12 +36,14 @@ export function ChartRadarLegend() {
             <PolarAngleAxis dataKey="month" />
             <PolarGrid />
             <Radar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="admissions"
+              fill="var(--color-admissions)"
               fillOpacity={0.6}
             />
-            <Radar dataKey="mobile" fill="var(--color-mobile)" />
-            <ChartLegend className="" content={<ChartLegendContent />} />
+            <Radar dataKey="withdrawals"
+            fill="var(--color-withdrawals)"
+             />
+              <ChartLegend className="" content={<ChartLegendContent />} />
           </RadarChart>
         </ChartContainer>
   )

@@ -1,17 +1,6 @@
 "use client"
 
-import * as React from "react"
-import { TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import {
   ChartConfig,
   ChartContainer,
@@ -20,16 +9,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { AdminPieChart } from "@/app/database/data"
 
-export const description = "A donut chart with text"
-
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
 
 const chartConfig = {
   visitors: {
@@ -58,12 +39,13 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChartPieDonutText() {
-  const totalVisitors = chartData.reduce((acc, curr) => acc + curr.visitors, 0)
+  const totalVisitors = AdminPieChart
+.reduce((acc, curr) => acc + curr.visitors, 0)
 
   return (
         <ChartContainer
           config={chartConfig}
-          className="h-80 md:h-55 w-full"
+          className="h-6/7 min-h-60 w-full"
         >
           <PieChart>
             <ChartTooltip
@@ -71,10 +53,11 @@ export function ChartPieDonutText() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={chartData}
+              data={AdminPieChart
+}
               dataKey="visitors"
               nameKey="browser"
-              innerRadius={60}
+              innerRadius={40}
               strokeWidth={5}
             >
 
