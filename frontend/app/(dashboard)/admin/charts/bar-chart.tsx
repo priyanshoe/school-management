@@ -34,7 +34,7 @@ export function ChartBarMultiple() {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <YAxis
-              dataKey="present"
+              dataKey=""
               tickLine={true}
               tickMargin={10}
               axisLine={false}

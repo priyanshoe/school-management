@@ -1,6 +1,5 @@
 "use client"
-
-import { Label, Pie, PieChart } from "recharts"
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import {
   ChartConfig,
   ChartContainer,
@@ -11,88 +10,52 @@ import {
 } from "@/components/ui/chart"
 import { AdminPieChart } from "@/app/database/data"
 
-
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
+
+  female:{
+    label:"Female",
     color: "var(--chart-1)",
   },
-  safari: {
-    label: "Safari",
+  male: {
+    label: "Male",
     color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
   },
 } satisfies ChartConfig
 
-export function ChartPieDonutText() {
-  const totalVisitors = AdminPieChart
-.reduce((acc, curr) => acc + curr.visitors, 0)
-
+export function ChartPieMultiple() {
   return (
-        <ChartContainer
-          config={chartConfig}
-          className="h-6/7 min-h-60 w-full"
-        >
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+    
+        <ChartContainer config={chartConfig} 
+          className="h-6/7 min-h-60 w-full">
+          <BarChart accessibilityLayer data={AdminPieChart}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="role"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
             />
-            <Pie
-              data={AdminPieChart
-}
-              dataKey="visitors"
-              nameKey="browser"
-              innerRadius={40}
-              strokeWidth={5}
-            >
-
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text
-                      x={viewBox.cx}
-                        y={viewBox.cy}
-                        textAnchor="middle"
-                        dominantBaseline="middle"
-                      >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="text-3xl lg:text-xl font-bold"
-                        >
-                          {totalVisitors.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
-                        >
-                          Total
-                        </tspan>
-                      </text>
-                    )
-                  }
-                }}
-              />
-            </Pie>
-                    <ChartLegend className="" content={<ChartLegendContent />} />
-          </PieChart>
+            <YAxis
+              dataKey=""
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+            />
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <ChartLegend content={<ChartLegendContent />} />
+            <Bar
+              dataKey="male"
+              stackId="a"
+              fill="var(--color-male)"
+              radius={[0, 0, 4, 4]}
+            />
+            <Bar
+              dataKey="female"
+              stackId="a"
+              fill="var(--color-female)"
+              radius={[4, 4, 0, 0]}
+            />
+          </BarChart>
         </ChartContainer>
   )
 }

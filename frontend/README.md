@@ -2,4 +2,9 @@ change chart data, store data in local database ✅
 Student attendence ✅ bar chart
 expense & profit ✅ line chart
 admission vs withdrawl ✅ radar chart
-male and female count (change chart?)
+male and female count (change chart?) ✅
+
+*right column*
+create layout for calender, anuouncements & events RESPONSIVE
+create calender with colors
+create event & announcement, scroll-y

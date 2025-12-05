@@ -18,19 +18,18 @@ export const communityCount = [
     {
       date: "24/08/2026",
       total: 357,
-      role: "parentes"
+      role: "parents"
     },
   ]
 
-
+// Male Female count each role
 export const AdminPieChart = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
+  // { role: "admins", male: 2, female: 1 },
+  { role: "teachers", male: 14, female: 11 },
+  { role: "students", male: 287, female: 213 },
+  { role: "parents", male: 185, female: 172 },
 ]
-
+// Student attendence Yearly
 export const AdminBarChart = [
   { month: "January", present: 512, absent: 8 },
   { month: "February", present: 508, absent: 12 },
@@ -45,6 +44,7 @@ export const AdminBarChart = [
   { month: "November", present: 510, absent: 10 },
   { month: "December", present: 465, absent: 55 },
 ]
+// Expense & Profit yearly
 export const AdminLineChart = [
   { month: "January", expense: 125000, profit: 8000 },
   { month: "February", expense: 118000, profit: 5000 },
@@ -59,6 +59,7 @@ export const AdminLineChart = [
   { month: "November", expense: 122000, profit: 15000 },
   { month: "December", expense: 165000, profit: 40000 },
 ]
+// Admission & Withdrawl
 export const AdminRadarChart = [
   { month: "January", admissions: 5, withdrawals: 2 },
   { month: "February", admissions: 6, withdrawals: 3 },

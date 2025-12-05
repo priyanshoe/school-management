@@ -26,7 +26,7 @@ export function ChartRadar() {
   return (
         <ChartContainer
           config={chartConfig}
-          className="h-6/7 min-h-60 w-full"
+          className="h-full min-h-60 w-full"
         >
           <RadarChart data={AdminRadarChart}>
             <ChartTooltip
