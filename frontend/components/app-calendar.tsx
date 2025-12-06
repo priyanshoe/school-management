@@ -1,21 +1,19 @@
-"use client"
+'use client'
+import 'react-calendar/dist/Calendar.css';
+import { useState } from 'react';
+import Calendar from 'react-calendar';
 
-import * as React from "react"
 
-import { Calendar } from "@/components/ui/calendar"
+type ValuePiece = Date | null;
 
-export function CalendarSmall() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+export default function CalendarSmall() {
+  const [value, onChange] = useState<Value>(new Date());  
 
   return (
-
-    <Calendar
-      mode="single"
-      selected={date}
-      onSelect={setDate}
-    //   numberOfMonths={2}
-      className="rounded-md border w-full h-full bg-white text-black shadow-sm"
-      captionLayout="dropdown"
-      />
-  )
+    <div className='w-full h-full '>
+      <Calendar onChange={onChange} value={value} />
+    </div>
+  );
 }

@@ -3,7 +3,7 @@ import { ChartBarMultiple } from "./charts/bar-chart"
 import { ChartLineMultiple } from "./charts/line-chart"
 import { ChartPieMultiple } from "./charts/pie-chart"
 import { ChartRadar } from "./charts/radar-chart"
-import { CalendarSmall } from "@/components/app-calendar"
+import CalendarSmall from "@/components/app-calendar"
 
 
 export default function Admin() {
@@ -154,13 +154,8 @@ export default function Admin() {
 
 
       <div id="right" className="h-screen w-full lg:w-1/3 pr-2">
-        <div id="calendar-messages" className="w-full h-1/3 bg-white rounded-lg rounded-bl-none flex justify-center">
-          <div id="calendar" className="h-full w-1/2 bg-amber-200">
-
-          </div>
-          <div id="messages" className="h-full w-1/2 hidden bg-blue-200">
-
-          </div>
+        <div id="calendar" className="w-full h-auto max-h-1/3 bg-white rounded-lg rounded-bl-none">
+            <CalendarSmall/>
         </div>
         <div id="announcement" className="w-full h-1/3  px-4  bg-white mt-2 rounded-lg rounded-l-none">
         <header className="w-full h-1/10">
@@ -173,11 +168,11 @@ export default function Admin() {
                   ${item.priority === 'high' ? 'border-red-500':
                     item.priority === 'medium' ? 'border-yellow-500':
                     'border-green-500'} `}>
-                  <header className="w-full flex justify-between items-center">
+                  <header className="w-full flex gap-2 justify-between items-center">
                     <h1 className="font-semibold capitalize">{item.title}</h1>
                     <h3>{item.time}</h3>
                   </header>
-                  <div className="flex justify-between items-top text-gray-600 text-xs">
+                  <div className="flex justify-between gap-4 items-top text-gray-600 text-xs">
                     <span className="w-4/5">{item.desc}</span>
                     <h3 className="text-sm">{item.date}</h3>
                   </div>
@@ -186,15 +181,15 @@ export default function Admin() {
             }
           </div>
         </div>
-        <div id="events" className="w-full h-1/3 bg-white mt-2  px-4  rounded-lg rounded-tl-none">
-        <header className="w-full h-1/10 p-2">
+        <div id="events" className="w-full h-1/3 bg-white mt-5  px-4  rounded-lg rounded-tl-none">
+        <header className="w-full h-1/10">
           <h1 className="text-lg font-bold">Events</h1>
         </header>
         <div id="events-wrapper" className="h-9/10 overflow-y-scroll scrollbar-hide ">
             {
               events.map((item, id) => (
                 <div id="events-container" key={id} className={`w-full px-4 py-2 mt-2 rounded-sm ${bgcolor[id % bgcolor.length]}`}>
-                  <header className="w-full flex justify-between items-center">
+                  <header className="w-full flex gap-2 justify-between items-center">
                   <h1 className="font-semibold capitalize">{item.title}</h1>
                   <h3 className="text-sm">{item.date}</h3>
                   </header>

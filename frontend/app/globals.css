@@ -125,3 +125,27 @@
     display: none;
   }
 }
+
+
+/* calender css */
+
+.react-calendar{
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  border-radius: 25%;
+}
+.react-calendar__navigation{
+  margin-bottom: 0 !important;
+}
+ .react-calendar__tile--active {
+    background-color: #edff89 !important;
+    color: blue !important;
+}
+.react-calendar__tile--now {
+    background-color: #C6EEF7 !important;
+    color: black !important;
+}
+.react-calendar__navigation__label__labelText{
+  font-weight: 600 !important;
+}
