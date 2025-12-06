@@ -9,7 +9,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { AdminRadarChart } from "@/app/database/data"
+import { AdminRadarChart } from "@/database/data"
 
 const chartConfig = {
   admissions: {

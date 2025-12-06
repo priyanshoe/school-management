@@ -8,7 +8,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { AdminPieChart } from "@/app/database/data"
+import { AdminPieChart } from "@/database/data"
 
 const chartConfig = {
 

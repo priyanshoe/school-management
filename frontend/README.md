@@ -7,4 +7,9 @@ male and female count (change chart?) ✅
 *right column*
 create layout for calender, anuouncements & events RESPONSIVE ✅
 create event & announcement, scroll-y ✅
-create calender with colors
+create calender with colors ✅
+
+*home pages*
+teacher dasbord page ✅
+student dashboard page
+parent dashboard page

@@ -128,7 +128,6 @@
 
 
 /* calender css */
-
 .react-calendar{
   width: 100% !important;
   height: 100% !important;
@@ -148,4 +147,82 @@
 }
 .react-calendar__navigation__label__labelText{
   font-weight: 600 !important;
+}
+
+/*  big calender css */
+.rbc-time-view{
+  border: none !important;
+  background-color: #F7FDFF;
+}
+.rbc-allday-cell{
+  display: none !important;
+}
+.rbc-events-container{
+  margin: 0 !important;
+}
+.rbc-day-slot .rbc-time-slot {
+    border-top: 0 !important;
+}
+.rbc-event{
+  height: 10.50% !important;
+  border: none !important;
+  color: black !important;
+  font-size: large;
+}
+.rbc-header{
+  border: none !important;
+}
+.rbc-toolbar-label{
+  text-align: end !important;
+}
+.rbc-btn-group:last-child > button {
+  background-color: #f0eeff;
+  margin-left: 2px !important;
+}
+.rbc-btn-group:last-child > button:hover{
+  background-color: #DBDAFE !important;
+}
+.rbc-active{
+  background-color: #DBDAFE !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.rbc-btn-group:first-child > button {
+  background-color: #f0eeff !important;
+  margin-left: 2px !important;
+  border: none !important;
+}
+.rbc-btn-group:first-child > button:hover{
+  background-color: #DBDAFE !important;
+}
+.rbc-button-link{
+  font-weight: 500 !important;
+}
+.rbc-toolbar-label{
+  font-weight: 700;
+}
+
+.rbc-event:nth-child(1) {
+  background-color: #e2f8ff !important;
+}
+.rbc-event:nth-child(2) {
+  background-color: #fefce8 !important;
+}
+.rbc-event:nth-child(3) {
+  background-color: #f2f1ff !important;
+}
+.rbc-event:nth-child(4) {
+  background-color: #fdf2fb !important;
+}
+.rbc-event:nth-child(5) {
+  background-color: #e2f8ff !important;
+}
+.rbc-event:nth-child(6) {
+  background-color: #fefce8 !important;
+}
+.rbc-event:nth-child(7) {
+  background-color: #f2f1ff !important;
+}
+.rbc-event:nth-child(8) {
+  background-color: #fdf2fb !important;
 }
