@@ -49,7 +49,7 @@ const items = [
   },
   {
     title: "Parents",
-    url: "/parents",
+    url: "/parent",
     icon: UsersRound ,
   },
   {

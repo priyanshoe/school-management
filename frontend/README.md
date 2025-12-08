@@ -11,5 +11,11 @@ create calender with colors ✅
 
 *home pages*
 teacher dasbord page ✅
-student dashboard page
-parent dashboard page
+student dashboard page ✅
+parent dashboard page ✅
+
+change side bar links, basis of role
+teacher list
+student list
+
+check small calender in mobile view ❓

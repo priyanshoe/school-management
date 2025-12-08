@@ -11,7 +11,7 @@ import Events from "@/components/custom/events"
 export default function Admin() {
   return (
     <div className="w-full h-full lg:h-screen flex flex-col lg:flex-row  text-black">
-
+      {/* left */}
       <div id="left" className="h-full md:h-screen w-full lg:w-2/3">
 
         <div id="count-container" className="min-h-1/7 flex flex-wrap items-center gap-4 px-4 py-2">
@@ -55,13 +55,12 @@ export default function Admin() {
             <div id="chart-4" className="h-full w-full md:w-[33%] bg-[#ffffff]  rounded-xl">
               <ChartRadar />
             </div>
-
           </div>
 
         </div>
       </div>
 
-
+     {/* right */}
       <div id="right" className="h-screen w-full lg:w-1/3 pr-2">
         <div id="calendar" className="w-full h-auto max-h-1/3 bg-white rounded-lg rounded-bl-none">
             <CalendarSmall/>
