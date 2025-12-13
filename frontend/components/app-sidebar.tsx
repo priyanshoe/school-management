@@ -54,22 +54,22 @@ const items = [
   },
   {
     title: "Subjects",
-    url: "/",
+    url: "/lists/subjects",
     icon: NotebookPen,
   },
   {
     title: "Classes",
-    url: "/",
+    url: "/lists/classes",
     icon: BookMarked,
   },
   {
     title: "Lessons",
-    url: "/",
+    url: "/lists/lessons",
     icon: NotepadText,
   },
   {
     title: "Exam",
-    url: "/",
+    url: "/lists/exams",
     icon: BookOpenCheck,
   },
   {

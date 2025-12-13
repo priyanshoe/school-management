@@ -44,7 +44,7 @@ export default function Admin() {
             </div>
           </div>
 
-          <div id="chart-column-2" className=" w-full h-full md:h-1/2 flex flex-wrap flex-col md:flex-row justify-center p-2 gap-2 ">
+          <div id="chart-column-2" className=" w-full h-full md:h-1/2 flex flex-wrap flex-col md:flex-row justify-center px-2 lg:p-2 gap-2 ">
             <div id="chart-3" className="h-full w-full md:w-[64%] bg-[#ffffff]  rounded-xl">
               <header className="h-1/7 px-4 py-1">
                 <h1 className="font-bold text-lg">Finance</h1>
@@ -61,14 +61,14 @@ export default function Admin() {
       </div>
 
      {/* right */}
-      <div id="right" className="h-screen w-full lg:w-1/3 pr-2">
+      <div id="right" className="h-screen w-full lg:w-1/3 px-2 lg:pr-2 flex flex-col gap-2 pt-2 lg:pt-4">
         <div id="calendar" className="w-full h-auto max-h-1/3 bg-white rounded-lg rounded-bl-none">
             <CalendarSmall/>
         </div>
-        <div id="announcement" className="w-full h-1/3  px-4  bg-white mt-2 rounded-lg rounded-l-none">
+        <div id="announcement" className="w-full h-1/3  px-4  bg-white  rounded-lg rounded-l-none">
           <Announcements/>
         </div>
-        <div id="events" className="w-full h-1/3 bg-white mt-5  px-4  rounded-lg rounded-tl-none">
+        <div id="events" className="w-full h-1/3 bg-white   px-4  rounded-lg rounded-tl-none">
           <Events/>
         </div>
       </div>
