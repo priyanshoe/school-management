@@ -1,4 +1,4 @@
-import { communityCount } from "@/database/data"
+import { totalCount } from "@/database/data"
 import { ChartBarMultiple } from "./charts/bar-chart"
 import { ChartLineMultiple } from "./charts/line-chart"
 import { ChartPieMultiple } from "./charts/pie-chart"
@@ -16,7 +16,7 @@ export default function Admin() {
 
         <div id="count-container" className="min-h-1/7 flex flex-wrap items-center gap-4 px-4 py-2">
           {
-            communityCount.map((item, id) => (
+            totalCount.map((item, id) => (
               <div id="count-box" key={id} className="min-w-30 text-black flex-1 rounded-xl px-4 py-2 odd:bg-[#CECBFC] even:bg-[#F7E681]">
                 <h3 className="text-xs bg-white text-blue-600 mb-2 rounded-full px-2 py-1 text-center w-fit">{item.date}</h3>
                 <h1 className="text-xl font-bold">{item.total}</h1>

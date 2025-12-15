@@ -18,7 +18,7 @@ const icons = [
 
 export default function NavbarSecondary(prop:{head:String}) {
     return (
-        <div id="Navbar-secondary" className="flex items-center justify-between bg-white">
+        <div id="Navbar-secondary" className="flex items-center justify-between flex-wrap gap-2 bg-white">
             <header>
                 <h1 className="text-xl font-bold">All {prop.head}</h1>
             </header>

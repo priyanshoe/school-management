@@ -9,39 +9,53 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { role, subjectsData } from '@/database/data';
+import { resultsData, role } from '@/database/data';
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 
-export default function SubjectsList() {
-    const rowsPerPage = 12;
+export default function ResultsList() {
+    const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
-            <div className="bg-white px-3 py-2 rounded-md">
+            <div className="bg-white px-3 py-2  rounded-md">
 
-                <NavbarSecondary head={"Subjects"} />
+                <NavbarSecondary head={"Results"} />
                 <div id="table-container">
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                {
+                                    ["admin", "teacher"].includes(role) &&
+                                    <TableHead className=" text-gray-800 font-semibold">Students Name</TableHead>
+                                }
                                 <TableHead className=" text-gray-800 font-semibold">Subjects Name</TableHead>
-                                <TableHead className="text-gray-800 font-semibold min-w-40">Teachers</TableHead>
-                                {role==="admin" &&
+                                <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Class</TableHead>
+                                <TableHead className="text-gray-800 font-semibold">Score</TableHead>
+                                <TableHead className="text-gray-800 font-semibold hidden md:table-cell">Teacher Name</TableHead>
+                                {
+                                    role === "admin" &&
                                     <TableHead className="text-gray-800 font-semibold">Actions</TableHead>
                                 }
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {
-                                subjectsData.slice(startIndex, endIndex).map((item) => (
+                                resultsData.slice(startIndex, endIndex).map((item) => (
                                     <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
-                                        <TableCell className="text-left">{item.name}</TableCell>
-                                        <TableCell className="text-left">{item.teachers.join(', ')}</TableCell>
-                                        {role === "admin" &&
+                                        {
+                                            ["admin", "teacher"].includes(role) &&
+                                            <TableCell className="text-left">{item.student}</TableCell>
+                                        }
+                                        <TableCell className="text-left">{item.subject}</TableCell>
+                                        <TableCell className="text-left hidden md:table-cell">{item.class}</TableCell>
+                                        <TableCell className="text-left">{item.score}</TableCell>
+                                        <TableCell className="text-left hidden sm:table-cell">{item.teacher}</TableCell>
+                                        {
+                                            role === "admin" &&
                                             <TableCell className="flex justify-start items-center gap-2">
                                                 <div className="rounded-full bg-purple-300 p-2">
                                                     <SquarePen size={15} />
@@ -60,7 +74,7 @@ export default function SubjectsList() {
                     </Table>
                     <div className="mt-2">
                         <PaginationList
-                            data={subjectsData}
+                            data={resultsData}
                             start={startIndex} setStart={setStartIndex}
                             end={endIndex} setEnd={setEndIndex}
                             rows={rowsPerPage} />

@@ -16,8 +16,8 @@ parent dashboard page ✅
 
 change side bar links, basis of role
 add interface for all variables
-teacher list
-student list
+teacher list ✅
+student list ✅
 classes list ✅
 exams list ✅
 lessons list ✅

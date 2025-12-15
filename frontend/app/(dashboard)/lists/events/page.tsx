@@ -9,12 +9,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { lessonsData, role } from '@/database/data';
+import { eventsData, role } from '@/database/data';
 import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 
-export default function LessonsList() {
+export default function EventsList() {
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
@@ -23,14 +23,16 @@ export default function LessonsList() {
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
             <div  className="bg-white px-3 py-2  rounded-md">
 
-            <NavbarSecondary head={"Lessons"} />
+            <NavbarSecondary head={"Events"} />
             <div id="table-container">
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className=" text-gray-800 font-semibold">Subjects Name</TableHead>
-                            <TableHead className="text-gray-800 font-semibold">Class Name</TableHead>
-                            <TableHead className="text-gray-800 font-semibold">Teacher Name</TableHead>
+                            <TableHead className=" text-gray-800 font-semibold">Event Name</TableHead>
+                            <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Class</TableHead>
+                            <TableHead className="text-gray-800 font-semibold">Date</TableHead>
+                            <TableHead className="text-gray-800 font-semibold">From</TableHead>
+                            <TableHead className="text-gray-800 font-semibold">To</TableHead>
                             {
                                 role === "admin" &&
                                 <TableHead className="text-gray-800 font-semibold">Actions</TableHead>
@@ -39,11 +41,13 @@ export default function LessonsList() {
                     </TableHeader>
                     <TableBody>
                         {
-                            lessonsData.slice(startIndex, endIndex).map((item) =>(
+                            eventsData.slice(startIndex, endIndex).map((item) =>(
                                 <TableRow key={item.id} className={`${item.id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
-                                    <TableCell className="text-left">{item.subject}</TableCell>
-                                    <TableCell className="text-left">{item.class}</TableCell>
-                                    <TableCell className="text-left">{item.teacher}</TableCell>
+                                    <TableCell className="text-left">{item.title}</TableCell>
+                                    <TableCell className="text-left hidden sm:table-cell">{item.class}</TableCell>
+                                    <TableCell className="text-left">{item.date}</TableCell>
+                                    <TableCell className="text-left">{item.startTime}</TableCell>
+                                    <TableCell className="text-left">{item.endTime}</TableCell>
                                     {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">
@@ -64,7 +68,7 @@ export default function LessonsList() {
                 </Table>
                 <div className="mt-2">
                     <PaginationList 
-                        data={lessonsData} 
+                        data={eventsData} 
                         start={startIndex} setStart={setStartIndex} 
                         end={endIndex} setEnd={setEndIndex} 
                         rows={rowsPerPage} />

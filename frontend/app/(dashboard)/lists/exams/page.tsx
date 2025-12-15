@@ -20,7 +20,7 @@ export default function ExamsList() {
     const [endIndex, setEndIndex] = useState(rowsPerPage);
 
     return (
-        <div className="w-full h-[93vh] text-black pr-3">
+        <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
             <div  className="bg-white px-3 py-2  rounded-md">
 
             <NavbarSecondary head={"Exams"} />
@@ -31,7 +31,7 @@ export default function ExamsList() {
                             <TableHead className=" text-gray-800 font-semibold">Subjects Name</TableHead>
                             <TableHead className="text-gray-800 font-semibold">Exam Date</TableHead>
                             <TableHead className="text-gray-800 font-semibold">Class</TableHead>
-                            <TableHead className="text-gray-800 font-semibold">Teacher Name</TableHead>
+                            <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Teacher Name</TableHead>
                             {
                                 role === "admin" &&
                                 <TableHead className="text-gray-800 font-semibold">Actions</TableHead>
@@ -45,7 +45,7 @@ export default function ExamsList() {
                                     <TableCell className="text-left">{item.subject}</TableCell>
                                     <TableCell className="text-left">{item.date}</TableCell>
                                     <TableCell className="text-left">{item.class}</TableCell>
-                                    <TableCell className="text-left">{item.teacher}</TableCell>
+                                    <TableCell className="text-left hidden sm:table-cell">{item.teacher}</TableCell>
                                     {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">

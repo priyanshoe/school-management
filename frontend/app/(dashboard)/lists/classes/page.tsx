@@ -20,7 +20,7 @@ export default function ClassesList() {
     const [endIndex, setEndIndex] = useState(rowsPerPage);
 
     return (
-        <div className="w-full h-[93vh] text-black pr-3">
+        <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
             <div  className="bg-white px-3 py-2  rounded-md">
 
             <NavbarSecondary head={"Classes"} />
@@ -30,7 +30,7 @@ export default function ClassesList() {
                         <TableRow>
                             <TableHead className=" text-gray-800 font-semibold">Classes Name</TableHead>
                             <TableHead className="text-gray-800 font-semibold">Teacher Name</TableHead>
-                            <TableHead className="text-gray-800 font-semibold">Grade</TableHead>
+                            <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Grade</TableHead>
                             {
                                 role === "admin" &&
                                 <TableHead className="text-gray-800 font-semibold">Actions</TableHead>
@@ -43,7 +43,7 @@ export default function ClassesList() {
                                 <TableRow key={item.id} className={`${item.id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
                                     <TableCell className="text-left">{item.name}</TableCell>
                                     <TableCell className="text-left">{item.supervisor}</TableCell>
-                                    <TableCell className="text-left">{item.grade}</TableCell>
+                                    <TableCell className="text-left pl-3 hidden sm:table-cell">{item.grade}</TableCell>
                                     {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">

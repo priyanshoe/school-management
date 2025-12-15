@@ -1,5 +1,5 @@
 
-import { 
+import {
   Home,
   GraduationCap,
   Users,
@@ -17,7 +17,7 @@ import {
   Settings,
   CircleUserRound,
   LogOut,
-  } from "lucide-react"
+} from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -30,81 +30,96 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
+import { role } from "@/database/data"
 
 const items = [
   {
     title: "Home",
     url: "/admin",
     icon: Home,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Teachers",
-    url: "/teacher",
-    icon: GraduationCap ,
+    url: "/lists/teachers",
+    icon: GraduationCap,
+    visible: ["admin", "teacher"],
   },
   {
     title: "Students",
-    url: "/student",
-    icon: Users ,
+    url: "/lists/students",
+    icon: Users,
+    visible: ["admin", "teacher"],
   },
   {
     title: "Parents",
-    url: "/parent",
-    icon: UsersRound ,
+    url: "/lists/parents",
+    icon: UsersRound,
+    visible: ["admin", "teacher"],
   },
   {
     title: "Subjects",
     url: "/lists/subjects",
     icon: NotebookPen,
+    visible: ["admin"],
   },
   {
     title: "Classes",
     url: "/lists/classes",
     icon: BookMarked,
+    visible: ["admin", "teacher"],
   },
   {
     title: "Lessons",
     url: "/lists/lessons",
     icon: NotepadText,
+    visible: ["admin", "teacher"],
   },
   {
     title: "Exam",
     url: "/lists/exams",
     icon: BookOpenCheck,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Assignments",
-    url: "/",
+    url: "/lists/assignments",
     icon: Notebook,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Result",
-    url: "/",
+    url: "/lists/results",
     icon: ChartCandlestick,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Attendance",
     url: "/",
     icon: CalendarCheck,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Event",
-    url: "/",
+    url: "/lists/events",
     icon: CalendarClock,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Messages",
     url: "/",
     icon: MessageSquareQuote,
+    visible: ["admin", "teacher", "student", "parent"],
   },
   {
     title: "Announcements",
-    url: "/",
+    url: "/lists/announcements",
     icon: Megaphone,
+    visible: ["admin", "teacher", "student", "parent"],
   },
 ]
 
-const items2 =[
+const items2 = [
   {
     title: "Profile",
     url: "/",
@@ -129,13 +144,13 @@ export function AppSidebar() {
 
       <SidebarHeader>
         <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/">
-                      < CircleUserRound/>
-                      <span>Logo</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+          <SidebarMenuButton asChild>
+            <a href="/">
+              < CircleUserRound />
+              <span>Logo</span>
+            </a>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
       </SidebarHeader>
 
       <SidebarContent>
@@ -143,16 +158,19 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {
+                items.map((item) => (
+                  item.visible.includes(role) &&
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <a href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              }
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
