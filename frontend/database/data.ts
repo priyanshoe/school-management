@@ -1,5 +1,5 @@
 
-export const role:string = "teacher";
+export const role:string = "admin";
 
 export const totalCount = [
   {
@@ -1157,6 +1157,9 @@ export const studentsData = [
     grade: 5,
     class: "1B",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-05-15",
+    bloodGroup: "O+",
+    bio: "Enthusiastic student interested in mathematics and sports",
   },
   {
     id: 2,
@@ -1169,6 +1172,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-08-22",
+    bloodGroup: "A+",
+    bio: "Creative student with passion for arts and literature",
   },
   {
     id: 3,
@@ -1181,6 +1187,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-03-10",
+    bloodGroup: "B+",
+    bio: "Science enthusiast with excellent analytical skills",
   },
   {
     id: 4,
@@ -1193,6 +1202,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-11-30",
+    bloodGroup: "AB+",
+    bio: "History buff with strong writing abilities",
   },
   {
     id: 5,
@@ -1205,6 +1217,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-07-18",
+    bloodGroup: "O-",
+    bio: "Music lover and talented performer in school events",
   },
   {
     id: 6,
@@ -1217,6 +1232,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-02-05",
+    bloodGroup: "A-",
+    bio: "Physics enthusiast with curiosity about scientific discoveries",
   },
   {
     id: 7,
@@ -1229,6 +1247,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-09-12",
+    bloodGroup: "B-",
+    bio: "Language learner fluent in multiple subjects and cultures",
   },
   {
     id: 8,
@@ -1241,6 +1262,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-06-28",
+    bloodGroup: "AB-",
+    bio: "Mathematics prodigy with exceptional problem-solving skills",
   },
   {
     id: 9,
@@ -1253,6 +1277,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-04-20",
+    bloodGroup: "O+",
+    bio: "Avid reader and aspiring writer with creative imagination",
   },
   {
     id: 10,
@@ -1265,6 +1292,9 @@ export const studentsData = [
     grade: 5,
     class: "5A",
     address: "123 Main St, Anytown, USA",
+    dob: "2010-12-08",
+    bloodGroup: "A+",
+    bio: "Biology enthusiast passionate about environmental conservation",
   },
 ];
 //Teachers
@@ -1280,6 +1310,9 @@ export const teachersData = [
     subjects: ["Math", "Geometry"],
     classes: ["1B", "2A", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1985-05-15",
+    bloodGroup: "O+",
+    bio: "Experienced math educator with 15 years of teaching experience",
   },
   {
     id: 2,
@@ -1292,6 +1325,9 @@ export const teachersData = [
     subjects: ["Physics", "Chemistry"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1988-08-22",
+    bloodGroup: "A+",
+    bio: "Passionate science teacher dedicated to hands-on learning",
   },
   {
     id: 3,
@@ -1304,6 +1340,9 @@ export const teachersData = [
     subjects: ["Biology"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1990-03-10",
+    bloodGroup: "B+",
+    bio: "Biology specialist with research background in environmental science",
   },
   {
     id: 4,
@@ -1316,6 +1355,9 @@ export const teachersData = [
     subjects: ["History"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1987-11-30",
+    bloodGroup: "AB+",
+    bio: "History teacher passionate about cultural heritage and historical events",
   },
   {
     id: 5,
@@ -1328,6 +1370,9 @@ export const teachersData = [
     subjects: ["Music", "History"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1989-07-18",
+    bloodGroup: "O-",
+    bio: "Music and history educator inspiring creativity and historical awareness",
   },
   {
     id: 6,
@@ -1340,6 +1385,9 @@ export const teachersData = [
     subjects: ["Physics"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1986-02-05",
+    bloodGroup: "A-",
+    bio: "Physics expert with innovative teaching methods and lab demonstrations",
   },
   {
     id: 7,
@@ -1352,6 +1400,9 @@ export const teachersData = [
     subjects: ["English", "Spanish"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1991-09-12",
+    bloodGroup: "B-",
+    bio: "Language educator fluent in multiple languages with international experience",
   },
   {
     id: 8,
@@ -1364,6 +1415,9 @@ export const teachersData = [
     subjects: ["Math", "Geometry"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1984-06-28",
+    bloodGroup: "AB-",
+    bio: "Advanced mathematics teacher known for clear explanations and problem-solving",
   },
   {
     id: 9,
@@ -1376,6 +1430,9 @@ export const teachersData = [
     subjects: ["Literature", "English"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1988-04-20",
+    bloodGroup: "O+",
+    bio: "Literature instructor fostering critical thinking and literary appreciation",
   },
   {
     id: 10,
@@ -1388,5 +1445,8 @@ export const teachersData = [
     subjects: ["Biology"],
     classes: ["5A", "4B", "3C"],
     address: "123 Main St, Anytown, USA",
+    dob: "1987-12-08",
+    bloodGroup: "A+",
+    bio: "Biology teacher committed to ecological awareness and scientific inquiry",
   },
 ];

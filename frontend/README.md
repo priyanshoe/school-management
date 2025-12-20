@@ -23,5 +23,8 @@ exams list ✅
 lessons list ✅
 subjects list ✅
 
+teacher details single ✅
+student details single ✅
+
 
 check small calender in mobile view ❓

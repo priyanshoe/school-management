@@ -11,10 +11,12 @@ import {
 } from "@/components/ui/table"
 import { teachersData, role } from '@/database/data';
 import { SquarePen, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
 export default function TeachersList() {
+    const router = useRouter();
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
@@ -49,7 +51,8 @@ export default function TeachersList() {
                             {
                                 teachersData.slice(startIndex, endIndex).map((item) => (
                                     <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
-                                        <TableCell className="text-left flex gap-2 items-center justify-start">
+                                        <TableCell className="text-left flex gap-2 items-center justify-start cursor-pointer"
+                                                    onClick={()=> router.push(`teachers/${item.id}`)}>
                                             <div id="profile-photo" className="rounded-full overflow-hidden h-10 w-10 hidden sm:table-cell">
                                                 <img src={item.photo} className="w-full h-full" />
                                             </div>

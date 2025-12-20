@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { studentsData, role } from '@/database/data';
 import { SquarePen, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
@@ -18,6 +19,8 @@ export default function StudentsList() {
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
+
+    const router = useRouter();
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -33,7 +36,7 @@ export default function StudentsList() {
                                 <TableHead className="text-gray-800 font-semibold">Grade</TableHead>
                                 <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Email</TableHead>
                                 {
-                                    ["admin","teacher"].includes(role) &&
+                                    ["admin", "teacher"].includes(role) &&
                                     <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Phone</TableHead>
                                 }
                                 {
@@ -49,7 +52,8 @@ export default function StudentsList() {
                             {
                                 studentsData.slice(startIndex, endIndex).map((item) => (
                                     <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
-                                        <TableCell className="text-left flex gap-2 items-center justify-start">
+                                        <TableCell className="text-left flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100"
+                                                    onClick={() => router.push(`students/${item.id}`)}>
                                             <div id="profile-photo" className="rounded-full overflow-hidden h-10 w-10 hidden sm:table-cell">
                                                 <img src={item.photo} className="w-full h-full" />
                                             </div>
@@ -62,7 +66,7 @@ export default function StudentsList() {
                                         <TableCell className="text-left">{item.grade}</TableCell>
                                         <TableCell className="text-left hidden sm:table-cell">{item.email}</TableCell>
                                         {
-                                            ["admin","teacher"].includes(role) &&
+                                            ["admin", "teacher"].includes(role) &&
                                             <TableCell className="text-left hidden sm:table-cell">{item.phone}</TableCell>
                                         }
                                         {

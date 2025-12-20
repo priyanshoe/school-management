@@ -1,22 +1,8 @@
 import { ArrowDownWideNarrow, Plus, SlidersHorizontal } from "lucide-react";
 import { Input } from "../ui/input";
+import { role } from "@/database/data";
 
-const icons = [
-    {
-        id: 1,
-        icon: ArrowDownWideNarrow
-    },
-    {
-        id: 2,
-        icon: Plus
-    },
-    {
-        id: 3,
-        icon: SlidersHorizontal
-    },
-]
-
-export default function NavbarSecondary(prop:{head:String}) {
+export default function NavbarSecondary(prop: { head: String }) {
     return (
         <div id="Navbar-secondary" className="flex items-center justify-between flex-wrap gap-2 bg-white">
             <header>
@@ -24,16 +10,20 @@ export default function NavbarSecondary(prop:{head:String}) {
             </header>
 
             <div id="form-container" className="flex items-center justify-center gap-2">
-                <Input type="name" placeholder="search"/>
+                <Input type="name" placeholder="search" />
                 <div id="button-container" className="flex justify-between gap-3">
+                    <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
+                        <ArrowDownWideNarrow size={15} />
+                    </div>
                     {
-
-                        icons.map((item, id) => (
-                            <div key={item.id} className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
-                                <item.icon size={15} />
-                            </div>
-                        ))
+                        role==="admin" &&
+                        <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
+                            <Plus size={15} />
+                        </div>
                     }
+                    <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
+                        <SlidersHorizontal size={15} />
+                    </div>
                 </div>
             </div>
         </div>
