@@ -3,15 +3,17 @@ import "../globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import Navbar from "@/components/custom/navbar";
+import { Toaster } from "sonner";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
       <main className="h-full w-full">
-        <Navbar/>
+        <Navbar />
         {children}
       </main>
+      <Toaster position="top-center" />
     </SidebarProvider>
   )
 }

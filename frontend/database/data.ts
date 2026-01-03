@@ -1298,7 +1298,22 @@ export const studentsData = [
   },
 ];
 //Teachers
-export const teachersData = [
+interface Teacher {
+  id: number;
+  teacherId: string;
+  name: string;
+  email: string;
+  photo: string;
+  phone: string;
+  subjects: string[];
+  classes: string[];
+  address: string;
+  dob: string;
+  bloodGroup: string;
+  bio: string;
+}
+
+export const teachersData: Teacher[] = [
   {
     id: 1,
     teacherId: "1234567890",

@@ -1,6 +1,7 @@
 import { ArrowDownWideNarrow, Plus, SlidersHorizontal } from "lucide-react";
 import { Input } from "../ui/input";
 import { role } from "@/database/data";
+import { FormCreate } from "./form-modal";
 
 export default function NavbarSecondary(prop: { head: String }) {
     return (
@@ -18,7 +19,7 @@ export default function NavbarSecondary(prop: { head: String }) {
                     {
                         role==="admin" &&
                         <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
-                            <Plus size={15} />
+                            <FormCreate/>
                         </div>
                     }
                     <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">

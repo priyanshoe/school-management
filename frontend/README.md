@@ -26,5 +26,23 @@ subjects list ✅
 teacher details single ✅
 student details single ✅
 
+create from for
+    Create ✅
+    Update ✅
+    Delete ✅
+add multiple selection for classes, teachers, etc
+add form to all lists
+    teacher ✅
+    student
+    classes
+    exams
+    lessons
+    subjects
+
+add form for CRUD in lists button 
+
+change color them 
+add darkmode / lightmode + theme
+
 
 check small calender in mobile view ❓
