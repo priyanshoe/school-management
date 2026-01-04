@@ -30,16 +30,22 @@ create from for
     Create ✅
     Update ✅
     Delete ✅
-add multiple selection for classes, teachers, etc
 add form to all lists
     teacher ✅
-    student
-    classes
-    exams
-    lessons
-    subjects
+    student ✅
+    classes ✅
+    exams ✅
+    lessons ✅
+    subjects ✅
+    
+add multiple selection for 
+    classes ✅
+    subjects ✅
+    students names in parent list
+    teachers names in subjects list
+    etc
 
-add form for CRUD in lists button 
+add form for CRUD in lists button ✅
 
 change color them 
 add darkmode / lightmode + theme

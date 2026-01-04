@@ -1,5 +1,6 @@
 "use client"
 import { PaginationList } from "@/components/app-pagination"
+import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
 import {
     Table,
@@ -48,10 +49,10 @@ export default function ClassesList() {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">
                                             <div className="rounded-full bg-purple-300 p-2">
-                                                <SquarePen size={15}/>
+                                                                                                    <FormUpdate data={item}/>
                                             </div>
                                             <div className="rounded-full bg-red-300 p-2">
-                                                <Trash2 size={15} />
+                                                                                                    <FormDelete id={item.id} name={item.name}/>
                                             </div>
                                         </TableCell>
                                     }
