@@ -6,6 +6,7 @@ import Image from "next/image";
 import CalendarBig from "@/components/app-big-calendar";
 import Announcements from "@/components/custom/annoncements";
 import { ChartBar } from "@/components/app-bar-chart";
+import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 
 export default function StudentDetails() {
     const { id } = useParams<{ id: string }>()
@@ -32,11 +33,11 @@ const shortcuts = [
 
                     <div id="card" className="h-full w-full lg:w-1/2 bg-white flex items-center rounded-md p-2 pt-0.5">
                         <div id="photo" className="hidden h-full w-1/3  sm:flex items-center justify-center">
-                            <div id="img-container" className="lg:w-[80%] lg:h-[80%] xl:w-full xl:h-[74%] w-[60%] h-[60%] rounded-full overflow-hidden">
+                            <div id="img-container" className="w-[74%] h-38 md:h-35 lg:h-23 xl:h-20 2xl:h-33 rounded-full overflow-hidden">
                                 <img src={userData.photo} className="w-full h-full object-cover" />
                             </div>
                         </div>
-                        <div id="text-container" className="h-full w-full sm:w-2/3 ` flex flex-col justify-center gap-5 md:gap-10 md:py-1.5 xl:px-2">
+                        <div id="text-container" className="h-full w-full sm:w-2/3 ` flex flex-col justify-center gap-5  md:py-1.5 xl:px-2">
                             <header>
                                 <h1 className="text-xl font-semibold">{userData.name}</h1>
                                 <span className="text-sm text-gray-700 md:pr-12 py-3">{userData.bio}</span>
@@ -58,6 +59,14 @@ const shortcuts = [
                                     <Phone size={15} />
                                     <h2 className="text-sm">{userData.phone}</h2>
                                 </div>
+                                                                <div className="w-[45%] bg-purple-300 rounded-sm px-1 flex gap-1 items-center">
+                                                                    <FormUpdate data={userData} />
+                                                                    <h2 className="text-sm">Update</h2>
+                                                                </div>
+                                                                <div className="w-[45%] bg-red-300 rounded-sm px-1 flex gap-1 items-center">
+                                                                    <FormDelete id={userData.id} name={userData.name} />
+                                                                    <h2 className="text-sm">Delete</h2>
+                                                                </div>
 
                             </div>
                         </div>

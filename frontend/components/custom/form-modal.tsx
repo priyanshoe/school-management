@@ -1,5 +1,5 @@
 "use client"
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Plus, SquarePen, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -20,6 +20,12 @@ export function FormCreate() {
   const router = useRouter()
   const [Name, setName] = useState("User")
 
+  const pathname = usePathname();
+  const temp = pathname.split('/').pop() || "";
+  const item = temp === "classes"
+  ? temp.slice(0,-2)
+  : temp.slice(0,-1);
+
   function handleCreate() {
     toast.promise<{ name: string }>(
             () =>
@@ -28,7 +34,7 @@ export function FormCreate() {
               ),
             {
               loading: "Creating...",
-              success: (data) => `${data.name} profile has been created`,
+              success: (data) => `${data.name} has been created`,
               error: "failed, Try again",
             }
           )
@@ -42,7 +48,7 @@ export function FormCreate() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-white text-black">
           <DialogHeader>
-            <DialogTitle className="text-green-500 text-xl capitalize">Add Teacher</DialogTitle>
+            <DialogTitle className="text-green-500 text-xl capitalize">Add {item}</DialogTitle>
             <DialogDescription>
               Fill the details properly
             </DialogDescription>
@@ -63,6 +69,10 @@ export function FormCreate() {
             <div className="grid gap-3">
               <Label htmlFor="address">Address</Label>
               <Input type="text" id="address" name="address" />
+            </div>
+            <div className="flex gap-2">
+              <DropdownSubjects/>
+              <DropdownClasses/>
             </div>
             <div className="flex gap-2">
               <DatePicker />
@@ -86,8 +96,13 @@ export function FormCreate() {
 
 
 
-export function FormUpdate(prop: any) {
+export function FormUpdate(prop:{data:any}) {
   const data = prop.data
+  const pathname = usePathname();
+  const temp = pathname.split('/').pop() || "";
+  const item = temp === "classes"
+  ? temp.slice(0,-2)
+  : temp.slice(0,-1);
 
   const router = useRouter()
   function handleUpdate() {
@@ -99,7 +114,7 @@ export function FormUpdate(prop: any) {
               ),
             {
               loading: "Updating...",
-              success: (data) => `${data.name} profile has been updated`,
+              success: (data) => `${data.name} has been updated`,
               error: "Update failed, Try again",
             }
           )
@@ -114,9 +129,9 @@ export function FormUpdate(prop: any) {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-white text-black">
           <DialogHeader>
-            <DialogTitle className="text-[#c282ff] text-xl capitalize">Edit profile</DialogTitle>
+            <DialogTitle className="text-[#c282ff] text-xl capitalize">Edit {item}</DialogTitle>
             <DialogDescription className="">
-              Make changes to your profile here. Click save when you&apos;re
+              Make changes to your here. Click save when you&apos;re
               done.
             </DialogDescription>
           </DialogHeader>
@@ -174,6 +189,8 @@ import {
 import { DatePicker } from "../app-date-picker";
 import { toast } from "sonner";
 import { useState } from "react";
+import path from "path";
+import { DropdownClasses, DropdownSubjects } from "../app-dropdown";
 
 export function FormDelete(prop: { id: number, name: string }) {
 
@@ -186,7 +203,7 @@ export function FormDelete(prop: { id: number, name: string }) {
               ),
             {
               loading: "Deleting...",
-              success: (data) => `${data.name} profile has been deleted`,
+              success: (data) => `${data.name} has been deleted`,
               error: "Delete failed, Try again",
             }
           )

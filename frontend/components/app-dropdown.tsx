@@ -1,0 +1,96 @@
+"use client"
+
+import * as React from "react"
+import { type DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+type Checked = DropdownMenuCheckboxItemProps["checked"]
+
+
+
+export function DropdownClasses() {
+  const classes = 
+["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
+  const [checkedClasses, setCheckedClasses] = React.useState<Record<string, Checked>>({})
+  const [selectedClasses, setSelectedClasses] = React.useState<string[]>([])
+  console.log(selectedClasses);
+  
+
+  const handleCheckedChange = (subject: string, checked: Checked) => {
+    setCheckedClasses(prev => ({ ...prev, [subject]: checked }))
+    if(checked){
+        setSelectedClasses(prev => [...prev, subject])
+    } else {
+        setSelectedClasses(prev => prev.filter(s => s !== subject))
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="default" className={`w-1/2 bg-white hover:bg-[#f8f8f8] text-black rounded-full border  focus-visible:border-chart-4 focus-visible:ring-chart-4 focus-visible:ring-[1px] data-[state=open]:border-green-500`}>Classes</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Classes</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {classes.map((classes) => (
+          <DropdownMenuCheckboxItem
+            key={classes}
+            checked={checkedClasses[classes] || false}
+            onSelect={(e)=>{e.preventDefault()}}
+            onCheckedChange={(checked) => handleCheckedChange(classes, checked)}
+          >
+            {classes}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+export function DropdownSubjects() {
+  const subjects = ["Maths", "English", "Physics", "Chemistry", "Biology", "History", "Geography", "Art", "Music", "Literature", "Computer Science", "Physical Education"]
+  const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>({})
+  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>([])
+  console.log(selectedSubjects);
+  
+
+  const handleCheckedChange = (subject: string, checked: Checked) => {
+    setCheckedSubjects(prev => ({ ...prev, [subject]: checked }))
+    if(checked){
+        setSelectedSubjects(prev => [...prev, subject])
+    } else {
+        setSelectedSubjects(prev => prev.filter(s => s !== subject))
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="default" className={`w-1/2 bg-white hover:bg-[#f8f8f8] text-black rounded-full border  focus-visible:border-chart-4 focus-visible:ring-chart-4 focus-visible:ring-[1px] data-[state=open]:border-green-500`}>Subjects</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Subjects</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {subjects.map((subject) => (
+          <DropdownMenuCheckboxItem
+            key={subject}
+            checked={checkedSubjects[subject] || false}
+            onSelect={(e)=>{e.preventDefault()}}
+            onCheckedChange={(checked) => handleCheckedChange(subject, checked)}
+          >
+            {subject}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}

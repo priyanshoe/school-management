@@ -35,7 +35,7 @@ function isValidDate(date: Date | undefined) {
 export function DatePicker(prop:any) {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(
-    new Date(prop.date)
+    new Date(prop.date || "2026-01-01")
   )
   const [month, setMonth] = React.useState<Date | undefined>(date)
   const [value, setValue] = React.useState(formatDate(date))
