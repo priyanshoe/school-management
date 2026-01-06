@@ -1,5 +1,5 @@
 
-export const role:string = "admin";
+export const role:string = "teacher";
 
 export const totalCount = [
   {
@@ -175,144 +175,144 @@ export const calendarEvents = [
   {
     title: "Math",
     allDay: false,
-    start: new Date(2025, 11, 1, 8, 0),
-    end: new Date(2025, 11, 1, 8, 45),
+    start: new Date(2026, 1, 1, 8, 0),
+    end: new Date(2026, 1, 1, 8, 45),
   },
   {
     title: "English",
     allDay: false,
-    start: new Date(2025, 11, 1, 9, 0),
-    end: new Date(2025, 11, 1, 9, 45),
+    start: new Date(2026, 1, 6, 9, 0),
+    end: new Date(2026, 1, 6, 9, 45),
   },
   {
     title: "Biology",
     allDay: false,
-    start: new Date(2025, 11, 1, 10, 0),
-    end: new Date(2025, 11, 1, 10, 45),
+    start: new Date(2026, 1, 6, 10, 0),
+    end: new Date(2026, 1, 6, 10, 45),
   },
   {
     title: "Physics",
     allDay: false,
-    start: new Date(2025, 11, 1, 11, 0),
-    end: new Date(2025, 11, 1, 11, 45),
+    start: new Date(2026, 1, 6, 11, 0),
+    end: new Date(2026, 1, 6, 11, 45),
   },
   {
     title: "Chemistry",
     allDay: false,
-    start: new Date(2025, 11, 1, 13, 0),
-    end: new Date(2025, 11, 1, 13, 45),
+    start: new Date(2026, 1, 6, 13, 0),
+    end: new Date(2026, 1, 6, 13, 45),
   },
   {
     title: "History",
     allDay: false,
-    start: new Date(2025, 11, 1, 14, 0),
-    end: new Date(2025, 11, 1, 14, 45),
+    start: new Date(2026, 1, 6, 14, 0),
+    end: new Date(2026, 1, 6, 14, 45),
   },
   {
     title: "English",
     allDay: false,
-    start: new Date(2025, 11, 2, 9, 0),
-    end: new Date(2025, 11, 2, 9, 45),
+    start: new Date(2026, 1, 7, 9, 0),
+    end: new Date(2026, 1, 7, 9, 45),
   },
   {
     title: "Biology",
     allDay: false,
-    start: new Date(2025, 11, 2, 10, 0),
-    end: new Date(2025, 11, 2, 10, 45),
+    start: new Date(2026, 1, 7, 10, 0),
+    end: new Date(2026, 1, 7, 10, 45),
   },
   {
     title: "Physics",
     allDay: false,
-    start: new Date(2025, 11, 2, 11, 0),
-    end: new Date(2025, 11, 2, 11, 45),
+    start: new Date(2026, 1, 7, 11, 0),
+    end: new Date(2026, 1, 7, 11, 45),
   },
 
   {
     title: "History",
     allDay: false,
-    start: new Date(2025, 11, 2, 14, 0),
-    end: new Date(2025, 11, 2, 14, 45),
+    start: new Date(2026, 1, 7, 14, 0),
+    end: new Date(2026, 1, 7, 14, 45),
   },
   {
     title: "Math",
     allDay: false,
-    start: new Date(2025, 11, 3, 8, 0),
-    end: new Date(2025, 11, 3, 8, 45),
+    start: new Date(2026, 1, 8, 8, 0),
+    end: new Date(2026, 1, 8, 8, 45),
   },
   {
     title: "Biology",
     allDay: false,
-    start: new Date(2025, 11, 3, 10, 0),
-    end: new Date(2025, 11, 3, 10, 45),
+    start: new Date(2026, 1, 8, 10, 0),
+    end: new Date(2026, 1, 8, 10, 45),
   },
 
   {
     title: "Chemistry",
     allDay: false,
-    start: new Date(2025, 11, 3, 13, 0),
-    end: new Date(2025, 11, 3, 13, 45),
+    start: new Date(2026, 1, 8, 13, 0),
+    end: new Date(2026, 1, 8, 13, 45),
   },
   {
     title: "History",
     allDay: false,
-    start: new Date(2025, 11, 3, 14, 0),
-    end: new Date(2025, 11, 3, 14, 45),
+    start: new Date(2026, 1, 8, 14, 0),
+    end: new Date(2026, 1, 8, 14, 45),
   },
   {
     title: "English",
     allDay: false,
-    start: new Date(2025, 11, 4, 9, 0),
-    end: new Date(2025, 11, 4, 9, 45),
+    start: new Date(2026, 1, 9, 9, 0),
+    end: new Date(2026, 1, 9, 9, 45),
   },
   {
     title: "Biology",
     allDay: false,
-    start: new Date(2025, 11, 4, 10, 0),
-    end: new Date(2025, 11, 4, 10, 45),
+    start: new Date(2026, 1, 9, 10, 0),
+    end: new Date(2026, 1, 9, 10, 45),
   },
   {
     title: "Physics",
     allDay: false,
-    start: new Date(2025, 11, 4, 11, 0),
-    end: new Date(2025, 11, 4, 11, 45),
+    start: new Date(2026, 1, 9, 11, 0),
+    end: new Date(2026, 1, 9, 11, 45),
   },
 
   {
     title: "History",
     allDay: false,
-    start: new Date(2025, 11, 4, 14, 0),
-    end: new Date(2025, 11, 4, 14, 45),
+    start: new Date(2026, 1, 9, 14, 0),
+    end: new Date(2026, 1, 9, 14, 45),
   },
   {
     title: "Math",
     allDay: false,
-    start: new Date(2025, 11, 5, 8, 0),
-    end: new Date(2025, 11, 5, 8, 45),
+    start: new Date(2026, 1, 10, 8, 0),
+    end: new Date(2026, 1, 10, 8, 45),
   },
   {
     title: "English",
     allDay: false,
-    start: new Date(2025, 11, 5, 9, 0),
-    end: new Date(2025, 11, 5, 9, 45),
+    start: new Date(2026, 1, 10, 9, 0),
+    end: new Date(2026, 1, 10, 9, 45),
   },
 
   {
     title: "Physics",
     allDay: false,
-    start: new Date(2025, 11, 5, 11, 0),
-    end: new Date(2025, 11, 5, 11, 45),
+    start: new Date(2026, 1, 10, 11, 0),
+    end: new Date(2026, 1, 10, 11, 45),
   },
   {
     title: "Chemistry",
     allDay: false,
-    start: new Date(2025, 11, 5, 13, 0),
-    end: new Date(2025, 11, 5, 13, 45),
+    start: new Date(2026, 1, 10, 13, 0),
+    end: new Date(2026, 1, 10, 13, 45),
   },
   {
     title: "History",
     allDay: false,
-    start: new Date(2025, 11, 5, 14, 0),
-    end: new Date(2025, 11, 5, 14, 45),
+    start: new Date(2026, 1, 10, 14, 0),
+    end: new Date(2026, 1, 10, 14, 45),
   },
 ];
 // Subjects
@@ -671,14 +671,14 @@ export const examsData = [
     subject: "Math",
     class: "1A",
     teacher: "Martha Morris",
-    date: "2025-01-01",
+    date: "2026-01-01",
   },
   {
     id: 2,
     subject: "English",
     class: "2A",
     teacher: "Randall Garcia",
-    date: "2025-01-01",
+    date: "2026-01-01",
   },
   {
     id: 3,
@@ -1312,7 +1312,6 @@ interface Teacher {
   bloodGroup: string;
   bio: string;
 }
-
 export const teachersData: Teacher[] = [
   {
     id: 1,
