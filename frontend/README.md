@@ -46,7 +46,7 @@ add multiple selection for
     etc
 
 add form for CRUD in lists button ✅
-
+change photo size in sigle user page
 change color them 
 add darkmode / lightmode + theme
 
