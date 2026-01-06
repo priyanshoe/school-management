@@ -1,5 +1,5 @@
 
-export const role:string = "teacher";
+export const role:string = "admin";
 
 export const totalCount = [
   {
