@@ -1,9 +1,9 @@
 {
   "name": "school-management",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,10 @@
     "url": "https://github.com/priyanshoe/school-management/issues"
   },
   "homepage": "https://github.com/priyanshoe/school-management#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mysql2": "^3.16.0"
+  }
 }
