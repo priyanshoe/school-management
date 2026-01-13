@@ -3,12 +3,15 @@ const app = express()
 app.use(express.json());  
 const cookieParser = require('cookie-parser')
 app.use(cookieParser())
-app.get("/",(req,res) =>{
-    res.send("Helooo")
-})
+const cors = require('cors')
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
-const auth = require('./routes/auth.routes')
-app.use('/api/auth', auth)
+
+const authTeacher = require('./routes/auth.routes')
+app.use('/api/teacher', authTeacher)
 
 
 module.exports = app

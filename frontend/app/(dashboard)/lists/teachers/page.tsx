@@ -1,4 +1,5 @@
 "use client"
+import axios from 'axios'
 import { PaginationList } from "@/components/app-pagination"
 import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
@@ -10,17 +11,39 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { teachersData, role } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
+import { role } from '@/database/data';
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function TeachersList() {
+    type Teacher = {
+        teacher_id: number;
+        name: string;
+        email: string;
+        photo?: string;
+        subjects: string[] | string;
+        classes: string[] | string;
+        phone?: string;
+        address?: string;
+    }
+    const [teachersData, setTeachersData] = useState<Teacher[] | null>(null)
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/`, { withCredentials: true })
+            .then(res => setTeachersData(res.data))
+            .catch(err => console.error(err))
+    }, [])
+
     const router = useRouter();
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
+
+    if (!teachersData) return (
+        <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
+            Loading...
+        </div>
+    )
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -33,10 +56,10 @@ export default function TeachersList() {
                             <TableRow>
                                 <TableHead className="text-gray-800 font-semibold">Name</TableHead>
                                 <TableHead className="text-gray-800 font-semibold">Teacher ID</TableHead>
-                                <TableHead className="text-gray-800 font-semibold">Subjects</TableHead>
-                                <TableHead className="text-gray-800 font-semibold">Classes</TableHead>
+                                {/* <TableHead className="text-gray-800 font-semibold">Subjects</TableHead>
+                                <TableHead className="text-gray-800 font-semibold">Classes</TableHead> */}
                                 {
-                                    ["admin","teacher"].includes(role) &&
+                                    ["admin", "teacher"].includes(role) &&
                                     <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Phone</TableHead>
                                 }
                                 {
@@ -50,10 +73,10 @@ export default function TeachersList() {
                         </TableHeader>
                         <TableBody>
                             {
-                                teachersData.slice(startIndex, endIndex).map((item) => (
-                                    <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
+                                teachersData.slice(startIndex, endIndex).map((item, id) => (
+                                    <TableRow key={id} className={`${id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
                                         <TableCell className="text-left flex gap-2 items-center justify-start cursor-pointer"
-                                                    onClick={()=> router.push(`teachers/${item.id}`)}>
+                                            onClick={() => router.push(`teachers/${item.teacher_id}`)}>
                                             <div id="profile-photo" className="rounded-full overflow-hidden h-10 w-10 hidden sm:table-cell">
                                                 <img src={item.photo} className="w-full h-full" />
                                             </div>
@@ -62,11 +85,11 @@ export default function TeachersList() {
                                                 <h3 className="text-xs font-semibold text-gray-500">{item.email}</h3>
                                             </div>
                                         </TableCell>
-                                        <TableCell className="text-left">{item.teacherId}</TableCell>
-                                        <TableCell className="text-left">{item.subjects.join(", ")}</TableCell>
-                                        <TableCell className="text-left">{item.classes.join(", ")}</TableCell>
+                                        <TableCell className="text-left">{item.teacher_id}</TableCell>
+                                        {/* <TableCell className="text-left">{item.subjects.join(", ")}</TableCell>
+                                        <TableCell className="text-left">{item.classes.join(", ")}</TableCell> */}
                                         {
-                                            ["admin","teacher"].includes(role) &&
+                                            ["admin", "teacher"].includes(role) &&
                                             <TableCell className="text-left hidden sm:table-cell">{item.phone}</TableCell>
                                         }
                                         {
@@ -75,11 +98,11 @@ export default function TeachersList() {
                                                 <TableCell className="text-left hidden lg:table-cell">{item.address}</TableCell>
                                                 <TableCell className="flex justify-start items-center gap-2">
                                                     <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item}/>
+                                                        <FormUpdate data={item} />
                                                         {/* <SquarePen size={15} /> */}
                                                     </div>
                                                     <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.id} name={item.name}/>
+                                                        <FormDelete id={item.teacher_id} name={item.name} />
                                                         {/* <Trash2 size={15} /> */}
                                                     </div>
                                                 </TableCell>
