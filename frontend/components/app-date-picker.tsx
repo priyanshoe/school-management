@@ -41,8 +41,8 @@ export function DatePicker(prop:any) {
   const [value, setValue] = React.useState(formatDate(date))
 
   return (
-    <div className="flex flex-col gap-2">
-      <Label htmlFor="date" className="px-1">
+    <div className=" text-black flex flex-col gap-2">
+      <Label htmlFor="date" className="px-1 text-white">
         Date of Birth
       </Label>
       <div className="relative flex gap-2">
@@ -50,7 +50,7 @@ export function DatePicker(prop:any) {
           id="date"
           value={value}
           placeholder="June 01, 2025"
-          className="bg-white pr-10"
+          className="bg-white font-semibold text-xs pr-10"
           onChange={(e) => {
             const date = new Date(e.target.value)
             setValue(e.target.value)

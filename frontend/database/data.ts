@@ -1404,7 +1404,7 @@ export const studentsData = [
 //Teachers
 interface Teacher {
   id: number;
-  teacherId: string;
+  teacher_id: number;
   name: string;
   email: string;
   photo: string;
@@ -1419,7 +1419,7 @@ interface Teacher {
 export const teachersData: Teacher[] = [
   {
     id: 1,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "John Doe",
     email: "john@doe.com",
     photo:
@@ -1434,7 +1434,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 2,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Jane Doe",
     email: "jane@doe.com",
     photo:
@@ -1449,7 +1449,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 3,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Mike Geller",
     email: "mike@geller.com",
     photo:
@@ -1464,7 +1464,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 4,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Jay French",
     email: "jay@gmail.com",
     photo:
@@ -1479,7 +1479,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 5,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Jane Smith",
     email: "jane@gmail.com",
     photo:
@@ -1494,7 +1494,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 6,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Anna Santiago",
     email: "anna@gmail.com",
     photo:
@@ -1509,7 +1509,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 7,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Allen Black",
     email: "allen@black.com",
     photo:
@@ -1524,7 +1524,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 8,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Ophelia Castro",
     email: "ophelia@castro.com",
     photo:
@@ -1539,7 +1539,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 9,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "Derek Briggs",
     email: "derek@briggs.com",
     photo:
@@ -1554,7 +1554,7 @@ export const teachersData: Teacher[] = [
   },
   {
     id: 10,
-    teacherId: "1234567890",
+    teacher_id: 1234567890,
     name: "John Glover",
     email: "john@glover.com",
     photo:

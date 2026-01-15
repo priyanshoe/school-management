@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { role } from '@/database/data';
+import { teachersData, role } from '@/database/data';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -27,12 +27,12 @@ export default function TeachersList() {
         phone?: string;
         address?: string;
     }
-    const [teachersData, setTeachersData] = useState<Teacher[] | null>(null)
-    useEffect(() => {
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/`, { withCredentials: true })
-            .then(res => setTeachersData(res.data))
-            .catch(err => console.error(err))
-    }, [])
+    // const [teachersData, setTeachersData] = useState<Teacher[] | null>(null)
+    // useEffect(() => {
+    //     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/`, { withCredentials: true })
+    //         .then(res => setTeachersData(res.data))
+    //         .catch(err => console.error(err))
+    // }, [])
 
     const router = useRouter();
     const rowsPerPage = 15;

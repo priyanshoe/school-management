@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import { type DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
 
 import { Button } from "@/components/ui/button"
@@ -11,12 +12,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
 
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 
 
-
+// CLASSES MULTIPLE SELECTIONS
 export function DropdownClasses() {
   const classes = 
 ["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
@@ -56,6 +59,36 @@ export function DropdownClasses() {
     </DropdownMenu>
   )
 }
+
+
+// CLASS SINGLE SELECTIONS
+export function DropdownClass() {
+  const classes = 
+["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
+  const [selectedClass, setSelectedClass] = React.useState("")
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="default" className={` bg-white hover:bg-[#f8f8f8] text-black rounded-full border  focus-visible:border-chart-4 focus-visible:ring-chart-4 focus-visible:ring-[1px] data-[state=open]:border-green-500`}>
+          Class
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup value={selectedClass} onValueChange={setSelectedClass}>
+          {
+            classes.map((item,id)=>(
+              <DropdownMenuRadioItem key={id} value={item}>{item}</DropdownMenuRadioItem>
+            ))
+          }
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+// SUBJECTS MULTIPLE SELECTIONS
 export function DropdownSubjects() {
   const subjects = ["Maths", "English", "Physics", "Chemistry", "Biology", "History", "Geography", "Art", "Music", "Literature", "Computer Science", "Physical Education"]
   const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>({})
@@ -88,6 +121,48 @@ export function DropdownSubjects() {
             onCheckedChange={(checked) => handleCheckedChange(subject, checked)}
           >
             {subject}
+          </DropdownMenuCheckboxItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
+// STUDENTS MULTIPLE SELECTIONS
+export function DropdownStudents() {
+  const students = ["Alice Johnson", "Bob Smith", "Charlie Brown", "Diana Prince", "Ethan Hunt", "Fiona Apple", "George Miller", "Hannah Montana", "Isaac Newton", "Julia Roberts", "Kevin Hart", "Laura Palmer"]
+  const [checkedStudents, setCheckedStudents] = React.useState<Record<string, Checked>>({})
+  const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
+  console.log(selectedStudents);
+  
+
+  const handleCheckedChange = (students: string, checked: Checked) => {
+    setCheckedStudents(prev => ({ ...prev, [students]: checked }))
+    if(checked){
+        setSelectedStudents(prev => [...prev, students])
+    } else {
+        setSelectedStudents(prev => prev.filter(s => s !== students))
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="default" className={`bg-white hover:bg-[#f8f8f8] text-black rounded-full border  focus-visible:border-chart-4 focus-visible:ring-chart-4 focus-visible:ring-[1px] data-[state=open]:border-green-500`}>
+          Students
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Students</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {students.map((item,id) => (
+          <DropdownMenuCheckboxItem
+            key={id}
+            checked={checkedStudents[item] || false}
+            onSelect={(e)=>{e.preventDefault()}}
+            onCheckedChange={(checked) => handleCheckedChange(item, checked)}
+          >
+            {item}
           </DropdownMenuCheckboxItem>
         ))}
       </DropdownMenuContent>

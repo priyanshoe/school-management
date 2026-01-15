@@ -46,7 +46,7 @@ export function FormCreate() {
         <DialogTrigger className=" hover:cursor-pointer" asChild>
           <Plus size={15} />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-white text-black">
+        <DialogContent className="sm:max-w-106 bg-white text-black">
           <DialogHeader>
             <DialogTitle className="text-green-500 text-xl capitalize">Add {item}</DialogTitle>
             <DialogDescription>
@@ -62,18 +62,37 @@ export function FormCreate() {
               <Label htmlFor="email">Email</Label>
               <Input type="email" id="email" name="email" />
             </div>
-            <div className="grid gap-3">
-              <Label htmlFor="phone">Phone</Label>
-              <Input type="phone" id="phone" name="phone" />
-            </div>
+            {
+              ['teachers','parents'].includes(temp) &&
+                <div className="grid gap-3">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input type="phone" id="phone" name="phone" />
+                </div>
+            }
             <div className="grid gap-3">
               <Label htmlFor="address">Address</Label>
               <Input type="text" id="address" name="address" />
             </div>
-            <div className="flex gap-2">
-              <DropdownSubjects/>
-              <DropdownClasses/>
-            </div>
+            {
+              ['students'].includes(temp) &&
+                <div className="grid gap-3">
+                  <DropdownClass/>
+                </div>
+            }
+            {
+              ['parents'].includes(temp) &&
+                <div className="grid gap-3">
+                  <DropdownStudents/>
+                </div>
+            }
+            {
+              ["teachers",].includes(temp) && 
+              <div className="flex gap-2">
+                <DropdownSubjects/>
+                <DropdownClasses/>
+              </div>
+              
+            }
             <div className="flex gap-2">
               <DatePicker />
               <div className="flex flex-col gap-2">
@@ -127,7 +146,7 @@ export function FormUpdate(prop:{data:any}) {
         <DialogTrigger className=" hover:cursor-pointer" asChild>
           <SquarePen size={15} />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-white text-black">
+        <DialogContent className="sm:max-w-106 bg-white text-black">
           <DialogHeader>
             <DialogTitle className="text-[#c282ff] text-xl capitalize">Edit {item}</DialogTitle>
             <DialogDescription className="">
@@ -189,8 +208,7 @@ import {
 import { DatePicker } from "../app-date-picker";
 import { toast } from "sonner";
 import { useState } from "react";
-import path from "path";
-import { DropdownClasses, DropdownSubjects } from "../app-dropdown";
+import { DropdownClass, DropdownClasses, DropdownStudents, DropdownSubjects } from "../app-dropdown";
 
 export function FormDelete(prop: { id: number, name: string }) {
 

@@ -1,4 +1,4 @@
-
+'use client'
 import {
   Home,
   GraduationCap,
@@ -31,6 +31,9 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { role } from "@/database/data"
+import axios from "axios"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const items = [
   {
@@ -130,15 +133,39 @@ const items2 = [
     url: "/",
     icon: Settings,
   },
-  {
-    title: "Logout",
-    url: "/",
-    icon: LogOut,
-  },
+  // {
+  //   title: "Logout",
+  //   url: "/",
+  //   icon: LogOut,
+  // },
 ]
 
 
 export function AppSidebar() {
+  const router = useRouter();
+
+  async function handleLogout() {
+    try {
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/signOut`, {}, { withCredentials: true })
+      console.log(responsePromise);
+      toast.promise(responsePromise,
+        {
+          loading: 'Connecting...',
+          success: (res) => res.data.message,
+          error: "failed, Try again",
+        }
+      )
+      const response = await responsePromise
+      if (response) {
+        return router.push('/')
+      }
+    } catch (err) {
+      return console.log(err);
+    }
+
+
+  }
+
   return (
     <Sidebar variant="floating" collapsible="icon">
 
@@ -189,6 +216,15 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              {/* LOGOUT BUTTON */}
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleLogout} asChild>
+                  <button>
+                    <LogOut />
+                    <span>Logout</span>
+                  </button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
