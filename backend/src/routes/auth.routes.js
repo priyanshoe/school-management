@@ -1,13 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const app = express()
 
-const authTeacherController = require('../controller/auth.teacher.controller')
-router.get('/', authTeacherController.getTeachers)
-router.get('/:id', authTeacherController.getTeacher)
-router.post('/signUp', authTeacherController.signUpTeacher)
-router.post('/signIn', authTeacherController.signInTeacher)
-router.post('/signOut', authTeacherController.signOutTeacher)
+const authTeacherController = require('../controller/auth/auth.teacher.controller')
+router.post('/teacher/signUp', authTeacherController.signUpTeacher)
+router.post('/teacher/signIn', authTeacherController.signInTeacher)
+router.post('/teacher/signOut', authTeacherController.signOutTeacher)
 
 
 module.exports = router;

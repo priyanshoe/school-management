@@ -1,7 +1,9 @@
 import { ArrowDownWideNarrow, Plus, SlidersHorizontal } from "lucide-react";
 import { Input } from "../ui/input";
 import { role } from "@/database/data";
-import { FormCreate } from "./form-modal";
+import { CreateTeacher } from "@/app/(dashboard)/lists/teachers/form-teacher";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { CreateStudent } from "@/app/(dashboard)/lists/students/form-student";
 
 export default function NavbarSecondary(prop: { head: String }) {
     return (
@@ -17,9 +19,24 @@ export default function NavbarSecondary(prop: { head: String }) {
                         <ArrowDownWideNarrow size={15} />
                     </div>
                     {
-                        role==="admin" &&
+                        role === "admin" &&
                         <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">
-                            <FormCreate/>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <Plus size={15} />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="start" className="w-25 rounded-sm overflow-hidden mt-3 mr-6  z-99">
+                                    <DropdownMenuLabel className="font-semibold text-center bg-yellow-500">
+                                        Create
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuItem asChild>
+                                        <CreateTeacher />
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <CreateStudent />
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     }
                     <div className="bg-yellow-400 rounded-full flex items-center justify-center p-2">

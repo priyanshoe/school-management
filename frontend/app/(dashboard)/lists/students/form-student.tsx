@@ -35,8 +35,111 @@ import { Textarea } from "@/components/ui/textarea";
 
 
 
+export function CreateStudent() {
+    const router = useRouter()
+    const [open, setOpen] = useState(false)
+    const [teacherData, setTeacherData] = useState({
+        name: "",
+        email: "",
+        photo: "",
+        phone: "",
+        address: "",
+        bio: "",
+        dob: "2026-01-10",
+        blood_group: "",
+        password: ""
+    })
+    const [conformPassword, setConformPassword] = useState("")
 
-export function FormUpdate(prop: { data: any }) {
+
+    async function handleCreate(e:any) {
+        e.preventDefault();
+        try {
+            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}aauth//teacher/signUp`, teacherData, { withCredentials: true })
+            toast.promise(responsePromise,
+                {
+                    loading: "Connecting...",
+                    success: (res) =>{ 
+                        setOpen(false);
+                        router.refresh();
+                        return "Teacher's data created"
+                    },
+                    error: (err) => err?.response?.data?.message || "Failed, try again"
+                })
+        } catch (err) {
+            setOpen(false);
+            return console.error(err);
+        }
+        
+    }
+    return (
+        <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+                <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
+                    <h2>Student</h2>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-106 bg-white text-black">
+            <form onSubmit={handleCreate}>
+                    <DialogHeader>
+                        <DialogTitle className="text-green-500 text-xl capitalize">Add Student</DialogTitle>
+                        <DialogDescription>
+                            Fill the details properly
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-3">
+                        <div className="grid gap-3">
+                            <Label htmlFor="name-1">Name</Label>
+                            <Input type="name" id="name-1" name="name" required value={teacherData.name} onChange={(e) => setTeacherData({ ...teacherData, name: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="photo">Photo</Label>
+                            <Input type="text" id="photo" name="photo" placeholder="photo URL ONLY"  value={teacherData.photo} onChange={(e) => setTeacherData({ ...teacherData, photo: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="email">Email</Label>
+                            <Input type="email" id="email" name="email" required value={teacherData.email} onChange={(e) => setTeacherData({ ...teacherData, email: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="password">Password</Label>
+                            <Input type="password" id="password" name="password" required value={teacherData.password} onChange={(e) => setTeacherData({ ...teacherData, password: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="conform-password">Conform Password</Label>
+                            <Input type="password" id="conform-password" name="conform-password" required value={conformPassword} onChange={(e) => setConformPassword(e.target.value)} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="phone">Phone</Label>
+                            <Input type="text" id="phone" name="phone" value={teacherData.phone} required onChange={(e) => setTeacherData({ ...teacherData, phone: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="address">Address</Label>
+                            <Input type="text" id="address" name="address" value={teacherData.address} required onChange={(e) => setTeacherData({ ...teacherData, address: e.target.value })} />
+                        </div>
+                        <div className="flex gap-2">
+                            <DatePicker />
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="bloodgroup">Blood Group</Label>
+                                <Input type="text" id="bloodgroup" name="bloodgroup" value={teacherData.blood_group} onChange={(e) => setTeacherData({ ...teacherData, blood_group: e.target.value })} />
+                            </div>
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="bio">Bio</Label>
+                            <Textarea id="bio" name="bio" value={teacherData.bio}  onChange={(e) => setTeacherData({ ...teacherData, bio: e.target.value })} />
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <Button variant="outline" className="bg-transparent text-black hover:cursor-pointer">Cancel</Button>
+                        </DialogClose>
+                        <Button type="submit" className="ml-2 hover:cursor-pointer bg-green-400 hover:bg-green-500 hover:text-white text-black">Save changes</Button>
+                    </DialogFooter>
+            </form>
+                </DialogContent>
+        </Dialog>
+    )
+}
+
+
+export function UpdateStudent(prop: { data: any }) {
     const router = useRouter()
     const [open, setOpen] = useState(false)
     const [teacherData, setTeacherData] = useState({
@@ -132,13 +235,12 @@ export function FormUpdate(prop: { data: any }) {
 
 
 
-export function FormDelete(prop: { id:number, name:string }) {
-    
+export function DeleteStudent(prop: { data:any }) {
     const router = useRouter()
     const [teacherData, setTeacherData] = useState({
-        teacher_id:"",
-        name:"",
-        email:"",
+        teacher_id:prop.data.teacher_id,
+        name:prop.data.name,
+        email:prop.data.email,
     })
 
     async function handleDelete() {

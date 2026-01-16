@@ -1,7 +1,6 @@
 "use client"
 import axios from 'axios'
 import { PaginationList } from "@/components/app-pagination"
-import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
 import {
     Table,
@@ -14,6 +13,7 @@ import {
 import { teachersData, role } from '@/database/data';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { DeleteTeacher, UpdateTeacher } from './form-teacher';
 
 
 export default function TeachersList() {
@@ -98,11 +98,11 @@ export default function TeachersList() {
                                                 <TableCell className="text-left hidden lg:table-cell">{item.address}</TableCell>
                                                 <TableCell className="flex justify-start items-center gap-2">
                                                     <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item} />
+                                                        <UpdateTeacher data={item} />
                                                         {/* <SquarePen size={15} /> */}
                                                     </div>
                                                     <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.teacher_id} name={item.name} />
+                                                        <DeleteTeacher data={item} />
                                                         {/* <Trash2 size={15} /> */}
                                                     </div>
                                                 </TableCell>

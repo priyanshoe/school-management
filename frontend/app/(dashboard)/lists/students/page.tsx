@@ -1,6 +1,5 @@
 "use client"
 import { PaginationList } from "@/components/app-pagination"
-import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
 import {
     Table,
@@ -11,9 +10,9 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { studentsData, role } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { DeleteStudent, UpdateStudent } from "./form-student";
 
 
 export default function StudentsList() {
@@ -76,10 +75,10 @@ export default function StudentsList() {
                                                 <TableCell className="text-left hidden lg:table-cell">{item.address}</TableCell>
                                                 <TableCell className="flex justify-start items-center gap-2">
                                                     <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item}/>
+                                                        <UpdateStudent data={item}/>
                                                     </div>
                                                     <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.id} name={item.name}/>
+                                                        <DeleteStudent data={item}/>
                                                     </div>
                                                 </TableCell>
                                             </>

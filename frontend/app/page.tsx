@@ -16,7 +16,7 @@ export default function Home() {
 
   async function handleSignIn() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/signIn`, signInData, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signIn`, signInData, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: "Connecting...",
@@ -45,10 +45,9 @@ export default function Home() {
     blood_group: "",
     password: ""
   })
-  console.log(signUpData);
   async function handleSignUp() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/signUp`, signUpData, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signUp`, signUpData, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: "Connecting...",
