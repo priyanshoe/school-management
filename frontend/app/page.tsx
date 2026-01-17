@@ -21,7 +21,7 @@ export default function Home() {
         {
           loading: "Connecting...",
           success: (res) => res.data.message,
-          error: "failed, Try again",
+          error: (err) => err?.response?.data?.message || "Failed, try again"
         })
       const response = await responsePromise
       if (response) {

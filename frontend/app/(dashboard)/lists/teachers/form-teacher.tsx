@@ -52,11 +52,11 @@ export function CreateTeacher() {
     async function handleCreate(e: any) {
         e.preventDefault();
         try {
-            if(teacherData.password !== conformPassword) {
-                setTeacherData({...teacherData,password:""}) 
-                setConformPassword("") 
+            if (teacherData.password !== conformPassword) {
+                setTeacherData({ ...teacherData, password: "" })
+                setConformPassword("")
                 return toast.warning("Password not matched")
-                }
+            }
             const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signUp`, teacherData, { withCredentials: true })
             toast.promise(responsePromise,
                 {
@@ -143,16 +143,17 @@ export function CreateTeacher() {
 export function UpdateTeacher(prop: { data: any }) {
     const [open, setOpen] = useState(false)
     const [teacherData, setTeacherData] = useState({
-        name: prop.data.name,
-        email: prop.data.email,
-        photo: prop.data.photo,
-        phone: prop.data.phone,
-        address: prop.data.address,
-        bio: prop.data.bio,
-        blood_group: prop.data.bloodGroup,
+        teacher_id:0,
+        name: "",
+        email: "",
+        photo: "",
+        phone: "",
+        address: "",
+        bio: "",
+        blood_group: "",
         dob: "2026-01-10",
     })
-
+    
     async function handleUpdate(e: any) {
         e.preventDefault();
         try {
@@ -173,7 +174,18 @@ export function UpdateTeacher(prop: { data: any }) {
     }
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-            <DialogTrigger className=" hover:cursor-pointer" asChild>
+            <DialogTrigger className=" hover:cursor-pointer" asChild
+                onClick={() => setTeacherData({
+                    ...teacherData,
+                    teacher_id:prop.data.teacher_id,
+                    name: prop.data.name,
+                    email: prop.data.email,
+                    photo: prop.data.photo,
+                    phone: prop.data.phone,
+                    address: prop.data.address,
+                    bio: prop.data.bio,
+                    blood_group: prop.data.blood_group,
+                })}>
                 <SquarePen size={15} />
             </DialogTrigger>
             <DialogContent className="sm:max-w-106 bg-white text-black">
@@ -236,9 +248,9 @@ export function UpdateTeacher(prop: { data: any }) {
 
 export function DeleteTeacher(prop: { data: any }) {
     const [teacherData, setTeacherData] = useState({
-        teacher_id:"",
-        name:"",
-        email:"",
+        teacher_id: "",
+        name: "",
+        email: "",
     })
 
     async function handleDelete() {
@@ -262,12 +274,12 @@ export function DeleteTeacher(prop: { data: any }) {
     }
     return (
         <AlertDialog>
-            <AlertDialogTrigger className="hover:cursor-pointer" asChild onClick={()=>
-            setTeacherData({
-                teacher_id: prop.data.teacher_id,
-                name: prop.data.name,
-                email: prop.data.email,
-            })}>
+            <AlertDialogTrigger className="hover:cursor-pointer" asChild onClick={() =>
+                setTeacherData({
+                    teacher_id: prop.data.teacher_id,
+                    name: prop.data.name,
+                    email: prop.data.email,
+                })}>
                 <Trash2 size={15} />
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-white">

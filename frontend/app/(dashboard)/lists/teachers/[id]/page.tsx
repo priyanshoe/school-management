@@ -10,27 +10,27 @@ import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function TeacherDetails() { 
-      type Teacher = {
+export default function TeacherDetails() {
+    type Teacher = {
         teacher_id: number;
         name: string;
         email: string;
         photo?: string;
         phone?: string;
         address?: string;
-        bio?:string;
+        bio?: string;
         blood_group: string;
         dob: string;
     }
     const { id } = useParams<{ id: string }>()
     const ID = Number(id);
     const [userData, setUserData] = useState<Teacher | null>(null)
-    
-    useEffect(()=>{
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/${ID}`, { withCredentials:true})
-        .then((res)=> setUserData(res.data))
-        .catch((err)=> console.error(err))
-    },[ID])    
+
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/${ID}`, { withCredentials: true })
+            .then((res) => setUserData(res.data))
+            .catch((err) => console.error(err))
+    }, [ID])
 
     const shortcuts = [
         { name: "Teacher's Classes", bgcolor: "bg-sky-100" },
@@ -39,7 +39,7 @@ export default function TeacherDetails() {
         { name: "Teacher's Exam", bgcolor: "bg-pink-100" },
         { name: "Teacher's Assignments", bgcolor: "bg-sky-100" },
     ];
-        
+
     if (!userData) return (
         <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
             Loading...
@@ -57,7 +57,11 @@ export default function TeacherDetails() {
                     <div id="card" className="h-full w-full lg:w-1/2 bg-white flex items-center rounded-md p-2 pt-0.5">
                         <div id="photo" className="hidden h-full w-1/3  sm:flex items-center justify-center">
                             <div id="img-container" className="w-[74%] h-38 md:h-35 lg:h-23 xl:h-20 2xl:h-33 rounded-full overflow-hidden">
-                                <img src={userData.photo} alt="profile" className="w-full h-full object-cover" />
+                                <img src={userData.photo || "https://github.com/evilrabbit.png"}
+                                    onError={(e) => {
+                                        e.currentTarget.src = "https://github.com/evilrabbit.png";
+                                    }} alt='profile'
+                                    className="w-full h-full object-cover" />
                             </div>
                         </div>
                         <div id="text-container" className="h-full w-full sm:w-2/3 ` flex flex-col justify-center gap-5 md:py-1.5 xl:px-2">
