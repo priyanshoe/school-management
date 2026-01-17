@@ -1,5 +1,4 @@
 "use client"
-import { useRouter } from "next/navigation";
 import { SquarePen, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -36,7 +35,6 @@ import { Textarea } from "@/components/ui/textarea";
 
 
 export function CreateTeacher() {
-    const router = useRouter()
     const [open, setOpen] = useState(false)
     const [teacherData, setTeacherData] = useState({
         name: "",
@@ -49,10 +47,7 @@ export function CreateTeacher() {
         blood_group: "",
         password: ""
     })
-    console.log(teacherData.password);
-    
     const [conformPassword, setConformPassword] = useState("")
-
 
     async function handleCreate(e: any) {
         e.preventDefault();
