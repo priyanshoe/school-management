@@ -10,7 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { teachersData, role } from '@/database/data';
+import { role } from '@/database/data';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DeleteTeacher, UpdateTeacher } from './form-teacher';
@@ -27,15 +27,15 @@ export default function TeachersList() {
         phone?: string;
         address?: string;
     }
-    // const [teachersData, setTeachersData] = useState<Teacher[] | null>(null)
-    // useEffect(() => {
-    //     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/`, { withCredentials: true })
-    //         .then(res => setTeachersData(res.data))
-    //         .catch(err => console.error(err))
-    // }, [])
+    const [teachersData, setTeachersData] = useState<Teacher[] | null>(null)
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/`, { withCredentials: true })
+            .then(res => setTeachersData(res.data))
+            .catch(err => console.error(err))
+    }, [])
 
     const router = useRouter();
-    const rowsPerPage = 15;
+    const rowsPerPage = 13;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
 
@@ -78,7 +78,11 @@ export default function TeachersList() {
                                         <TableCell className="text-left flex gap-2 items-center justify-start cursor-pointer"
                                             onClick={() => router.push(`teachers/${item.teacher_id}`)}>
                                             <div id="profile-photo" className="rounded-full overflow-hidden h-10 w-10 hidden sm:table-cell">
-                                                <img src={item.photo} className="w-full h-full" />
+                                                <img src={item.photo || "https://github.com/evilrabbit.png"}
+                                                    onError={(e) => {
+                                                        e.currentTarget.src = "https://github.com/evilrabbit.png";
+                                                    }} alt='profile' 
+                                                    className="w-full h-full" />
                                             </div>
                                             <div id="name">
                                                 <h1 className="text-md font-semibold">{item.name}</h1>
