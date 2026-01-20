@@ -57,18 +57,21 @@ export function CreateTeacher() {
                 setConformPassword("")
                 return toast.warning("Password not matched")
             }
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signUp`, teacherData, { withCredentials: true })
+            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/create`, teacherData, { withCredentials: true })
+
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
                     success: (res) => {
-                        window.location.reload();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
                         return "Teacher's data created"
                     },
                     error: (err) => err?.response?.data?.message || "Failed, try again"
                 })
         } catch (err) {
-            setOpen(false);
+            // setOpen(false);
             return console.error(err);
         }
 
@@ -143,7 +146,7 @@ export function CreateTeacher() {
 export function UpdateTeacher(prop: { data: any }) {
     const [open, setOpen] = useState(false)
     const [teacherData, setTeacherData] = useState({
-        teacher_id:0,
+        teacher_id: 0,
         name: "",
         email: "",
         photo: "",
@@ -153,7 +156,7 @@ export function UpdateTeacher(prop: { data: any }) {
         blood_group: "",
         dob: "2026-01-10",
     })
-    
+
     async function handleUpdate(e: any) {
         e.preventDefault();
         try {
@@ -162,7 +165,9 @@ export function UpdateTeacher(prop: { data: any }) {
                 {
                     loading: "Connecting...",
                     success: (res) => {
-                        window.location.reload();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
                         return "Teacher's data updated"
                     },
                     error: (err) => err?.response?.data?.message || "Failed, try again"
@@ -177,7 +182,7 @@ export function UpdateTeacher(prop: { data: any }) {
             <DialogTrigger className=" hover:cursor-pointer" asChild
                 onClick={() => setTeacherData({
                     ...teacherData,
-                    teacher_id:prop.data.teacher_id,
+                    teacher_id: prop.data.teacher_id,
                     name: prop.data.name,
                     email: prop.data.email,
                     photo: prop.data.photo,
@@ -262,7 +267,9 @@ export function DeleteTeacher(prop: { data: any }) {
                 {
                     loading: "Connecting...",
                     success: (res) => {
-                        window.location.reload();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1200);
                         return `${teacherData.name} deleted`
                     },
                     error: (err) => err?.response?.data?.message || "Failed, try again"

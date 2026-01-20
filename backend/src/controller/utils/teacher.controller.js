@@ -1,4 +1,6 @@
 const pool = require('../../db/db')
+const bcrypt = require('bcrypt')
+
 
 async function getTeachers(req, res) {
     try {
@@ -9,6 +11,7 @@ async function getTeachers(req, res) {
         return res.status(500).json({ message: "Server error" });
     }
 }
+
 async function getTeacher(req, res) {
     try {
         const userID = req.params.id
@@ -20,6 +23,19 @@ async function getTeacher(req, res) {
     }
 }
 
+async function createTeacher(req,res){
+    try{
+        const { name, email, photo, phone, address, dob, blood_group, bio, password } = req.body
+        const [user] =  await pool.query("SELECT * FROM teachers WHERE email = ?",[email])
+        if(user.length>0) return res.status(409).json({ message: "Teacher already exist"});
+        const hashPassword = await bcrypt.hash(password, 10)
+        const [created] = await pool.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password,role) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword,"teacher"])
+        return res.status(200).json({ message: "Teacher added", data: created.insertId });
+    } catch (err){
+        return res.status(500).json({ message: "Creation failed", err });
+    }
+}
 
 async function updateTeacher(req, res) {
     try {
@@ -36,7 +52,6 @@ async function updateTeacher(req, res) {
 
 }
 
-
 async function deleteTeacher(req, res) {
     try {
         const { email } = req.body;
@@ -48,9 +63,11 @@ async function deleteTeacher(req, res) {
     }
 }
 
+
 module.exports = {
     getTeachers,
     getTeacher,
+    createTeacher,
     deleteTeacher,
     updateTeacher
 }

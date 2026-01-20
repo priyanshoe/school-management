@@ -11,7 +11,7 @@ async function signUpTeacher(req,res){
         if(user.length>0) return res.status(409).json({ message: "Teacher already exist"});
         const hashPassword = await bcrypt.hash(password, 10)
         const [created] = await pool.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password,role) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword,"admin"])
+                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword,"teacher"])
         const token = jwt.sign({id:created.insertId, role: process.env.TEACHER_CODE}, process.env.JWT_SECRETE)
         res.cookie('token',token);        
         return res.status(200).json({ message: "SignIn Success", data: created.insertId });
