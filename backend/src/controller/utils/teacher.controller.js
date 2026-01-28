@@ -29,8 +29,8 @@ async function createTeacher(req,res){
         const [user] =  await pool.query("SELECT * FROM teachers WHERE email = ?",[email])
         if(user.length>0) return res.status(409).json({ message: "Teacher already exist"});
         const hashPassword = await bcrypt.hash(password, 10)
-        const [created] = await pool.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password,role) VALUES (?,?,?,?,?,?,?,?,?,?)",
-                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword,"teacher"])
+        const [created] = await pool.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?)",
+                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword])
         return res.status(200).json({ message: "Teacher added", data: created.insertId });
     } catch (err){
         return res.status(500).json({ message: "Creation failed", err });

@@ -42,7 +42,7 @@ export function DatePicker(prop:any) {
 
   return (
     <div className=" text-black flex flex-col gap-2">
-      <Label htmlFor="date" className="px-1 text-white">
+      <Label htmlFor="date" className="px-1 text-black">
         Date of Birth
       </Label>
       <div className="relative flex gap-2">

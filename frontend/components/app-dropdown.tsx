@@ -62,21 +62,31 @@ export function DropdownClasses() {
 
 
 // CLASS SINGLE SELECTIONS
-export function DropdownClass() {
+type DropdownProp = {
+  defaultClass?:string,
+  setClass:Function
+}
+export function DropdownClass({defaultClass,setClass}:DropdownProp) {
   const classes = 
 ["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
-  const [selectedClass, setSelectedClass] = React.useState("")
+  const [selectedClass, setSelectedClass] = React.useState(defaultClass || "")
+  function handleChange(value:string){
+    setSelectedClass(value)
+    setClass(value)
+  }
+  
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="default" className={` bg-white hover:bg-[#f8f8f8] text-black rounded-full border  focus-visible:border-chart-4 focus-visible:ring-chart-4 focus-visible:ring-[1px] data-[state=open]:border-green-500`}>
-          Class
+          {selectedClass}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={selectedClass} onValueChange={setSelectedClass}>
+        <DropdownMenuRadioGroup value={selectedClass} onValueChange={handleChange}>
           {
             classes.map((item,id)=>(
               <DropdownMenuRadioItem key={id} value={item}>{item}</DropdownMenuRadioItem>
