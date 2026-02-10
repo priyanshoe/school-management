@@ -12,11 +12,11 @@ import { Label } from "@/components/ui/label"
 
 export default function Home() {
   const router = useRouter();
-  const [signInData, setSignInData] = useState({ email: "", password: "" })
 
+  const [signInData, setSignInData] = useState({ email: "", password: "" })
   async function handleSignIn() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signIn`, signInData, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/student/signIn`, signInData, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: "Connecting...",
@@ -47,7 +47,7 @@ export default function Home() {
   })
   async function handleSignUp() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signUp`, signUpData, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/student/signUp`, signUpData, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: "Connecting...",
@@ -56,7 +56,7 @@ export default function Home() {
         })
       const response = await responsePromise
       const createdID = response.data.data
-      if(response) return router.push(`/lists/teachers/${createdID}`)
+      if(response) return router.push(`/lists/students/${createdID}`)
       console.log(response,createdID);
 
     } catch (err) {

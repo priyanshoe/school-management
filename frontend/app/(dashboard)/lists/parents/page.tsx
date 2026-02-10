@@ -1,6 +1,5 @@
 "use client"
 import { PaginationList } from "@/components/app-pagination"
-import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
 import {
     Table,
@@ -11,8 +10,8 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { parentsData, role } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { DeleteParent, UpdateParent } from "./form-parent";
 
 
 export default function ParentsList() {
@@ -56,10 +55,10 @@ export default function ParentsList() {
                                                 <TableCell className="text-left hidden sm:table-cell">{item.address}</TableCell>
                                                 <TableCell className="flex justify-start items-center gap-2">
                                                     <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item}/>
+                                                        <UpdateParent data={item}/>
                                                     </div>
                                                     <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.id} name={item.name}/>
+                                                        <DeleteParent data={item}/>
                                                     </div>
                                                 </TableCell>
                                             </>

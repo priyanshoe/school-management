@@ -1,7 +1,6 @@
 'use client'
 import { useParams } from "next/navigation";
 import { CalendarClock, HeartPulse, Mail, Phone } from "lucide-react";
-import { teachersData } from "@/database/data";
 import Image from "next/image";
 import CalendarBig from "@/components/app-big-calendar";
 import Announcements from "@/components/custom/annoncements";

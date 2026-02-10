@@ -4,6 +4,7 @@ import { role } from "@/database/data";
 import { CreateTeacher } from "@/app/(dashboard)/lists/teachers/form-teacher";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { CreateStudent } from "@/app/(dashboard)/lists/students/form-student";
+import { CreateParent } from "@/app/(dashboard)/lists/parents/form-parent";
 
 export default function NavbarSecondary(prop: { head: String }) {
     return (
@@ -34,6 +35,9 @@ export default function NavbarSecondary(prop: { head: String }) {
                                     </DropdownMenuItem>
                                     <DropdownMenuItem asChild>
                                         <CreateStudent />
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem asChild>
+                                        <CreateParent />
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>

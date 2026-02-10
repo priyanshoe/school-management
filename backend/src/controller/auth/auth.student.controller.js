@@ -10,7 +10,7 @@ async function signUpStudent(req,res){
         const [user] =  await pool.query("SELECT email FROM students WHERE email = ?",[email])
         if(user.length>0) return res.status(409).json({ message: "Student already exist"});
         const hashPassword = await bcrypt.hash(password, 10)
-        const [created] = await pool.query("INSERT INTO student (name, email,photo,phone,class_name,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        const [created] = await pool.query("INSERT INTO students (name, email,photo,phone,class,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?,?)",
                             [name, email,photo,phone,class_name,address,dob,blood_group,bio,hashPassword])
         const token = jwt.sign({id:created.insertId, role:'teacher'}, process.env.JWT_SECRETE)
         res.cookie('token',token);        

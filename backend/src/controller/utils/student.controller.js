@@ -15,7 +15,7 @@ async function getStudents(req, res) {
 async function getStudent(req, res) {
     try {
         const userID = req.params.id
-        const [user] = await pool.query("SELECT * FROM students WHERE teacher_id = ?", [userID])
+        const [user] = await pool.query("SELECT * FROM students WHERE student_id = ?", [userID])
         return res.json(user[0])
     } catch (err) {
         console.error(err);

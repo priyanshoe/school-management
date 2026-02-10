@@ -1,28 +1,52 @@
 'use client'
 import { useParams } from "next/navigation";
 import { CalendarClock, HeartPulse, Mail, Phone } from "lucide-react";
-import { studentsData } from "@/database/data";
 import Image from "next/image";
 import CalendarBig from "@/components/app-big-calendar";
 import Announcements from "@/components/custom/annoncements";
 import { ChartBar } from "@/components/app-bar-chart";
-import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
+import { DeleteStudent, UpdateStudent } from "../form-student";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function StudentDetails() {
     const { id } = useParams<{ id: string }>()
-    const temp = Number(id);
-    const ID = temp - 1;
-    const userData = studentsData[ID]
+    const ID = Number(id);
 
+    const shortcuts = [
+        { name: "Student's Classes", bgcolor: "bg-sky-100" },
+        { name: "Student's Teacher", bgcolor: "bg-yellow-100" },
+        { name: "Student's Lessons", bgcolor: "bg-purple-100 xl:hidden 2xl:block" },
+        { name: "Student's Exam", bgcolor: "bg-pink-100" },
+        { name: "Student's Assignments", bgcolor: "bg-sky-100" },
+    ];
 
-const shortcuts = [
-    { name: "Student's Classes", bgcolor: "bg-sky-100"},
-    { name: "Student's Teacher", bgcolor: "bg-yellow-100"},
-    { name: "Student's Lessons", bgcolor: "bg-purple-100 xl:hidden 2xl:block"},
-    { name: "Student's Exam", bgcolor: "bg-pink-100"},
-    { name: "Student's Assignments", bgcolor: "bg-sky-100"},
-];
-    
+    type Student = {
+        teacher_id: number;
+        name: string;
+        email: string;
+        photo?: string;
+        phone?: string;
+        address?: string;
+        class?: string;
+        bio?: string;
+        blood_group: string;
+        dob: string;
+    }
+
+    const [userData, setUserData] = useState<Student | null>(null)
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/${ID}`)
+            .then((res) => setUserData(res.data))
+            .catch((err) => console.error(err))
+    }, [ID])
+
+    if (!userData) return (
+        <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
+            Loading...
+        </div>
+    )
+
     return (
         <div id="main" className="text-black h-full xl:h-[94vh] w-full flex flex-col xl:flex-row md:pr-3">
 
@@ -34,8 +58,11 @@ const shortcuts = [
                     <div id="card" className="h-full w-full lg:w-1/2 bg-white flex items-center rounded-md p-2 pt-0.5">
                         <div id="photo" className="hidden h-full w-1/3  sm:flex items-center justify-center">
                             <div id="img-container" className="w-[74%] h-38 md:h-35 lg:h-23 xl:h-20 2xl:h-33 rounded-full overflow-hidden">
-                                <img src={userData.photo} className="w-full h-full object-cover" />
-                            </div>
+                                <img src={userData.photo || "https://github.com/evilrabbit.png"}
+                                    onError={(e) => {
+                                        e.currentTarget.src = "https://github.com/evilrabbit.png";
+                                    }} alt='profile'
+                                    className="w-full h-full object-cover" />                            </div>
                         </div>
                         <div id="text-container" className="h-full w-full sm:w-2/3 ` flex flex-col justify-center gap-5  md:py-1.5 xl:px-2">
                             <header>
@@ -45,11 +72,16 @@ const shortcuts = [
                             <div id="extras" className="flex flex-wrap justify-between gap-2 border-gray-200 border-t pt-1">
                                 <div className="w-[45%] flex gap-1 items-center">
                                     <HeartPulse size={15} />
-                                    <h2 className="text-sm">{userData.bloodGroup}</h2>
+                                    <h2 className="text-sm">{userData.blood_group}</h2>
                                 </div>
                                 <div className="w-[45%] flex gap-1 items-center">
                                     <CalendarClock size={15} />
-                                    <h2 className="text-sm">{userData.dob}</h2>
+                                    <h2 className="text-sm">{new Date(userData.dob).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        day: "2-digit",
+                                        year: "numeric",
+                                        timeZone: "Asia/Kolkata",
+                                    })}</h2>
                                 </div>
                                 <div className="w-[45%] flex gap-1 items-center">
                                     <Mail size={15} />
@@ -59,14 +91,14 @@ const shortcuts = [
                                     <Phone size={15} />
                                     <h2 className="text-sm">{userData.phone}</h2>
                                 </div>
-                                                                <div className="w-[45%] bg-purple-300 rounded-sm px-1 flex gap-1 items-center">
-                                                                    <FormUpdate data={userData} />
-                                                                    <h2 className="text-sm">Update</h2>
-                                                                </div>
-                                                                <div className="w-[45%] bg-red-300 rounded-sm px-1 flex gap-1 items-center">
-                                                                    <FormDelete id={userData.id} name={userData.name} />
-                                                                    <h2 className="text-sm">Delete</h2>
-                                                                </div>
+                                <div className="w-[45%] bg-purple-300 rounded-sm px-1 flex gap-1 items-center">
+                                    <UpdateStudent data={userData} />
+                                    <h2 className="text-sm">Update</h2>
+                                </div>
+                                <div className="w-[45%] bg-red-300 rounded-sm px-1 flex gap-1 items-center">
+                                    <DeleteStudent data={userData} />
+                                    <h2 className="text-sm">Delete</h2>
+                                </div>
 
                             </div>
                         </div>
@@ -121,7 +153,7 @@ const shortcuts = [
                                 className="w-6 h-6"
                             />
                             <div className="">
-                                <h1 className="text-xl font-semibold">6A</h1>
+                                <h1 className="text-xl font-semibold">{userData.class}</h1>
                                 <span className="text-sm text-gray-400">Class</span>
                             </div>
                         </div>
@@ -155,9 +187,9 @@ const shortcuts = [
                         <div className="w-full h-3/4 flex flex-wrap gap-3 items-center px-3">
                             {
                                 shortcuts.map((item, id) => (
-                                        <button key={id} className={`${item.bgcolor} text-md text-black p-1 md:py-2 md:px-3 rounded-sm`}>{item.name}</button>
+                                    <button key={id} className={`${item.bgcolor} text-md text-black p-1 md:py-2 md:px-3 rounded-sm`}>{item.name}</button>
 
-                                    ))
+                                ))
                             }
                         </div>
                     </div>

@@ -11,6 +11,7 @@ router.post('/teacher/delete',teacherController.deleteTeacher)
 
 const studentController = require('../controller/utils/student.controller')
 router.get('/student/', studentController.getStudents)
+router.get('/student/:id', studentController.getStudent)
 router.post('/student/create', studentController.createStudent)
 router.post('/student/update', studentController.updateStudent)
 router.post('/student/delete', studentController.deleteStudent)

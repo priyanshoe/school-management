@@ -8,6 +8,8 @@ router.post('/teacher/signOut', authTeacherController.signOutTeacher)
 
 const authStudentController = require('../controller/auth/auth.student.controller')
 router.post('/student/signUp', authStudentController.signUpStudent)
+router.post('/student/signIn', authStudentController.signInStudent)
+router.post('/student/signOut', authStudentController.signOutStudent)
 
 
 module.exports = router;
