@@ -7,8 +7,7 @@ async function getStudents(req, res) {
         const [users] = await pool.query("SELECT * FROM students")
         return res.status(200).json(users);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        return res.status(500).json({ message: "Server error", error:err });
     }
 }
 
@@ -18,8 +17,7 @@ async function getStudent(req, res) {
         const [user] = await pool.query("SELECT * FROM students WHERE student_id = ?", [userID])
         return res.json(user[0])
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Teacher not found" });
+        return res.status(500).json({ message: "Teacher not found", error:err });
     }
 }
 
@@ -47,7 +45,7 @@ async function updateStudent(req, res) {
         return res.status(200).json({message:"Student update success"})
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Student update failed" });
+        return res.status(500).json({ message: "Student update failed",error:err });
     }
 
 }
@@ -59,7 +57,7 @@ async function deleteStudent(req, res) {
         return res.status(200).json({ message: "Data delete" });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Student deletion failed" });
+        return res.status(500).json({ message: "Student deletion failed",error:err });
     }
 }
 

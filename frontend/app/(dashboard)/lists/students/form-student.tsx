@@ -178,7 +178,7 @@ export function UpdateStudent(prop: { data: any }) {
     async function handleUpdate(e: any) {
         e.preventDefault();
         try {
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/student/update`, studentData, { withCredentials: true })
+            const responsePromise = axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/student/update`, studentData, { withCredentials: true })
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
@@ -281,7 +281,7 @@ export function DeleteStudent(prop: { data: any }) {
 
     async function handleDelete() {
         try {
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/student/delete`, studentData, { withCredentials: true })
+            const responsePromise = axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/student/delete`,{ data:studentData,  withCredentials: true })
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",

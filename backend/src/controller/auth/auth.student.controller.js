@@ -13,10 +13,15 @@ async function signUpStudent(req,res){
         const [created] = await pool.query("INSERT INTO students (name, email,photo,phone,class,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?,?)",
                             [name, email,photo,phone,class_name,address,dob,blood_group,bio,hashPassword])
         const token = jwt.sign({id:created.insertId, role:'teacher'}, process.env.JWT_SECRETE)
-        res.cookie('token',token);        
+        res.cookie('token',token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });        
         return res.status(200).json({ message: "SignIn Success", data: created.insertId });
     } catch (err){
-        return res.status(500).json({ message: "SignIn failed", err });
+        return res.status(500).json({ message: "SignIn failed", error:err });
     }
 }
 
@@ -29,7 +34,12 @@ async function signInStudent(req,res){
         if(!hashPassword) return res.status(409).json({message:"Wrong Credential"});
         delete user[0].password        
         const token = jwt.sign({id:user[0].id, role: user[0].role}, process.env.JWT_SECRETE)
-        res.cookie('token',token);
+        res.cookie('token',token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });
         return res.status(200).json({ message: "LogIn Success", data: user[0] });
     } catch(err){
         return res.status(500).json({ message: "SignIn failed", error: err });
@@ -38,11 +48,16 @@ async function signInStudent(req,res){
 
 async function signOutStudent(req,res){
     try{
-        res.clearCookie('token');
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });
         return res.status(200).json({ message: 'Logged out successfully' });
 
     } catch {
-        return res.status(500).json({ message: "Logout failed", err });
+        return res.status(500).json({ message: "Logout failed", error:err });
     }
 }
 

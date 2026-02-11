@@ -16,7 +16,7 @@ export default function Home() {
   const [signInData, setSignInData] = useState({ email: "", password: "" })
   async function handleSignIn() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/student/signIn`, signInData, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/parent/signIn`, signInData, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: "Connecting...",

@@ -146,7 +146,7 @@ export function AppSidebar() {
 
   async function handleLogout() {
     try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signOut`, {}, { withCredentials: true })
+      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/parent/signOut`, {}, { withCredentials: true })
       toast.promise(responsePromise,
         {
           loading: 'Connecting...',

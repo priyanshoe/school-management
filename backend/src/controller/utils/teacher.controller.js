@@ -7,8 +7,7 @@ async function getTeachers(req, res) {
         const [users] = await pool.query("SELECT * FROM teachers")
         return res.status(200).json(users);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Server error" });
+        return res.status(500).json({ message: "Server error",error:err });
     }
 }
 
@@ -18,8 +17,7 @@ async function getTeacher(req, res) {
         const [user] = await pool.query("SELECT * FROM teachers WHERE teacher_id = ?", [userID])
         return res.json(user[0])
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Teacher not found" });
+        return res.status(500).json({ message: "Teacher not found",error:err });
     }
 }
 
@@ -33,7 +31,7 @@ async function createTeacher(req,res){
                             [name, email,photo,phone,address,dob,blood_group,bio,hashPassword])
         return res.status(200).json({ message: "Teacher added", data: created.insertId });
     } catch (err){
-        return res.status(500).json({ message: "Creation failed", err });
+        return res.status(500).json({ message: "Creation failed", error:err });
     }
 }
 
@@ -47,7 +45,7 @@ async function updateTeacher(req, res) {
         return res.status(200).json({message:"Teacher update success"})
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher update failed" });
+        return res.status(500).json({ message: "Teacher update failed",error:err });
     }
 
 }
@@ -59,7 +57,7 @@ async function deleteTeacher(req, res) {
         return res.status(200).json({ message: "Data delete" });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher deletion failed" });
+        return res.status(500).json({ message: "Teacher deletion failed",error:err });
     }
 }
 

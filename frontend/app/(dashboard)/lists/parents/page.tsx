@@ -10,8 +10,9 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { parentsData, role } from '@/database/data';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DeleteParent, UpdateParent } from "./form-parent";
+import axios from "axios";
 
 
 export default function ParentsList() {
@@ -19,6 +20,26 @@ export default function ParentsList() {
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
 
+        type Parent = {
+        parent_id: number;
+        name: string;
+        email: string;
+        phone?: string;
+        address?: string;
+    }
+    const [parentsData, setParentsData] = useState<Parent[]>([])
+    useEffect(()=>{
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/parent`)
+        .then(res=> setParentsData(res.data.data))
+        .catch(err=> console.error(err))
+    },[parentsData])
+
+
+      if (!parentsData) return (
+        <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
+            Loading...
+        </div>
+    )
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
             <div className="bg-white px-3 py-2  rounded-md">
@@ -44,9 +65,11 @@ export default function ParentsList() {
                         <TableBody>
                             {
                                 parentsData.slice(startIndex, endIndex).map((item) => (
-                                    <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
+                                    <TableRow key={item.parent_id} className={`${item.parent_id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
                                         <TableCell className="text-left">{item.name}</TableCell>
-                                        <TableCell className="text-left">{item.students.join(", ")}</TableCell>
+                                        <TableCell className="text-left">
+                                            {/* {item.students.join(", ")} */}
+                                            </TableCell>
                                         <TableCell className="text-left">{item.email}</TableCell>
                                         <TableCell className="text-left hidden sm:table-cell">{item.phone}</TableCell>
                                         {

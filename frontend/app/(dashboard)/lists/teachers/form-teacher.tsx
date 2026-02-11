@@ -160,7 +160,7 @@ export function UpdateTeacher(prop: { data: any }) {
     async function handleUpdate(e: any) {
         e.preventDefault();
         try {
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/update`, teacherData, { withCredentials: true })
+            const responsePromise = axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/teacher/update`, teacherData, { withCredentials: true })
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
@@ -168,7 +168,7 @@ export function UpdateTeacher(prop: { data: any }) {
                         setTimeout(() => {
                             window.location.reload();
                         }, 1200);
-                        return "Teacher's data updated"
+                        return res.data.message || "Teacher's data updated"
                     },
                     error: (err) => err?.response?.data?.message || "Failed, try again"
                 })
@@ -262,7 +262,7 @@ export function DeleteTeacher(prop: { data: any }) {
         try {
             console.log(prop.data.email);
             console.log(teacherData);
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/teacher/delete`, teacherData, { withCredentials: true })
+            const responsePromise = axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/teacher/delete`, { data: teacherData, withCredentials: true })
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
