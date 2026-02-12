@@ -38,10 +38,11 @@ async function createTeacher(req,res){
 async function updateTeacher(req, res) {
     try {
         const { name, email, photo, phone, address, bio, blood_group, dob, teacher_id } = req.body;
-        await pool.query(
+        const [result] = await pool.query(
             "UPDATE teachers SET name=?,email=?,photo=?,phone=?,address=?,bio=?,blood_group=?,dob=? WHERE teacher_id=?",
             [name, email, photo, phone, address, bio, blood_group, dob,teacher_id]
         )
+        if (result.affectedRows === 0) res.status(404).json({ message: "Teacher not found" });
         return res.status(200).json({message:"Teacher update success"})
     } catch (err) {
         console.error(err);

@@ -27,7 +27,7 @@ export default function ParentsList() {
         phone?: string;
         address?: string;
     }
-    const [parentsData, setParentsData] = useState<Parent[]>([])
+    const [parentsData, setParentsData] = useState<Parent[]>()
     useEffect(()=>{
         axios.get(`${process.env.NEXT_PUBLIC_API_URL}/parent`)
         .then(res=> setParentsData(res.data.data))

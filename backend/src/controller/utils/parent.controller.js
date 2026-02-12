@@ -2,22 +2,20 @@ const db = require('../../db/db')
 const bcrypt = require('bcrypt')
 
 
-async function getParents(req,res){
-    try{
-        const getUsers = 'SELECT * FROM parents';
-        const [users] = await db.query(getUsers);
-        return res.status(200).json({message:"Data fetched success", data:users})
+async function getParents(req, res) {
+    try {
+        const [users] = await db.query('SELECT * FROM parents');
+        return res.status(200).json({ message: "Data fetched success", data: users })
     } catch (err) {
         return res.status(500).json({ message: "Data not found", error: err })
     }
 }
 
-async function getParent(req,res){
-    try{
-        const {id} = req.body;
-        const getParent = 'SELECT * FROM parents WHERE parent_id = ?'
-        const [user] = await db.query(getParent,[id]);
-        return res.status(200).json({message:"Data fetched success", data:user})
+async function getParent(req, res) {
+    try {
+        const { id } = req.body;
+        const [user] = await db.query('SELECT * FROM parents WHERE parent_id = ?', [id]);
+        return res.status(200).json({ message: "Data fetched success", data: user })
     } catch (err) {
         return res.status(500).json({ message: "Data not found", error: err })
     }
@@ -25,28 +23,39 @@ async function getParent(req,res){
 
 
 async function createParent(req, res) {
+    const connection = await db.getConnection();
     try {
-        const { name, email, phone, address, dob, blood_group, password } = req.body.parentData;
-        const studentEmails = req.body.studentEmails
-        const checkParent = 'SELECT email FROM parents WHERE email = ?'
-        const [user] = await db.query(checkParent, [email]);
+        const { name, email, student_email, phone, address, dob, blood_group, password } = req.body;
+        const [user] = await db.query('SELECT email FROM parents WHERE email = ?', [email]);
         if (user.length > 0) return res.status(409).json({ message: "Parent alreay exist" })
         const hash = await bcrypt.hash(password, 10);
-        const insertParent = 'INSERT INTO parents (name,email,phone,address,dob,blood_group,password) VALUES (?,?,?,?,?,?,?)';
-        const [inserted] = await db.query(insertParent, [name, email, phone, address, dob, blood_group, hash])
-        return res.status(200).json({ message: "Parent added" , id:inserted.insertId })
-    } catch (err) {
-        return res.status(500).json({ message: "Creation failed", error: err })
+        await connection.beginTransaction();
+        const [inserted] = await connection.query('INSERT INTO parents (name,email,phone,address,dob,blood_group,password) VALUES (?,?,?,?,?,?,?)',
+            [name, email, phone, address, dob, blood_group, hash])
+        for (const item of student_email) {
+            const [student_id] = await connection.query('SELECT student_id FROM students WHERE email = ?', [item])
+            if (student_id.length === 0) throw new Error(`Student not found ${item}`)
+            const [result] = await connection.query('INSERT INTO parents_students (parent_id, student_id) VALUES (?,?)', [inserted.insertId, student_id[0].student_id])
+            if (result.affectedRows === 0) throw new Error("Student not added")
+        }
+        await connection.commit();
+        return res.status(200).json({ message: "Parent added", id: inserted.insertId })
+    } catch (error) {
+        await connection.rollback();
+        return res.status(500).json({ message: error.message || "Creation failed", error: error.message })
+    } finally {
+        connection.release();
     }
 }
 
 
-async function updateParent(req,res){
-    try{
+async function updateParent(req, res) {
+    try {
         const { name, email, phone, address, dob, blood_group, parent_id } = req.body;
-        const updateParent = 'UPDATE parents SET name=?, email=?, phone=?, address=?, dob=?, blood_group=? WHERE parent_id = ?'
-        const updated = await db.query(updateParent,[ name, email, phone, address, dob, blood_group, parent_id ])
-        return res.status(200).json({message:"Parent Update success"})
+        const [result] = await db.query('UPDATE parents SET name=?, email=?, phone=?, address=?, dob=?, blood_group=? WHERE parent_id = ?',
+            [name, email, phone, address, dob, blood_group, parent_id])
+        if (result.affectedRows === 0) res.status(404).json({ message: "Parent not found" });
+        return res.status(200).json({ message: "Parent Update success" })
     } catch (err) {
         return res.status(500).json({ message: "Parent Update failed", error: err })
     }
@@ -60,7 +69,7 @@ async function deleteParent(req, res) {
         return res.status(200).json({ message: "Data delete" });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher deletion failed",error:err });
+        return res.status(500).json({ message: "Teacher deletion failed", error: err });
     }
 }
 

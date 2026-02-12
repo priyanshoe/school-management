@@ -34,19 +34,28 @@ import { DatePicker } from "@/components/app-date-picker";
 
 export function CreateParent() {
     const [open, setOpen] = useState(false)
-
-    const [parentData, setParentData] = useState({
+    type Parent = {
+        name: string;
+        email: string;
+        studentEmail: string,
+        student_email: string[],
+        phone?: string;
+        address?: string;
+        dob: string,
+        blood_group: string,
+        password: string
+    }
+    const [parentData, setParentData] = useState<Parent>({
         name: "",
         email: "",
-        student_email: "",
+        studentEmail: "",
+        student_email: [],
         phone: "",
         address: "",
         dob: "2026-01-10",
         blood_group: "",
         password: ""
     })
-    const [studentEmails, setStudentEmails] = useState<string[]>([])
-
     const [conformPassword, setConformPassword] = useState("")
 
     async function handleCreate(e: any) {
@@ -57,7 +66,7 @@ export function CreateParent() {
                 setConformPassword("")
                 return toast.warning("Password not matched")
             }
-            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/parent/create`, { parentData, studentEmails }, { withCredentials: true })
+            const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/parent/create`, parentData, { withCredentials: true })
 
             toast.promise(responsePromise,
                 {
@@ -79,12 +88,20 @@ export function CreateParent() {
     }
 
     function addStudent() {
-        const email = parentData.student_email.trim();
-        setStudentEmails(prev => prev.includes(email) ? prev : [...prev, email])
+        const newEmail = parentData.studentEmail.trim();
+    if (!newEmail) return;
+    if (parentData.student_email.includes(newEmail)) return;
+        setParentData(prev => ({
+            ...prev,
+            student_email: [...prev.student_email, newEmail]
+        }))
     }
 
     function removeStudent(email: string) {
-        setStudentEmails(prev => prev.filter(item => item !== email));
+        setParentData(prev => ({
+            ...prev,
+            student_email: prev.student_email.filter(item => item !== email)
+        }))
     }
 
     return (
@@ -112,9 +129,8 @@ export function CreateParent() {
                         <div className="grid gap-3">
                             <Label htmlFor="email">Student Email</Label>
                             {
-                                (studentEmails.length > 0) &&
-
-                                studentEmails.map((item, id) => (
+                                (parentData.student_email.length >= 0) &&
+                                parentData.student_email.map((item, id) => (
                                     <div key={id} className="flex gap-2">
                                         <Input type="email" id="email" name="email" disabled value={item} />
                                         <Button type="button"
@@ -124,7 +140,7 @@ export function CreateParent() {
                                 ))
                             }
                             <div className="flex gap-2">
-                                <Input type="email" id="email" name="email" required value={parentData.student_email} onChange={(e) => setParentData({ ...parentData, student_email: e.target.value })} />
+                                <Input type="email" id="email" name="email" required value={parentData.studentEmail} onChange={(e) => setParentData({ ...parentData, studentEmail: e.target.value })} />
                                 <Button
                                     type="button"
                                     onClick={addStudent}
