@@ -89,8 +89,8 @@ export function CreateParent() {
 
     function addStudent() {
         const newEmail = parentData.studentEmail.trim();
-    if (!newEmail) return;
-    if (parentData.student_email.includes(newEmail)) return;
+        if (!newEmail) return;
+        if (parentData.student_email.includes(newEmail)) return;
         setParentData(prev => ({
             ...prev,
             student_email: [...prev.student_email, newEmail]
@@ -186,10 +186,23 @@ export function CreateParent() {
 
 export function UpdateParent(prop: { data: any }) {
     const [open, setOpen] = useState(false)
-    const [parentData, setParentData] = useState({
+    type Parent = {
+        parent_id: Number;
+        name: string;
+        email: string;
+        studentEmail: string,
+        student_email: string[],
+        phone?: string;
+        address?: string;
+        dob: string,
+        blood_group: string,
+    }
+    const [parentData, setParentData] = useState<Parent>({
         parent_id: 0,
         name: "",
         email: "",
+        studentEmail: "",
+        student_email: [],
         phone: "",
         address: "",
         blood_group: "",
@@ -214,20 +227,39 @@ export function UpdateParent(prop: { data: any }) {
         } catch (err) {
             return console.error(err);
         }
+    }
 
+    function addStudent() {
+        const newEmail = parentData.studentEmail.trim();
+        if (!newEmail) return;
+        if(parentData.student_email)
+        if (parentData.student_email.includes(newEmail)) return;
+        setParentData(prev => ({
+            ...prev,
+            student_email: [...prev.student_email, newEmail]
+        }))
+    }
+
+    function removeStudent(email: string) {
+        setParentData(prev => ({
+            ...prev,
+            student_email: prev.student_email.filter(item => item !== email)
+        }))
     }
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
             <DialogTrigger className=" hover:cursor-pointer" asChild
-                onClick={() => setParentData({
-                    ...parentData,
+                onClick={() => setParentData(prev => ({
+                    ...prev,
                     parent_id: prop.data.parent_id,
                     name: prop.data.name,
                     email: prop.data.email,
+                    student_email: prop.data.student_emails ? 
+                        prop.data.student_emails.split(",") : [],
                     phone: prop.data.phone,
                     address: prop.data.address,
                     blood_group: prop.data.blood_group,
-                })}>
+                }))}>
                 <SquarePen size={15} />
             </DialogTrigger>
             <DialogContent className="sm:max-w-106 bg-white text-black">
@@ -246,6 +278,28 @@ export function UpdateParent(prop: { data: any }) {
                         <div className="grid gap-3">
                             <Label htmlFor="email">Email</Label>
                             <Input type="email" id="email" name="email" required value={parentData.email} onChange={(e) => setParentData({ ...parentData, email: e.target.value })} />
+                        </div>
+                        <div className="grid gap-3">
+                            <Label htmlFor="email">Student Email</Label>
+                            {
+                                (parentData.student_email) &&
+                                (parentData.student_email.length >= 0) &&
+                                parentData.student_email.map((item, id) => (
+                                    <div key={id} className="flex gap-2">
+                                        <Input type="email" id="email" name="email" disabled value={item} />
+                                        <Button type="button"
+                                            onClick={() => removeStudent(item)}
+                                            className="ml-2 hover:cursor-pointer bg-red-400 hover:bg-red-500 hover:text-white text-black">Remove</Button>
+                                    </div>
+                                ))
+                            }
+                            <div className="flex gap-2">
+                                <Input type="email" id="email" name="email" required value={parentData.studentEmail} onChange={(e) => setParentData({ ...parentData, studentEmail: e.target.value })} />
+                                <Button
+                                    type="button"
+                                    onClick={addStudent}
+                                    className="ml-2 hover:cursor-pointer bg-green-400 hover:bg-green-500 hover:text-white text-black">Add</Button>
+                            </div>
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="phone">Phone</Label>

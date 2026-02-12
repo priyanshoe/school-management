@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 async function getParents(req, res) {
     try {
-        const [users] = await db.query('SELECT * FROM parents');
+        const [users] = await db.query('SELECT pt.*, GROUP_CONCAT(st.name)  AS student_names, GROUP_CONCAT(st.email) AS student_emails FROM parents pt LEFT JOIN parents_students ps ON pt.parent_id = ps.parent_id LEFT JOIN students st ON st.student_id = ps.student_id GROUP BY pt.parent_id')
         return res.status(200).json({ message: "Data fetched success", data: users })
     } catch (err) {
         return res.status(500).json({ message: "Data not found", error: err })

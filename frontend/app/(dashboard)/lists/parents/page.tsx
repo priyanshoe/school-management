@@ -9,7 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { parentsData, role } from '@/database/data';
+import { role } from '@/database/data';
 import { useEffect, useState } from "react";
 import { DeleteParent, UpdateParent } from "./form-parent";
 import axios from "axios";
@@ -26,14 +26,14 @@ export default function ParentsList() {
         email: string;
         phone?: string;
         address?: string;
+        student_names: string;
     }
     const [parentsData, setParentsData] = useState<Parent[]>()
     useEffect(()=>{
         axios.get(`${process.env.NEXT_PUBLIC_API_URL}/parent`)
         .then(res=> setParentsData(res.data.data))
         .catch(err=> console.error(err))
-    },[parentsData])
-
+    },[])
 
       if (!parentsData) return (
         <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
@@ -68,7 +68,7 @@ export default function ParentsList() {
                                     <TableRow key={item.parent_id} className={`${item.parent_id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
                                         <TableCell className="text-left">{item.name}</TableCell>
                                         <TableCell className="text-left">
-                                            {/* {item.students.join(", ")} */}
+                                            {item.student_names}
                                             </TableCell>
                                         <TableCell className="text-left">{item.email}</TableCell>
                                         <TableCell className="text-left hidden sm:table-cell">{item.phone}</TableCell>
