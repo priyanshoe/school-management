@@ -26,4 +26,10 @@ router.patch('/parent/update', parentController.updateParent)
 router.delete('/parent/delete',parentController.deleteParent)
 
 
+// UTILS
+const utilsController = require('../controller/utils/utils.controller')
+router.post('/add/student', utilsController.addStudent)
+router.delete('/remove/student', utilsController.removeStudent)
+
+
 module.exports = router;

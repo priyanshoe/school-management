@@ -231,20 +231,59 @@ export function UpdateParent(prop: { data: any }) {
 
     function addStudent() {
         const newEmail = parentData.studentEmail.trim();
+        const data = {
+            email: newEmail,
+            parent_id: parentData.parent_id
+        }
         if (!newEmail) return;
-        if(parentData.student_email)
-        if (parentData.student_email.includes(newEmail)) return;
-        setParentData(prev => ({
-            ...prev,
-            student_email: [...prev.student_email, newEmail]
-        }))
+        if (parentData.student_email)
+            if (parentData.student_email.includes(newEmail)) return;
+        const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/add/student`, data, { withCredentials: true })
+
+        toast.promise(responsePromise,
+            {
+                loading: "Connecting...",
+                success: (res) => {
+                    setParentData(prev => ({
+                        ...prev,
+                        student_email: [...prev.student_email, newEmail]
+                    }))
+                    return res.data.message || "Student added.."
+                },
+                error: (err) => err?.response?.data?.message || "Failed, try again",
+
+                action: {
+                    label: "Refresh",
+                    onClick: () => window.location.reload(),
+                },
+            })
     }
 
     function removeStudent(email: string) {
-        setParentData(prev => ({
-            ...prev,
-            student_email: prev.student_email.filter(item => item !== email)
-        }))
+        const data = {
+            email: email,
+            parent_id: parentData.parent_id
+        }
+        const responsePromise = axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/remove/student`,{ withCredentials: true, data: data })
+
+        toast.promise(responsePromise,
+            {
+                loading: "Connecting...",
+                success: (res) => {
+                    setParentData(prev => ({
+                        ...prev,
+                        student_email: prev.student_email.filter(item => item !== email)
+                    }))
+                    return res.data.message || "Student remove"
+                },
+                error: (err) => err?.response?.data?.message || "Failed, try again",
+
+                action: {
+                    label: "Refresh",
+                    onClick: () => window.location.reload(),
+                },
+            })
+
     }
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -254,7 +293,7 @@ export function UpdateParent(prop: { data: any }) {
                     parent_id: prop.data.parent_id,
                     name: prop.data.name,
                     email: prop.data.email,
-                    student_email: prop.data.student_emails ? 
+                    student_email: prop.data.student_emails ?
                         prop.data.student_emails.split(",") : [],
                     phone: prop.data.phone,
                     address: prop.data.address,
@@ -294,7 +333,7 @@ export function UpdateParent(prop: { data: any }) {
                                 ))
                             }
                             <div className="flex gap-2">
-                                <Input type="email" id="email" name="email" required value={parentData.studentEmail} onChange={(e) => setParentData({ ...parentData, studentEmail: e.target.value })} />
+                                <Input type="email" id="email" name="email" value={parentData.studentEmail} onChange={(e) => setParentData({ ...parentData, studentEmail: e.target.value })} />
                                 <Button
                                     type="button"
                                     onClick={addStudent}

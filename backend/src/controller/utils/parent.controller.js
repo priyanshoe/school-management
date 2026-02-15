@@ -26,7 +26,7 @@ async function createParent(req, res) {
     const connection = await db.getConnection();
     try {
         const { name, email, student_email, phone, address, dob, blood_group, password } = req.body;
-        const [user] = await db.query('SELECT email FROM parents WHERE email = ?', [email]);
+        const [user] = await connection.query('SELECT email FROM parents WHERE email = ?', [email]);
         if (user.length > 0) return res.status(409).json({ message: "Parent alreay exist" })
         const hash = await bcrypt.hash(password, 10);
         await connection.beginTransaction();
@@ -42,7 +42,7 @@ async function createParent(req, res) {
         return res.status(200).json({ message: "Parent added", id: inserted.insertId })
     } catch (error) {
         await connection.rollback();
-        return res.status(500).json({ message: error.message || "Creation failed", error: error.message })
+        return res.status(500).json({ message: error.message || "Creation failed"})
     } finally {
         connection.release();
     }
