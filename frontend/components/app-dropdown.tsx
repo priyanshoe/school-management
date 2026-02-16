@@ -15,25 +15,34 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu"
+import axios from "axios"
 
 type Checked = DropdownMenuCheckboxItemProps["checked"]
 
 
 // CLASSES MULTIPLE SELECTIONS
-export function DropdownClasses() {
-  const classes = 
-["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
+export function DropdownClasses(props: { setClasses: Function, default?: string[] }) {
+  const classes =
+    ["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
   const [checkedClasses, setCheckedClasses] = React.useState<Record<string, Checked>>({})
-  const [selectedClasses, setSelectedClasses] = React.useState<string[]>([])
-  console.log(selectedClasses);
-  
+  props.default?.forEach((item) => {
+    checkedClasses[item] = true;
+  })
+  const [selectedClasses, setSelectedClasses] = React.useState<string[]>(props.default || [])
 
-  const handleCheckedChange = (subject: string, checked: Checked) => {
-    setCheckedClasses(prev => ({ ...prev, [subject]: checked }))
-    if(checked){
-        setSelectedClasses(prev => [...prev, subject])
+  React.useEffect(() => {
+    props.setClasses((prev: object) => ({
+      ...prev,
+      classes: selectedClasses
+    }))
+  }, [selectedClasses])
+
+  const handleCheckedChange = (classes: string, checked: Checked) => {
+    setCheckedClasses(prev => ({ ...prev, [classes]: checked }))
+    if (checked) {
+      setSelectedClasses(prev => [...prev, classes])
     } else {
-        setSelectedClasses(prev => prev.filter(s => s !== subject))
+      setSelectedClasses(prev => prev.filter(s => s !== classes))
     }
   }
 
@@ -49,7 +58,7 @@ export function DropdownClasses() {
           <DropdownMenuCheckboxItem
             key={classes}
             checked={checkedClasses[classes] || false}
-            onSelect={(e)=>{e.preventDefault()}}
+            onSelect={(e) => { e.preventDefault() }}
             onCheckedChange={(checked) => handleCheckedChange(classes, checked)}
           >
             {classes}
@@ -63,19 +72,19 @@ export function DropdownClasses() {
 
 // CLASS SINGLE SELECTIONS
 type DropdownProp = {
-  defaultClass?:string,
-  setClass:Function
+  defaultClass?: string,
+  setClass: Function
 }
-export function DropdownClass({defaultClass,setClass}:DropdownProp) {
-  const classes = 
-["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
+export function DropdownClass({ defaultClass, setClass }: DropdownProp) {
+  const classes =
+    ["1A", "1B", "1C", "1D", "2A", "2B", "2C", "2D", "3A", "3B", "3C", "3D", "4A", "4B", "4C", "4D", "5A", "5B", "5C", "5D"]
   const [selectedClass, setSelectedClass] = React.useState(defaultClass || "")
-  function handleChange(value:string){
+  function handleChange(value: string) {
     setSelectedClass(value)
     setClass(value)
   }
-  
-  
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -88,7 +97,7 @@ export function DropdownClass({defaultClass,setClass}:DropdownProp) {
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={selectedClass} onValueChange={handleChange}>
           {
-            classes.map((item,id)=>(
+            classes.map((item, id) => (
               <DropdownMenuRadioItem key={id} value={item}>{item}</DropdownMenuRadioItem>
             ))
           }
@@ -99,19 +108,35 @@ export function DropdownClass({defaultClass,setClass}:DropdownProp) {
 }
 
 // SUBJECTS MULTIPLE SELECTIONS
-export function DropdownSubjects() {
-  const subjects = ["Maths", "English", "Physics", "Chemistry", "Biology", "History", "Geography", "Art", "Music", "Literature", "Computer Science", "Physical Education"]
+export function DropdownSubjects(props: { setSubjects: Function, default?: string[] }) {
+  type Subjects = {
+    subject_id: number,
+    name: string
+  }
+  const [subjects, setSubjects] = React.useState<Subjects[]>()
+  React.useEffect(() => {
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/subject`)
+      .then((res) => setSubjects(res.data.data))
+      .catch((err) => console.log(err.message))
+  }, [])
+
   const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>({})
-  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>([])
-  console.log(selectedSubjects);
-  
+  props.default?.forEach((item) => {
+    checkedSubjects[item] = true
+  })
+
+  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(props.default || [])
+
+  React.useEffect(() => {
+    props.setSubjects((prev: object) => ({ ...prev, subjects: selectedSubjects }));
+  }, [selectedSubjects])
 
   const handleCheckedChange = (subject: string, checked: Checked) => {
     setCheckedSubjects(prev => ({ ...prev, [subject]: checked }))
-    if(checked){
-        setSelectedSubjects(prev => [...prev, subject])
+    if (checked) {
+      setSelectedSubjects(prev => [...prev, subject])
     } else {
-        setSelectedSubjects(prev => prev.filter(s => s !== subject))
+      setSelectedSubjects(prev => prev.filter(s => s !== subject))
     }
   }
 
@@ -123,16 +148,18 @@ export function DropdownSubjects() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Subjects</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {subjects.map((subject) => (
-          <DropdownMenuCheckboxItem
-            key={subject}
-            checked={checkedSubjects[subject] || false}
-            onSelect={(e)=>{e.preventDefault()}}
-            onCheckedChange={(checked) => handleCheckedChange(subject, checked)}
-          >
-            {subject}
-          </DropdownMenuCheckboxItem>
-        ))}
+        {
+          (subjects) &&
+          subjects.map((item) => (
+            <DropdownMenuCheckboxItem
+              key={item.subject_id}
+              checked={checkedSubjects[item.name] || false}
+              onSelect={(e) => { e.preventDefault() }}
+              onCheckedChange={(checked) => handleCheckedChange(item.name, checked)}
+            >
+              {item.name}
+            </DropdownMenuCheckboxItem>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
@@ -144,14 +171,14 @@ export function DropdownStudents() {
   const [checkedStudents, setCheckedStudents] = React.useState<Record<string, Checked>>({})
   const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
   console.log(selectedStudents);
-  
+
 
   const handleCheckedChange = (students: string, checked: Checked) => {
     setCheckedStudents(prev => ({ ...prev, [students]: checked }))
-    if(checked){
-        setSelectedStudents(prev => [...prev, students])
+    if (checked) {
+      setSelectedStudents(prev => [...prev, students])
     } else {
-        setSelectedStudents(prev => prev.filter(s => s !== students))
+      setSelectedStudents(prev => prev.filter(s => s !== students))
     }
   }
 
@@ -165,11 +192,11 @@ export function DropdownStudents() {
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Students</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {students.map((item,id) => (
+        {students.map((item, id) => (
           <DropdownMenuCheckboxItem
             key={id}
             checked={checkedStudents[item] || false}
-            onSelect={(e)=>{e.preventDefault()}}
+            onSelect={(e) => { e.preventDefault() }}
             onCheckedChange={(checked) => handleCheckedChange(item, checked)}
           >
             {item}

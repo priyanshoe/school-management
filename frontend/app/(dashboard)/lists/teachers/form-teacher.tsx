@@ -31,16 +31,31 @@ import { DropdownClasses, DropdownSubjects } from "@/components/app-dropdown";
 import { DatePicker } from "@/components/app-date-picker";
 import { Textarea } from "@/components/ui/textarea";
 
-
+type Teacher = {
+        teacher_id?: number;
+        name: string;
+        email: string;
+        photo?: string;
+        subjects: string[] | string;
+        classes: string[] | string;
+        phone?: string;
+        address?: string;
+        bio: string;
+        blood_group:string;
+        dob:string;
+        password?: string;
+    }
 
 
 export function CreateTeacher() {
     const [open, setOpen] = useState(false)
-    const [teacherData, setTeacherData] = useState({
+    const [teacherData, setTeacherData] = useState<Teacher>({
         name: "",
         email: "",
         photo: "",
         phone: "",
+        subjects:[],
+        classes:[],
         address: "",
         bio: "",
         dob: "2026-01-10",
@@ -63,15 +78,19 @@ export function CreateTeacher() {
                 {
                     loading: "Connecting...",
                     success: (res) => {
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1200);
-                        return "Teacher's data created"
+                        // setTimeout(() => {
+                        //     window.location.reload();
+                        // }, 1200);
+                        return res.data.message || "Teacher's data created"
                     },
-                    error: (err) => err?.response?.data?.message || "Failed, try again"
+                    error: (err) => err?.response?.data?.message || "Failed, try again",
+                    
+                    action: {
+                    label: "Refresh",
+                    onClick: () => window.location.reload(),
+                },
                 })
         } catch (err) {
-            // setOpen(false);
             return console.error(err);
         }
 
@@ -101,6 +120,11 @@ export function CreateTeacher() {
                         <div className="grid gap-3">
                             <Label htmlFor="email">Email</Label>
                             <Input type="email" id="email" name="email" required value={teacherData.email} onChange={(e) => setTeacherData({ ...teacherData, email: e.target.value })} />
+                        </div>
+                        <div className="w-full flex gap-2">
+                            <DropdownSubjects setSubjects={setTeacherData}/>
+                            <DropdownClasses setClasses={setTeacherData}/>
+
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="password">Password</Label>
@@ -143,14 +167,19 @@ export function CreateTeacher() {
 }
 
 
+
+
 export function UpdateTeacher(prop: { data: any }) {
+    
     const [open, setOpen] = useState(false)
-    const [teacherData, setTeacherData] = useState({
+    const [teacherData, setTeacherData] = useState<Teacher>({
         teacher_id: 0,
         name: "",
         email: "",
         photo: "",
         phone: "",
+        subjects:[],
+        classes:[],
         address: "",
         bio: "",
         blood_group: "",
@@ -175,7 +204,6 @@ export function UpdateTeacher(prop: { data: any }) {
         } catch (err) {
             return console.error(err);
         }
-
     }
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -217,6 +245,10 @@ export function UpdateTeacher(prop: { data: any }) {
                         <div className="grid gap-3">
                             <Label htmlFor="phone">Phone</Label>
                             <Input type="text" id="phone" name="phone" value={teacherData.phone} required onChange={(e) => setTeacherData({ ...teacherData, phone: e.target.value })} />
+                        </div>
+                        <div className="w-full flex gap-2">
+                            <DropdownSubjects default={prop.data.subjects} setSubjects={setTeacherData}/>
+                            <DropdownClasses default={prop.data.classes} setClasses={setTeacherData}/>
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="address">Address</Label>

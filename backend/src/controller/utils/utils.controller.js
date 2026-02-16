@@ -26,9 +26,7 @@ async function removeStudent(req,res){
             [parent_id, student_id[0].student_id]);
         return res.status(200).json({message: "Student removed"})
     } catch(err){
-        return  console.log(err);
-        
-        res.status(500).json({message : err.message})
+        return res.status(500).json({message : err.message})
     }
 }
 

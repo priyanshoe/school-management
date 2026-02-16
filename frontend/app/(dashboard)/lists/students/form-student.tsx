@@ -47,13 +47,13 @@ export function CreateStudent() {
         photo: "",
         phone: "",
         class_name:"",
+        subjects:[],
         address: "",
         bio: "",
         dob: "2026-01-10",
         blood_group: "",
         password: ""
     })
-    
     
     const [conformPassword, setConformPassword] = useState("")
 
@@ -123,8 +123,9 @@ export function CreateStudent() {
                                 <Input type="text" id="phone" name="phone" value={studentData.phone} required onChange={(e) => setStudentData({ ...studentData, phone: e.target.value })} />
                             </div>
                             <div className="flex flex-col w-1/2 gap-2">
-                                <Label>Class</Label>
-                                <DropdownClass setClass={setSelectedClass}/>
+                                {/* <Label>Class</Label> */}
+                                {/* <DropdownClass setClass={setSelectedClass}/> */}
+                                <DropdownSubjects setSubjects={setStudentData}/>
                             </div>
                         </div>
                         <div className="grid gap-3">

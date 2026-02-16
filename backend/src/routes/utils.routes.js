@@ -32,4 +32,8 @@ router.post('/add/student', utilsController.addStudent)
 router.delete('/remove/student', utilsController.removeStudent)
 
 
+// SUBJECT
+const subjectController = require('../controller/utils/subject.controller')
+router.get('/subject', subjectController.getStubjects)
+
 module.exports = router;

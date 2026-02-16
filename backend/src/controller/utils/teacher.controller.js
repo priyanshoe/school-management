@@ -7,7 +7,7 @@ async function getTeachers(req, res) {
         const [users] = await pool.query("SELECT * FROM teachers")
         return res.status(200).json(users);
     } catch (error) {
-        return res.status(500).json({ message: "Server error",error:err });
+        return res.status(500).json({ message: "Server error", error: err });
     }
 }
 
@@ -17,21 +17,34 @@ async function getTeacher(req, res) {
         const [user] = await pool.query("SELECT * FROM teachers WHERE teacher_id = ?", [userID])
         return res.json(user[0])
     } catch (err) {
-        return res.status(500).json({ message: "Teacher not found",error:err });
+        return res.status(500).json({ message: "Teacher not found", error: err });
     }
 }
 
-async function createTeacher(req,res){
-    try{
-        const { name, email, photo, phone, address, dob, blood_group, bio, password } = req.body
-        const [user] =  await pool.query("SELECT * FROM teachers WHERE email = ?",[email])
-        if(user.length>0) return res.status(409).json({ message: "Teacher already exist"});
+async function createTeacher(req, res) {
+    const connection = await pool.getConnection();
+    try {
+        const { name, email, photo, phone, address, subjects, dob, blood_group, bio, password } = req.body
+        const [user] = await connection.query("SELECT * FROM teachers WHERE email = ?", [email])
+        if (user.length > 0) return res.status(409).json({ message: "Teacher already exist" });
         const hashPassword = await bcrypt.hash(password, 10)
-        const [created] = await pool.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?)",
-                            [name, email,photo,phone,address,dob,blood_group,bio,hashPassword])
+        await connection.beginTransaction();
+        const [created] = await connection.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?)",
+            [name, email, photo, phone, address, dob, blood_group, bio, hashPassword])
+        for (const item of subjects) {
+            const [subject_id] = await connection.query('select subject_id from subjects where name=?', [item])
+            if (subject_id.length === 0) throw new Error(`Subject not found ${item}`)
+            const [result] = await connection.query('insert into subjects_teachers (subject_id, teacher_id) values (?,?)',
+                [subject_id[0].subject_id, created.insertId]);
+            if (result.affectedRows === 0) throw new Error("Subject not inserted")
+        }
+        await connection.commit();
         return res.status(200).json({ message: "Teacher added", data: created.insertId });
-    } catch (err){
-        return res.status(500).json({ message: "Creation failed", error:err });
+    } catch (err) {
+        await connection.rollback();
+        return res.status(500).json({ message: "Creation failed", error: err.message });
+    } finally {
+        connection.release()
     }
 }
 
@@ -40,13 +53,13 @@ async function updateTeacher(req, res) {
         const { name, email, photo, phone, address, bio, blood_group, dob, teacher_id } = req.body;
         const [result] = await pool.query(
             "UPDATE teachers SET name=?,email=?,photo=?,phone=?,address=?,bio=?,blood_group=?,dob=? WHERE teacher_id=?",
-            [name, email, photo, phone, address, bio, blood_group, dob,teacher_id]
+            [name, email, photo, phone, address, bio, blood_group, dob, teacher_id]
         )
         if (result.affectedRows === 0) res.status(404).json({ message: "Teacher not found" });
-        return res.status(200).json({message:"Teacher update success"})
+        return res.status(200).json({ message: "Teacher update success" })
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher update failed",error:err });
+        return res.status(500).json({ message: "Teacher update failed", error: err });
     }
 
 }
@@ -58,7 +71,7 @@ async function deleteTeacher(req, res) {
         return res.status(200).json({ message: "Data delete" });
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher deletion failed",error:err });
+        return res.status(500).json({ message: "Teacher deletion failed", error: err });
     }
 }
 
