@@ -4,10 +4,10 @@ const bcrypt = require('bcrypt')
 
 async function getTeachers(req, res) {
     try {
-        const [users] = await pool.query("SELECT * FROM teachers")
+        const [users] = await pool.query("select tt.teacher_id, tt.name, tt.email, tt.photo, tt.phone, tt.address, tt.dob, tt.blood_group, tt.bio, group_concat(s.name) as subjects from teachers tt left join subjects_teachers st on tt.teacher_id = st.teacher_id left join subjects s on s.subject_id = st.subject_id group by tt.teacher_id;")
         return res.status(200).json(users);
     } catch (error) {
-        return res.status(500).json({ message: "Server error", error: err });
+        return res.status(500).json({ message: "Server error", error: error.message });
     }
 }
 
@@ -31,13 +31,13 @@ async function createTeacher(req, res) {
         await connection.beginTransaction();
         const [created] = await connection.query("INSERT INTO teachers (name, email,photo,phone,address,dob,blood_group,bio,password) VALUES (?,?,?,?,?,?,?,?,?)",
             [name, email, photo, phone, address, dob, blood_group, bio, hashPassword])
-        for (const item of subjects) {
-            const [subject_id] = await connection.query('select subject_id from subjects where name=?', [item])
-            if (subject_id.length === 0) throw new Error(`Subject not found ${item}`)
-            const [result] = await connection.query('insert into subjects_teachers (subject_id, teacher_id) values (?,?)',
-                [subject_id[0].subject_id, created.insertId]);
-            if (result.affectedRows === 0) throw new Error("Subject not inserted")
-        }
+        const [subject_id] = await connection.query('select subject_id from subjects where name in(?)',[subjects]);
+        if(subject_id.length != subjects.length) throw new Error("Some subject not found")
+        const values = subject_id.map((item)=>[
+            item.subject_id,
+            created.insertId
+        ])
+        await connection.query("insert into subjects_teachers (subject_id,teacher_id) values ?", [values])
         await connection.commit();
         return res.status(200).json({ message: "Teacher added", data: created.insertId });
     } catch (err) {

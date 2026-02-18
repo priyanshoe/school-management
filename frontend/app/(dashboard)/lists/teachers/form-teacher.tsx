@@ -36,7 +36,7 @@ type Teacher = {
         name: string;
         email: string;
         photo?: string;
-        subjects: string[] | string;
+        subjects: string[];
         classes: string[] | string;
         phone?: string;
         address?: string;
@@ -205,6 +205,8 @@ export function UpdateTeacher(prop: { data: any }) {
             return console.error(err);
         }
     }
+    console.log(teacherData);
+    
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
             <DialogTrigger className=" hover:cursor-pointer" asChild
@@ -215,6 +217,7 @@ export function UpdateTeacher(prop: { data: any }) {
                     email: prop.data.email,
                     photo: prop.data.photo,
                     phone: prop.data.phone,
+                    subjects: prop.data.subjects,
                     address: prop.data.address,
                     bio: prop.data.bio,
                     blood_group: prop.data.blood_group,
@@ -247,7 +250,7 @@ export function UpdateTeacher(prop: { data: any }) {
                             <Input type="text" id="phone" name="phone" value={teacherData.phone} required onChange={(e) => setTeacherData({ ...teacherData, phone: e.target.value })} />
                         </div>
                         <div className="w-full flex gap-2">
-                            <DropdownSubjects default={prop.data.subjects} setSubjects={setTeacherData}/>
+                            <DropdownSubjects default={teacherData.subjects} setSubjects={setTeacherData}/>
                             <DropdownClasses default={prop.data.classes} setClasses={setTeacherData}/>
                         </div>
                         <div className="grid gap-3">
