@@ -36,4 +36,9 @@ router.delete('/remove/student', utilsController.removeStudent)
 const subjectController = require('../controller/utils/subject.controller')
 router.get('/subject', subjectController.getStubjects)
 
+
+// CLASSES
+const classesController = require('../controller/utils/classes.controller')
+router.get('/class', classesController.getClasses)
+
 module.exports = router;

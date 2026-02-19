@@ -23,7 +23,7 @@ export default function TeachersList() {
         email: string;
         photo?: string;
         subjects: string[];
-        classes: string[] | string;
+        classes: string[];
         phone?: string;
         address?: string;
     }
@@ -36,6 +36,10 @@ export default function TeachersList() {
                     subjects:
                     typeof item.subjects === "string"
                     ? item.subjects.split(",")
+                    : [],
+                    classes:
+                    typeof item.classes === "string"
+                    ? item.classes.split(",")
                     : []
             }))
         setTeachersData(data)
@@ -83,7 +87,7 @@ return (
                             <TableHead className="text-gray-800 font-semibold">Name</TableHead>
                             <TableHead className="text-gray-800 font-semibold">Teacher ID</TableHead>
                             <TableHead className="text-gray-800 font-semibold min-w-40 w-6">Subjects</TableHead>
-                            {/* <TableHead className="text-gray-800 font-semibold">Classes</TableHead> */}
+                            <TableHead className="text-gray-800 font-semibold">Classes</TableHead>
                             {
                                 ["admin", "teacher"].includes(role) &&
                                 <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Phone</TableHead>
@@ -117,7 +121,7 @@ return (
                                     </TableCell>
                                     <TableCell className="text-left">{item.teacher_id}</TableCell>
                                     <TableCell className="text-left">{item.subjects.join(", ")}</TableCell>
-                                    {/* <TableCell className="text-left">{item.classes.join(", ")}</TableCell> */}
+                                    <TableCell className="text-left">{item.classes.join(", ")}</TableCell>
                                     {
                                         ["admin", "teacher"].includes(role) &&
                                         <TableCell className="text-left hidden sm:table-cell">{item.phone}</TableCell>

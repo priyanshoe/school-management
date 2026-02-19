@@ -37,7 +37,7 @@ type Teacher = {
         email: string;
         photo?: string;
         subjects: string[];
-        classes: string[] | string;
+        classes: string[] ;
         phone?: string;
         address?: string;
         bio: string;
@@ -217,6 +217,7 @@ export function UpdateTeacher(prop: { data: any }) {
                     photo: prop.data.photo,
                     phone: prop.data.phone,
                     subjects: prop.data.subjects,
+                    classes: prop.data.classes,
                     address: prop.data.address,
                     bio: prop.data.bio,
                     blood_group: prop.data.blood_group,
@@ -250,7 +251,7 @@ export function UpdateTeacher(prop: { data: any }) {
                         </div>
                         <div className="w-full flex gap-2">
                             <DropdownSubjects default={teacherData.subjects} setSubjects={setTeacherData}/>
-                            <DropdownClasses default={prop.data.classes} setClasses={setTeacherData}/>
+                            <DropdownClasses default={teacherData.classes} setClasses={setTeacherData}/>
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="address">Address</Label>
