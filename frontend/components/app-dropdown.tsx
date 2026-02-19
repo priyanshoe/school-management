@@ -121,18 +121,18 @@ export function DropdownSubjects(props: { setSubjects: Function, default?: strin
   }, [])
 
   const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>({})
-  props.default?.forEach((item) => {
+  
+  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(props.default || [])
+  selectedSubjects.forEach((item) => {
     checkedSubjects[item] = true
   })
 
-  const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(props.default || [])
-
   React.useEffect(() => {
     props.setSubjects((prev: object) => ({ ...prev, subjects: selectedSubjects }));
-  }, [selectedSubjects])
-
-  const handleCheckedChange = (subject: string, checked: Checked) => {
-    setCheckedSubjects(prev => ({ ...prev, [subject]: checked }))
+    }, [selectedSubjects])
+    
+    const handleCheckedChange = (subject: string, checked: Checked) => {
+      setCheckedSubjects(prev => ({ ...prev, [subject]: checked }))
     if (checked) {
       setSelectedSubjects(prev => [...prev, subject])
     } else {

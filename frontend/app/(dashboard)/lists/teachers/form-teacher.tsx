@@ -193,19 +193,18 @@ export function UpdateTeacher(prop: { data: any }) {
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
-                    success: (res) => {
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1200);
-                        return res.data.message || "Teacher's data updated"
-                    },
-                    error: (err) => err?.response?.data?.message || "Failed, try again"
+                    success: (res) => res.data.message || "Teacher's data updated",
+                    error: (err) => err?.response?.data?.message || "Failed, try again",
+                    action:{
+                        label:"Refresh",
+                        onClick:(()=> window.location.reload())
+                    }
+                    
                 })
         } catch (err) {
             return console.error(err);
         }
     }
-    console.log(teacherData);
     
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>

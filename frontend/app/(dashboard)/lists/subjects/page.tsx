@@ -10,15 +10,43 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { role, subjectsData } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { role } from '@/database/data';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 
 export default function SubjectsList() {
-    const rowsPerPage = 12;
+    const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
+
+    type Subject = {
+        subject_id: number,
+        name: string,
+        teachers: string[],
+    }
+    const [subjectsData, setSubjectsData] = useState<Subject[]>([])
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/subject`)
+            .then((res) => {
+                
+                const data = res.data.data.map((item:any)=>({
+                    ...item,
+                    teachers:
+                    typeof item.teachers === 'string'
+                    ? item.teachers.split(",")
+                    : []
+                }))
+                setSubjectsData(data)
+            })
+            .catch((err) => console.log(err.messase))
+    }, [])
+
+    if (!subjectsData) return (
+        <div className='h-screen w-full text-2xl capitalize text-white flex items-center justify-center'>
+            Loading...
+        </div>
+    )
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -31,7 +59,7 @@ export default function SubjectsList() {
                             <TableRow>
                                 <TableHead className=" text-gray-800 font-semibold">Subjects Name</TableHead>
                                 <TableHead className="text-gray-800 font-semibold min-w-40">Teachers</TableHead>
-                                {role==="admin" &&
+                                {role === "admin" &&
                                     <TableHead className="text-gray-800 font-semibold">Actions</TableHead>
                                 }
                             </TableRow>
@@ -39,16 +67,16 @@ export default function SubjectsList() {
                         <TableBody>
                             {
                                 subjectsData.slice(startIndex, endIndex).map((item) => (
-                                    <TableRow key={item.id} className={`${item.id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
+                                    <TableRow key={item.subject_id} className={`${item.subject_id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
                                         <TableCell className="text-left">{item.name}</TableCell>
                                         <TableCell className="text-left">{item.teachers.join(', ')}</TableCell>
                                         {role === "admin" &&
                                             <TableCell className="flex justify-start items-center gap-2">
                                                 <div className="rounded-full bg-purple-300 p-2">
-                                                    <FormUpdate data={item}/>
+                                                    <FormUpdate data={item} />
                                                 </div>
                                                 <div className="rounded-full bg-red-300 p-2">
-                                                    <FormDelete id={item.id} name={item.name}/>
+                                                    <FormDelete id={item.subject_id} name={item.name} />
                                                 </div>
                                             </TableCell>
                                         }
