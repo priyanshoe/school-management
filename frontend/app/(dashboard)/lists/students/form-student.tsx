@@ -60,6 +60,7 @@ export function CreateStudent() {
     async function handleCreate(e: any) {
         e.preventDefault();
         try {
+            if(studentData.class_name == "") return toast.warning("Select class")
             if (studentData.password !== conformPassword) {
                 setStudentData({ ...studentData, password: "" })
                 setConformPassword("")
@@ -70,12 +71,7 @@ export function CreateStudent() {
             toast.promise(responsePromise,
                 {
                     loading: "Connecting...",
-                    success: (res) => {
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1200);
-                        return "Student's data created"
-                    },
+                    success: (res) => res.data.message || "Student's data created",
                     error: (err) => err?.response?.data?.message || "Failed, try again"
                 })
         } catch (err) {
@@ -83,6 +79,7 @@ export function CreateStudent() {
         }
 
     }
+    
     return (
         <Dialog open={open} onOpenChange={() => setOpen(!open)}>
             <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
@@ -117,16 +114,13 @@ export function CreateStudent() {
                             <Label htmlFor="conform-password">Conform Password</Label>
                             <Input type="password" id="conform-password" name="conform-password" required value={conformPassword} onChange={(e) => setConformPassword(e.target.value)} />
                         </div>
-                        <div className="flex gap-2">
-                            <div className="flex flex-col w-1/2 gap-2">
+                            <div className="grid gap-3">
                                 <Label htmlFor="phone">Phone</Label>
                                 <Input type="text" id="phone" name="phone" value={studentData.phone} required onChange={(e) => setStudentData({ ...studentData, phone: e.target.value })} />
                             </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                {/* <Label>Class</Label> */}
-                                {/* <DropdownClass setClass={setSelectedClass}/> */}
+                        <div className="flex gap-2 w-full">
+                                <DropdownClass setClass={setStudentData}/>
                                 <DropdownSubjects setSubjects={setStudentData}/>
-                            </div>
                         </div>
                         <div className="grid gap-3">
                             <Label htmlFor="address">Address</Label>
@@ -159,10 +153,6 @@ export function CreateStudent() {
 
 export function UpdateStudent(prop: { data: any }) {
     const [open, setOpen] = useState(false)
-    const [selectedClass, setSelectedClass] = useState('')
-    useEffect(()=>{
-        setStudentData({...studentData,class_name:selectedClass})
-    },[selectedClass])
     const [studentData, setStudentData] = useState({
         student_id: 0,
         name: "",
@@ -170,6 +160,7 @@ export function UpdateStudent(prop: { data: any }) {
         photo: "",
         phone: "",
         class_name:"",
+        subjects: [],
         address: "",
         bio: "",
         blood_group: "",
@@ -179,6 +170,7 @@ export function UpdateStudent(prop: { data: any }) {
     async function handleUpdate(e: any) {
         e.preventDefault();
         try {
+            if(studentData.class_name == null || studentData.class_name ==  "") return toast.warning("Select class")
             const responsePromise = axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/student/update`, studentData, { withCredentials: true })
             toast.promise(responsePromise,
                 {
@@ -187,7 +179,7 @@ export function UpdateStudent(prop: { data: any }) {
                         setTimeout(() => {
                             window.location.reload();
                         }, 1200);
-                        return "Student's data updated"
+                        return res.data.message || "Student's data updated"
                     },
                     error: (err) => err?.response?.data?.message || "Failed, try again"
                 })
@@ -207,6 +199,7 @@ export function UpdateStudent(prop: { data: any }) {
                     photo: prop.data.photo,
                     phone: prop.data.phone,
                     class_name: prop.data.class,
+                    subjects: prop.data.subjects,
                     address: prop.data.address,
                     bio: prop.data.bio,
                     blood_group: prop.data.blood_group,
@@ -234,16 +227,14 @@ export function UpdateStudent(prop: { data: any }) {
                             <Label htmlFor="email">Email</Label>
                             <Input type="email" id="email" name="email" required value={studentData.email} onChange={(e) => setStudentData({ ...studentData, email: e.target.value })} />
                         </div>
-                        <div className="flex gap-2">
-                            <div className="flex flex-col w-1/2 gap-2">
+                        <div className="grid gap-3">
                                 <Label htmlFor="phone">Phone</Label>
                                 <Input type="text" id="phone" name="phone" value={studentData.phone} required onChange={(e) => setStudentData({ ...studentData, phone: e.target.value })} />
                             </div>
-                            <div className="flex flex-col w-1/2 gap-2">
-                                <Label>Class</Label>
-                                <DropdownClass defaultClass={studentData.class_name} setClass={setSelectedClass}/>
+                            <div className="flex gap-2">
+                                <DropdownClass defaultClass={studentData.class_name} setClass={setStudentData}/>
+                                <DropdownSubjects default={studentData.subjects} setSubjects={setStudentData}/>
                             </div>
-                        </div>
                         <div className="grid gap-3">
                             <Label htmlFor="address">Address</Label>
                             <Input type="text" id="address" name="address" value={studentData.address} required onChange={(e) => setStudentData({ ...studentData, address: e.target.value })} />

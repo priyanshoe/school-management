@@ -17,24 +17,37 @@ import axios from "axios";
 
 
 export default function StudentsList() {
-   type Student = {
+    type Student = {
         student_id: number;
         name: string;
         email: string;
         photo?: string;
-        class?:string,
-        grade?:string,
-        subjects: string[] | string;
-        classes: string[] | string;
+        class?: string,
+        grade?: string,
+        subjects: string[];
+        classes: string;
         phone?: string;
         address?: string;
     }
     const [studentsData, setStudentsData] = useState<Student[] | null>(null)
-    useEffect(()=>{
-        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/`, {withCredentials:true})
-        .then(res=> setStudentsData(res.data))
-        .catch(err => console.error(err))
-    },[])
+    useEffect(() => {
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/student/`, { withCredentials: true })
+            .then(res => {
+                const data = res.data.map((item: any) => ({
+                    ...item,
+                    subjects:
+                        typeof item.subjects === "string"
+                            ? item.subjects.split(",")
+                            : [],
+                    classes:
+                        typeof item.classes === "string"
+                            ? item.classes.split(",")
+                            : []
+                }))
+                setStudentsData(data)
+            })
+            .catch(err => console.error(err))
+    }, [])
 
 
     const rowsPerPage = 15;
@@ -60,7 +73,7 @@ export default function StudentsList() {
                             <TableRow>
                                 <TableHead className="text-gray-800 font-semibold">Name</TableHead>
                                 <TableHead className="text-gray-800 font-semibold">Student ID</TableHead>
-                                <TableHead className="text-gray-800 font-semibold">Grade</TableHead>
+                                <TableHead className="text-gray-800 font-semibold">Class</TableHead>
                                 <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Email</TableHead>
                                 {
                                     ["admin", "teacher"].includes(role) &&
@@ -77,15 +90,15 @@ export default function StudentsList() {
                         </TableHeader>
                         <TableBody>
                             {
-                                studentsData.slice(startIndex, endIndex).map((item,id) => (
+                                studentsData.slice(startIndex, endIndex).map((item, id) => (
                                     <TableRow key={id} className={`${id % 2 === 0 ? 'bg-[#F8FAFC]' : ''}`}>
                                         <TableCell className="text-left flex gap-2 items-center justify-start cursor-pointer hover:bg-gray-100"
-                                                    onClick={() => router.push(`students/${item.student_id}`)}>
+                                            onClick={() => router.push(`students/${item.student_id}`)}>
                                             <div id="profile-photo" className="rounded-full overflow-hidden h-10 w-10 hidden sm:table-cell">
                                                 <img src={item.photo || "https://github.com/evilrabbit.png"}
                                                     onError={(e) => {
                                                         e.currentTarget.src = "https://github.com/evilrabbit.png";
-                                                    }} alt='profile' 
+                                                    }} alt='profile'
                                                     className="w-full h-full" />
                                             </div>
                                             <div id="name">
@@ -94,7 +107,7 @@ export default function StudentsList() {
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-left">{item.student_id}</TableCell>
-                                        <TableCell className="text-left">{item.grade}</TableCell>
+                                        <TableCell className="text-left">{item.class}</TableCell>
                                         <TableCell className="text-left hidden sm:table-cell">{item.email}</TableCell>
                                         {
                                             ["admin", "teacher"].includes(role) &&
@@ -106,10 +119,10 @@ export default function StudentsList() {
                                                 <TableCell className="text-left hidden lg:table-cell">{item.address}</TableCell>
                                                 <TableCell className="flex justify-start items-center gap-2">
                                                     <div className="rounded-full bg-purple-300 p-2">
-                                                        <UpdateStudent data={item}/>
+                                                        <UpdateStudent data={item} />
                                                     </div>
                                                     <div className="rounded-full bg-red-300 p-2">
-                                                        <DeleteStudent data={item}/>
+                                                        <DeleteStudent data={item} />
                                                     </div>
                                                 </TableCell>
                                             </>
