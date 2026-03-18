@@ -3,6 +3,7 @@ node_modules
 
 #variables
 .env
+.vscode
 
 #notes
 /notes.txt
