@@ -28,16 +28,27 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { SquarePen, Trash2 } from "lucide-react";
 
+
+type Class = {
+  class_id: number;
+  name: string;
+  class_teacher: number;
+};
+
 export function CreateClass() {
   const [open, setOpen] = useState(false);
-  const [className, setClassName] = useState("");
+  const [classData, setClassData] = useState<Class>({
+    class_id: 0,
+    name: "",
+    class_teacher: 0
+  });
 
   async function handleCreate(e: any) {
     e.preventDefault();
-    console.log(className);
+    console.log(classData);
     const responsePromise = axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/class/create`,
-      [className],
+      classData,
       { withCredentials: true },
     );
 
@@ -45,6 +56,11 @@ export function CreateClass() {
       loading: "Connecting...",
       success: (res) => {
         setOpen(false)
+        setClassData({
+          class_id: 0,
+          name: "",
+          class_teacher: 0
+        })
         return res.data.message || "Class created";
       },
       error: (err) => err?.response?.data?.message || "Failed, try again",
@@ -55,6 +71,19 @@ export function CreateClass() {
       },
     });
   }
+
+  async function check() {
+    const responsePromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/${classData.class_teacher}`)
+    toast.promise(responsePromise, {
+      loading: "Connecting...",
+      success: (res) => {
+        if (res.data) return `Teacher: ${res.data.name}`
+        else return "Teacher not found"
+      },
+      error: (err) => err?.response?.data?.message || "Failed, try again",
+    });
+  }
+
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
@@ -76,9 +105,28 @@ export function CreateClass() {
                 id="name-1"
                 name="name"
                 required
-                value={className}
-                onChange={(e) => setClassName(e.target.value)}
+                value={classData.name}
+                onChange={(e) => setClassData({ ...classData, name: e.target.value })}
               />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="name-1">Class Teacher ID</Label>
+              <div className="flex gap-2 items-center">
+
+                <Input
+                  type="number"
+                  id="name-id"
+                  name="name-id"
+                  required
+                  value={classData.class_teacher}
+                  onChange={(e) => setClassData({ ...classData, class_teacher: Number(e.target.value) })}
+                />
+                <Button
+                  type="reset"
+                  className="hover:cursor-pointer bg-amber-400 hover:bg-amber-500 hover:text-white text-black"
+                  onClick={() => check()}
+                >Check</Button>
+              </div>
             </div>
           </div>
           <DialogFooter>

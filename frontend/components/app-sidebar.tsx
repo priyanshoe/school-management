@@ -64,7 +64,7 @@ const items = [
     title: "Subjects",
     url: "/lists/subjects",
     icon: NotebookPen,
-    visible: ["admin"],
+    visible: ["admin", "teacher"],
   },
   {
     title: "Classes",

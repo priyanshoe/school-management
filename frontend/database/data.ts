@@ -1,5 +1,5 @@
 
-export const role:string = "admin";
+export const role: string = "admin";
 
 export const totalCount = [
   {
@@ -32,7 +32,7 @@ export const AdminPieChart = [
   { role: "students", male: 287, female: 213 },
   { role: "parents", male: 185, female: 172 },
 ]
-// Student attendence Yearly
+// Student attendance Yearly
 export const AdminBarChart = [
   { month: "January", present: 512, absent: 8 },
   { month: "February", present: 508, absent: 12 },

@@ -23,6 +23,7 @@ export default function ClassesList() {
   type Class = {
     class_id: number;
     name: string;
+    class_teacher: string;
   };
   const [classesData, setClassesData] = useState<Class[]>([]);
   useEffect(() => {
@@ -47,10 +48,9 @@ export default function ClassesList() {
             <TableHeader>
               <TableRow>
                 <TableHead className=" text-gray-800 font-semibold">
-                  Classes Name
+                  Class Name
                 </TableHead>
-                {/* <TableHead className="text-gray-800 font-semibold">Teacher Name</TableHead>
-                                <TableHead className="text-gray-800 font-semibold hidden sm:table-cell">Grade</TableHead> */}
+                <TableHead className="text-gray-800 font-semibold">Class Teacher</TableHead>
                 {role === "admin" && (
                   <TableHead className="text-gray-800 font-semibold">
                     Actions
@@ -65,8 +65,7 @@ export default function ClassesList() {
                   className={`${item.class_id % 2 === 0 ? "bg-[#F8FAFC]" : ""}`}
                 >
                   <TableCell className="text-left">{item.name}</TableCell>
-                  {/* <TableCell className="text-left">{item.supervisor}</TableCell>
-                                    <TableCell className="text-left pl-3 hidden sm:table-cell">{item.grade}</TableCell> */}
+                  <TableCell className="text-left">{item.class_teacher}</TableCell>
                   {role === "admin" && (
                     <TableCell className="flex justify-start items-center gap-2">
                       <div className="rounded-full bg-red-300 p-2">
