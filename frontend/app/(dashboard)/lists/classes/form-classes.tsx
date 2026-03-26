@@ -28,23 +28,24 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { SquarePen, Trash2 } from "lucide-react";
 
-export function CreateSubject() {
+export function CreateClass() {
   const [open, setOpen] = useState(false);
-  const [subjectName, setSubjectName] = useState("");
+  const [className, setClassName] = useState("");
 
   async function handleCreate(e: any) {
     e.preventDefault();
-    console.log(subjectName);
+    console.log(className);
     const responsePromise = axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/subject/create`,
-      [subjectName],
+      `${process.env.NEXT_PUBLIC_API_URL}/class/create`,
+      [className],
       { withCredentials: true },
     );
 
     toast.promise(responsePromise, {
       loading: "Connecting...",
       success: (res) => {
-        return res.data.message || "subject created";
+        setOpen(false)
+        return res.data.message || "Class created";
       },
       error: (err) => err?.response?.data?.message || "Failed, try again",
 
@@ -57,26 +58,26 @@ export function CreateSubject() {
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
-        <h2>Subject</h2>
+        <h2>Class</h2>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106 bg-white text-black">
         <form onSubmit={handleCreate}>
           <DialogHeader>
             <DialogTitle className="text-green-500 text-xl capitalize">
-              Add Subject
+              Add Class
             </DialogTitle>
             <DialogDescription>Enter name properly</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-3">
             <div className="grid gap-3">
-              <Label htmlFor="name-1">Subject Name</Label>
+              <Label htmlFor="name-1">Class Name</Label>
               <Input
                 type="name"
                 id="name-1"
                 name="name"
                 required
-                value={subjectName}
-                onChange={(e) => setSubjectName(e.target.value)}
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
               />
             </div>
           </div>
@@ -102,99 +103,8 @@ export function CreateSubject() {
   );
 }
 
-export function UpdateSubject(prop: { data: any }) {
-  const [open, setOpen] = useState(false);
-  const [subjectData, setSubjectData] = useState({
-    id: 0,
-    name: "",
-  });
-  async function handleUpdate(e: any) {
-    e.preventDefault();
-    try {
-      const responsePromise = axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/subject/update`,
-        subjectData,
-        { withCredentials: true },
-      );
-      toast.promise(responsePromise, {
-        loading: "Connecting...",
-        success: (res) => {
-          setOpen(false)
-          return res.data.message || "Subject name updated";
-        },
-        error: (err) => err?.response?.data?.message || "Failed, try again",
-        action: {
-          label: "Refresh",
-          onClick: () => window.location.reload(),
-        },
-      });
-    } catch (err) {
-      return console.error(err);
-    }
-  }
-
-  return (
-    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-      <DialogTrigger
-        className=" hover:cursor-pointer"
-        asChild
-        onClick={() =>
-          setSubjectData({
-            ...subjectData,
-            id: prop.data.subject_id,
-            name: prop.data.name,
-          })
-        }
-      >
-        <SquarePen size={15} />
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-106 bg-white text-black">
-        <form onSubmit={handleUpdate}>
-          <DialogHeader>
-            <DialogTitle className="text-purple-400 text-xl capitalize">
-              Update Subject
-            </DialogTitle>
-            <DialogDescription>Change the details properly</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-3">
-            <div className="grid gap-3">
-              <Label htmlFor="name-1">Subject Name</Label>
-              <Input
-                type="name"
-                id="name-1"
-                name="name"
-                required
-                value={subjectData.name}
-                onChange={(e) =>
-                  setSubjectData({ ...subjectData, name: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button
-                variant="outline"
-                className="bg-transparent text-black hover:cursor-pointer"
-              >
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button
-              type="submit"
-              className="ml-2 hover:cursor-pointer bg-purple-400 hover:bg-purple-500 hover:text-white text-black"
-            >
-              Save changes
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-export function DeleteSubject(prop: { data: any }) {
-  const [subjectData, setSubjectData] = useState({
+export function DeleteClass(prop: { data: any }) {
+  const [classData, setClassData] = useState({
     id: 0,
     name: "",
   });
@@ -202,8 +112,8 @@ export function DeleteSubject(prop: { data: any }) {
   async function handleDelete() {
     try {
       const responsePromise = axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/subject/delete`,
-        { data: subjectData, withCredentials: true },
+        `${process.env.NEXT_PUBLIC_API_URL}/class/delete`,
+        { data: classData, withCredentials: true },
       );
       toast.promise(responsePromise, {
         loading: "Connecting...",
@@ -211,7 +121,7 @@ export function DeleteSubject(prop: { data: any }) {
           setTimeout(() => {
             window.location.reload();
           }, 1200);
-          return `${subjectData.name} deleted`;
+          return `${classData.name} deleted`;
         },
         error: (err) => err?.response?.data?.message || "Failed, try again",
       });
@@ -225,8 +135,8 @@ export function DeleteSubject(prop: { data: any }) {
         className="hover:cursor-pointer"
         asChild
         onClick={() =>
-          setSubjectData({
-            id: prop.data.subject_id,
+          setClassData({
+            id: prop.data.class_id,
             name: prop.data.name,
           })
         }
@@ -240,7 +150,7 @@ export function DeleteSubject(prop: { data: any }) {
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete{" "}
-            <span className="font-bold">{` ${subjectData.name}(${subjectData.id}) `}</span>{" "}
+            <span className="font-bold">{` ${classData.name}(${classData.id}) `}</span>{" "}
             data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
