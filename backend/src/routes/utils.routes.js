@@ -41,6 +41,7 @@ router.delete("/subject/delete", subjectController.deleteSubject);
 const classesController = require("../controller/utils/classes.controller");
 router.get("/class", classesController.getClasses);
 router.post("/class/create", classesController.createClass);
+router.patch("/class/update", classesController.updateClass);
 router.delete("/class/delete", classesController.deleteClass);
 
 module.exports = router;

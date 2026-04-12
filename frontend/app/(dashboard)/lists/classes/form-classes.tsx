@@ -28,7 +28,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { SquarePen, Trash2 } from "lucide-react";
 
-
 type Class = {
   class_id: number;
   name: string;
@@ -40,12 +39,11 @@ export function CreateClass() {
   const [classData, setClassData] = useState<Class>({
     class_id: 0,
     name: "",
-    class_teacher: 0
+    class_teacher: 0,
   });
 
   async function handleCreate(e: any) {
     e.preventDefault();
-    console.log(classData);
     const responsePromise = axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/class/create`,
       classData,
@@ -55,12 +53,12 @@ export function CreateClass() {
     toast.promise(responsePromise, {
       loading: "Connecting...",
       success: (res) => {
-        setOpen(false)
+        setOpen(false);
         setClassData({
           class_id: 0,
           name: "",
-          class_teacher: 0
-        })
+          class_teacher: 0,
+        });
         return res.data.message || "Class created";
       },
       error: (err) => err?.response?.data?.message || "Failed, try again",
@@ -73,12 +71,14 @@ export function CreateClass() {
   }
 
   async function check() {
-    const responsePromise = axios.get(`${process.env.NEXT_PUBLIC_API_URL}/teacher/${classData.class_teacher}`)
+    const responsePromise = axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/teacher/${classData.class_teacher}`,
+    );
     toast.promise(responsePromise, {
       loading: "Connecting...",
       success: (res) => {
-        if (res.data) return `Teacher: ${res.data.name}`
-        else return "Teacher not found"
+        if (res.data) return `Teacher: ${res.data.name}`;
+        else return "Teacher not found";
       },
       error: (err) => err?.response?.data?.message || "Failed, try again",
     });
@@ -86,7 +86,10 @@ export function CreateClass() {
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-      <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
+      <DialogTrigger
+        asChild
+        className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm"
+      >
         <h2>Class</h2>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106 bg-white text-black">
@@ -106,26 +109,165 @@ export function CreateClass() {
                 name="name"
                 required
                 value={classData.name}
-                onChange={(e) => setClassData({ ...classData, name: e.target.value })}
+                onChange={(e) =>
+                  setClassData({ ...classData, name: e.target.value })
+                }
               />
             </div>
             <div className="grid gap-3">
               <Label htmlFor="name-1">Class Teacher ID</Label>
               <div className="flex gap-2 items-center">
-
                 <Input
                   type="number"
                   id="name-id"
                   name="name-id"
                   required
                   value={classData.class_teacher}
-                  onChange={(e) => setClassData({ ...classData, class_teacher: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setClassData({
+                      ...classData,
+                      class_teacher: Number(e.target.value),
+                    })
+                  }
                 />
                 <Button
                   type="reset"
                   className="hover:cursor-pointer bg-amber-400 hover:bg-amber-500 hover:text-white text-black"
                   onClick={() => check()}
-                >Check</Button>
+                >
+                  Check
+                </Button>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                className="bg-transparent text-black hover:cursor-pointer"
+              >
+                Cancel
+              </Button>
+            </DialogClose>
+            <Button
+              type="submit"
+              className="ml-2 hover:cursor-pointer bg-green-400 hover:bg-green-500 hover:text-white text-black"
+            >
+              Save changes
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export function UpdateClass(prop: { data: any }) {
+  const [open, setOpen] = useState(false);
+
+  const [classData, setClassData] = useState<Class>({
+    class_id: 0,
+    name: "",
+    class_teacher: 0,
+  });
+
+  async function handleUpdate(e: any) {
+    e.preventDefault();
+    const responsePromise = axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/class/update`,
+      classData,
+      { withCredentials: true },
+    );
+
+    toast.promise(responsePromise, {
+      loading: "Connecting...",
+      success: (res) => {
+        setOpen(false);
+        return res.data.message || "Class created";
+      },
+      error: (err) => err?.response?.data?.message || "Failed, try again",
+
+      action: {
+        label: "Refresh",
+        onClick: () => window.location.reload(),
+      },
+    });
+  }
+
+  async function check() {
+    const responsePromise = axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/teacher/${classData.class_teacher}`,
+    );
+    toast.promise(responsePromise, {
+      loading: "Connecting...",
+      success: (res) => {
+        if (res.data) return `Teacher: ${res.data.name}`;
+        else return "Teacher not found";
+      },
+      error: (err) => err?.response?.data?.message || "Failed, try again",
+    });
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+      <DialogTrigger
+        className="hover:cursor-pointer"
+        asChild
+        onClick={() =>
+          setClassData({
+            class_id: prop.data.class_id,
+            name: prop.data.name,
+            class_teacher: prop.data.class_teacher_id,
+          })
+        }
+      >
+        <SquarePen size={15} />
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-106 bg-white text-black">
+        <form onSubmit={handleUpdate}>
+          <DialogHeader>
+            <DialogTitle className="text-green-500 text-xl capitalize">
+              Add Class
+            </DialogTitle>
+            <DialogDescription>Enter name properly</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-3">
+            <div className="grid gap-3">
+              <Label htmlFor="name-1">Class Name</Label>
+              <Input
+                type="name"
+                id="name-1"
+                name="name"
+                required
+                value={classData.name || ""}
+                onChange={(e) =>
+                  setClassData({ ...classData, name: e.target.value })
+                }
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="name-1">Class Teacher ID</Label>
+              <div className="flex gap-2 items-center">
+                <Input
+                  type="number"
+                  id="name-id"
+                  name="name-id"
+                  required
+                  value={classData.class_teacher || 0}
+                  onChange={(e) =>
+                    setClassData({
+                      ...classData,
+                      class_teacher: Number(e.target.value),
+                    })
+                  }
+                />
+                <Button
+                  type="reset"
+                  className="hover:cursor-pointer bg-amber-400 hover:bg-amber-500 hover:text-white text-black"
+                  onClick={() => check()}
+                >
+                  Check
+                </Button>
               </div>
             </div>
           </div>

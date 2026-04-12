@@ -13,7 +13,7 @@ import {
 import { role } from "@/database/data";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { DeleteClass } from "./form-classes";
+import { DeleteClass, UpdateClass } from "./form-classes";
 
 export default function ClassesList() {
   const rowsPerPage = 15;
@@ -50,7 +50,9 @@ export default function ClassesList() {
                 <TableHead className=" text-gray-800 font-semibold">
                   Class Name
                 </TableHead>
-                <TableHead className="text-gray-800 font-semibold">Class Teacher</TableHead>
+                <TableHead className="text-gray-800 font-semibold">
+                  Class Teacher
+                </TableHead>
                 {role === "admin" && (
                   <TableHead className="text-gray-800 font-semibold">
                     Actions
@@ -65,9 +67,14 @@ export default function ClassesList() {
                   className={`${item.class_id % 2 === 0 ? "bg-[#F8FAFC]" : ""}`}
                 >
                   <TableCell className="text-left">{item.name}</TableCell>
-                  <TableCell className="text-left">{item.class_teacher}</TableCell>
+                  <TableCell className="text-left">
+                    {item.class_teacher}
+                  </TableCell>
                   {role === "admin" && (
                     <TableCell className="flex justify-start items-center gap-2">
+                      <div className="rounded-full bg-purple-300 p-2">
+                        <UpdateClass data={item} />
+                      </div>
                       <div className="rounded-full bg-red-300 p-2">
                         <DeleteClass data={item} />
                       </div>
