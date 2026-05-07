@@ -14,6 +14,7 @@ import { CreateStudent } from "@/app/(dashboard)/lists/students/form-student";
 import { CreateParent } from "@/app/(dashboard)/lists/parents/form-parent";
 import { CreateSubject } from "@/app/(dashboard)/lists/subjects/form-subject";
 import { CreateClass } from "@/app/(dashboard)/lists/classes/form-classes";
+import { CreateExam } from "@/app/(dashboard)/lists/exams/form-exam";
 
 export default function NavbarSecondary(prop: { head: String }) {
   return (
@@ -65,6 +66,10 @@ export default function NavbarSecondary(prop: { head: String }) {
                   <DropdownMenuItem asChild>
                     <CreateClass />
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <CreateExam />
+                  </DropdownMenuItem>
+
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

@@ -13,6 +13,7 @@ import {
 import { role } from '@/database/data';
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { DeleteExam } from "./form-exam";
 
 
 export default function ExamsList() {
@@ -68,7 +69,7 @@ export default function ExamsList() {
                                                         <FormUpdate data={item}/>
                                             </div>
                                             <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.id} name={item.subject}/>
+                                                <DeleteExam data={item}/>
                                             </div>
                                         </TableCell>
                                     }
