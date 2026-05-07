@@ -87,7 +87,6 @@ export function CreateClass() {
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger
-        asChild
         className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm"
       >
         <h2>Class</h2>

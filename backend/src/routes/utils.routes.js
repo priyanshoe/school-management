@@ -44,4 +44,8 @@ router.post("/class/create", classesController.createClass);
 router.patch("/class/update", classesController.updateClass);
 router.delete("/class/delete", classesController.deleteClass);
 
+// EXAM
+const examController = require("../controller/utils/exam.controller")
+router.get("/exam", examController.getExamData)
+
 module.exports = router;

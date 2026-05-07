@@ -5,8 +5,7 @@ async function getClasses(req, res) {
     const [data] = await pool.query(
       "select ct.class_id, ct.name, ct.class_teacher as class_teacher_id, tt.name as class_teacher from classes ct left join teachers tt on tt.teacher_id = ct.class_teacher",
     );
-    if (data.length === 0)
-      return res.status(409).json({ message: "Data not found" });
+    if (data.length === 0) return res.status(409).json({ message: "Data not found" });
     return res.status(200).json({ message: "Data fetched", data: data });
   } catch (err) {
     return res
@@ -85,9 +84,7 @@ async function updateClass(req, res) {
     }
     return res.status(200).json({ message: "Class saved" });
   } catch (err) {
-    return console.log(err);
-
-    res.status(500).json({ message: "Server error", error: err.message });
+   return res.status(500).json({ message: "Server error", error: err.message });
   }
 }
 

@@ -10,15 +10,29 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { examsData, role } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { role } from '@/database/data';
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 
 export default function ExamsList() {
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
+    const [examData, setExamData] = useState<[]>([])
+ 
+    useEffect(()=>{
+        axios.get(`${process.env.NEXT_PUBLIC_API_URL}/exam`)
+        .then((res) => setExamData(res.data.data))
+        .catch((err)=>console.log(err))
+    },[])
+
+    if (!examData)
+    return (
+      <div className="h-screen w-full text-2xl capitalize text-white flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -41,10 +55,10 @@ export default function ExamsList() {
                     </TableHeader>
                     <TableBody>
                         {
-                            examsData.slice(startIndex, endIndex).map((item) =>(
-                                <TableRow key={item.id} className={`${item.id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
+                            examData.slice(startIndex, endIndex).map((item:any) =>(
+                                <TableRow key={item.id} className={`${item.exam_id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
                                     <TableCell className="text-left">{item.subject}</TableCell>
-                                    <TableCell className="text-left">{item.date}</TableCell>
+                                    <TableCell className="text-left">{new Date(item.date).toDateString()}</TableCell>
                                     <TableCell className="text-left">{item.class}</TableCell>
                                     <TableCell className="text-left hidden sm:table-cell">{item.teacher}</TableCell>
                                     {
@@ -67,7 +81,7 @@ export default function ExamsList() {
                 </Table>
                 <div className="mt-2">
                     <PaginationList 
-                        data={examsData} 
+                        data={examData} 
                         start={startIndex} setStart={setStartIndex} 
                         end={endIndex} setEnd={setEndIndex} 
                         rows={rowsPerPage} />
