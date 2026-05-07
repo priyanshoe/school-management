@@ -140,25 +140,29 @@ export function CreateExam() {
   );
 }
 
-export function UpdateSubject(prop: { data: any }) {
+export function UpdateExam(prop: { data: any }) {
   const [open, setOpen] = useState(false);
-  const [subjectData, setSubjectData] = useState({
-    id: 0,
-    name: "",
+   const [examData, setExamData] = useState({
+    exam_id: Number,
+    subject:"",
+    date:"",
+    class_name:"",
+    teacher:""
   });
+  
   async function handleUpdate(e: any) {
     e.preventDefault();
     try {
       const responsePromise = axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/subject/update`,
-        subjectData,
+        `${process.env.NEXT_PUBLIC_API_URL}/exam/update`,
+        examData,
         { withCredentials: true },
       );
       toast.promise(responsePromise, {
         loading: "Connecting...",
         success: (res) => {
           setOpen(false)
-          return res.data.message || "Subject name updated";
+          return res.data.message || "Exam data updated";
         },
         error: (err) => err?.response?.data?.message || "Failed, try again",
         action: {
@@ -177,10 +181,13 @@ export function UpdateSubject(prop: { data: any }) {
         className=" hover:cursor-pointer"
         asChild
         onClick={() =>
-          setSubjectData({
-            ...subjectData,
-            id: prop.data.subject_id,
-            name: prop.data.name,
+          setExamData({
+            ...examData,
+            exam_id: prop.data.exam_id,
+            subject: prop.data.subject,
+            class_name: prop.data.class,
+            date: prop.data.date.split("T")[0],
+            teacher: prop.data.teacher,
           })
         }
       >
@@ -196,16 +203,47 @@ export function UpdateSubject(prop: { data: any }) {
           </DialogHeader>
           <div className="grid gap-4 py-3">
             <div className="grid gap-3">
-              <Label htmlFor="name-1">Subject Name</Label>
+              <Label htmlFor="name">Subject Name</Label>
               <Input
-                type="name"
-                id="name-1"
+                type="text"
+                id="name"
                 name="name"
                 required
-                value={subjectData.name}
-                onChange={(e) =>
-                  setSubjectData({ ...subjectData, name: e.target.value })
-                }
+                value={examData.subject}
+                onChange={(e) => setExamData({...examData,subject:e.target.value})}
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="examDate">Exam Date</Label>
+              <Input
+                type="date"
+                id="examDate"
+                name="name"
+                required
+                value={examData.date}
+                onChange={(e) => setExamData({...examData,date:e.target.value})}
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="class">Class</Label>
+              <Input
+                type="text"
+                id="class"
+                name="name"
+                required
+                value={examData.class_name}
+                onChange={(e) => setExamData({...examData,class_name:e.target.value})}
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="teacher">Teacher Name</Label>
+              <Input
+                type="text"
+                id="teacher"
+                name="name"
+                required
+                value={examData.teacher}
+                onChange={(e) => setExamData({...examData,teacher:e.target.value})}
               />
             </div>
           </div>
@@ -220,7 +258,7 @@ export function UpdateSubject(prop: { data: any }) {
             </DialogClose>
             <Button
               type="submit"
-              className="ml-2 hover:cursor-pointer bg-purple-400 hover:bg-purple-500 hover:text-white text-black"
+              className="ml-2 hover:cursor-pointer bg-green-400 hover:bg-green-500 hover:text-white text-black"
             >
               Save changes
             </Button>

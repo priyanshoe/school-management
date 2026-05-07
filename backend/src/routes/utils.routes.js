@@ -48,6 +48,7 @@ router.delete("/class/delete", classesController.deleteClass);
 const examController = require("../controller/utils/exam.controller")
 router.get("/exam", examController.getExamData)
 router.post("/exam/create", examController.createExam)
+router.patch('/exam/update',examController.updateExam)
 router.delete("/exam/delete",examController.deleteExam)
 
 module.exports = router;

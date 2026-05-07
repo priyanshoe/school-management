@@ -13,7 +13,7 @@ import {
 import { role } from '@/database/data';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { DeleteExam } from "./form-exam";
+import { DeleteExam, UpdateExam } from "./form-exam";
 
 
 export default function ExamsList() {
@@ -57,7 +57,7 @@ export default function ExamsList() {
                     <TableBody>
                         {
                             examData.slice(startIndex, endIndex).map((item:any) =>(
-                                <TableRow key={item.id} className={`${item.exam_id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
+                                <TableRow key={item.exam_id} className={`${item.exam_id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
                                     <TableCell className="text-left">{item.subject}</TableCell>
                                     <TableCell className="text-left">{new Date(item.date).toDateString()}</TableCell>
                                     <TableCell className="text-left">{item.class}</TableCell>
@@ -66,7 +66,7 @@ export default function ExamsList() {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">
                                             <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item}/>
+                                                <UpdateExam data={item}/>
                                             </div>
                                             <div className="rounded-full bg-red-300 p-2">
                                                 <DeleteExam data={item}/>
