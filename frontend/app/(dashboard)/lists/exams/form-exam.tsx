@@ -61,7 +61,7 @@ export function CreateExam() {
   }
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-      <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
+      <DialogTrigger asChild className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
         <h2>Exam</h2>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106 bg-white text-black">
@@ -143,7 +143,7 @@ export function CreateExam() {
 export function UpdateExam(prop: { data: any }) {
   const [open, setOpen] = useState(false);
    const [examData, setExamData] = useState({
-    exam_id: Number,
+    exam_id: 0,
     subject:"",
     date:"",
     class_name:"",
@@ -176,7 +176,7 @@ export function UpdateExam(prop: { data: any }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         className=" hover:cursor-pointer"
         asChild
@@ -186,7 +186,7 @@ export function UpdateExam(prop: { data: any }) {
             exam_id: prop.data.exam_id,
             subject: prop.data.subject,
             class_name: prop.data.class,
-            date: prop.data.date.split("T")[0],
+            date: prop.data.date?.split("T")[0],
             teacher: prop.data.teacher,
           })
         }
@@ -319,7 +319,7 @@ export function DeleteExam(prop: { data: any }) {
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete
             <span className="font-bold">{` ${examData.subject}(${examData.class_name}) `}</span>{" "}
-            schedueled for {new Date(examData.date).toDateString()},
+            schedueled for {examData.date?.split("T")[0]},
             data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
