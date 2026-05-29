@@ -51,4 +51,11 @@ router.post("/exam/create", examController.createExam)
 router.patch('/exam/update',examController.updateExam)
 router.delete("/exam/delete",examController.deleteExam)
 
+//LESSON
+const lessonController = require('../controller/utils/lessons.controller')
+router.get('/lesson',lessonController.getLessons)
+router.post('/lesson/create',lessonController.createLesson)
+router.patch('/lesson/update', lessonController.updateLesson)
+router.delete('/lesson/delete', lessonController.deleteLesson)
+
 module.exports = router;

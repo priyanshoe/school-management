@@ -10,13 +10,30 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { lessonsData, role } from "@/database/data";
-import { useState } from "react";
+import { role } from "@/database/data";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { DeleteLesson, UpdateLesson } from "./form-lesson";
+
 
 export default function LessonsList() {
   const rowsPerPage = 15;
   const [startIndex, setStartIndex] = useState(0);
   const [endIndex, setEndIndex] = useState(rowsPerPage);
+  const [lessonsData, setLessonsData] = useState<[]>([])
+
+useEffect(()=>{
+  axios.get(`${process.env.NEXT_PUBLIC_API_URL}/lesson`)
+  .then((res)=>setLessonsData(res.data.data))
+  .catch((err)=>console.log(err))
+},[])
+
+if (!lessonsData)
+    return (
+      <div className="h-screen w-full text-2xl capitalize text-white flex items-center justify-center">
+        Loading...
+      </div>
+    );
 
   return (
     <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -43,10 +60,10 @@ export default function LessonsList() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {lessonsData.slice(startIndex, endIndex).map((item) => (
+              {lessonsData.slice(startIndex, endIndex).map((item:any) => (
                 <TableRow
-                  key={item.id}
-                  className={`${item.id % 2 === 0 ? "bg-[#F8FAFC]" : ""}`}
+                  key={item.lessons_id}
+                  className={`${item.lessons_id % 2 === 0 ? "bg-[#F8FAFC]" : ""}`}
                 >
                   <TableCell className="text-left">{item.subject}</TableCell>
                   <TableCell className="text-left">{item.class}</TableCell>
@@ -54,10 +71,10 @@ export default function LessonsList() {
                   {role === "admin" && (
                     <TableCell className="flex justify-start items-center gap-2">
                       <div className="rounded-full bg-purple-300 p-2">
-                        <FormUpdate data={item} />
+                        <UpdateLesson data={item} />
                       </div>
                       <div className="rounded-full bg-red-300 p-2">
-                        <FormDelete id={item.id} name={item.subject} />
+                        <DeleteLesson data={item} />
                       </div>
                     </TableCell>
                   )}
