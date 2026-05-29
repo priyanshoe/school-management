@@ -58,4 +58,11 @@ router.post('/lesson/create',lessonController.createLesson)
 router.patch('/lesson/update', lessonController.updateLesson)
 router.delete('/lesson/delete', lessonController.deleteLesson)
 
+//ASSIGNMENT
+const assignmentController = require('../controller/utils/assignment.controller')
+router.get('/assignment',assignmentController.getAssignments)
+router.post('/assignment/create',assignmentController.createAssignment)
+router.patch('/assignment/update', assignmentController.updateAssignment)
+router.delete('/assignment/delete', assignmentController.deleteAssignment)
+
 module.exports = router;
