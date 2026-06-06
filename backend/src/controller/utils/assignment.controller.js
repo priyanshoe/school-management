@@ -18,7 +18,7 @@ async function createAssignment(req,res){
         if(subject_id.length===0) return res.status(404).json({message:"Subject not found"})
         const [class_id] = await pool.query("select class_id from classes where name=?",[class_name])
         if(class_id.length===0) return res.status(404).json({message:"Class not found"})
-        const [teacher_id] = await pool.query("select teacher_id from teachers where name=?",[teacher])
+        const [teacher_id] = await pool.query("select teacher_id from teachers where email=?",[teacher])
         if(teacher_id.length===0) return res.status(404).json({message:"Teacher not found"})
         const [create] = await pool.query('INSERT INTO assignmentData (subject_id, dueDate, class_id, teacher_id) values (?,?,?,?)',[subject_id[0].subject_id,dueDate,class_id[0].class_id,teacher_id[0].teacher_id])
         if(create.affectedRows===0) return res.status(409).json({message:"assignment data not added"})

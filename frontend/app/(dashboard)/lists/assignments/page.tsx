@@ -1,6 +1,5 @@
 "use client"
 import { PaginationList } from "@/components/app-pagination"
-import { FormDelete, FormUpdate } from "@/components/custom/form-modal";
 import NavbarSecondary from "@/components/custom/navbar-secondary"
 import {
     Table,
@@ -10,15 +9,31 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { assignmentsData, role } from '@/database/data';
-import { SquarePen, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { role } from '@/database/data';
+import { useEffect, useState } from "react";
+import { DeleteAssignment, UpdateAssignment } from "./form-assignment";
+import axios from "axios";
 
 
 export default function AssignmentsList() {
     const rowsPerPage = 15;
     const [startIndex, setStartIndex] = useState(0);
     const [endIndex, setEndIndex] = useState(rowsPerPage);
+    const [assignmentData, setAssignmentData] = useState<[]>([])
+
+    useEffect(()=>{
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/assignment`)
+    .then((res)=>setAssignmentData(res.data.data))
+    .catch((err)=>console.log(err))
+    },[])
+
+    if (!assignmentData)
+        return (
+        <div className="h-screen w-full text-2xl capitalize text-white flex items-center justify-center">
+            Loading...
+        </div>
+        );
+
 
     return (
         <div className="w-full h-[93vh] text-black px-1 md:px-0 md:pr-2">
@@ -41,20 +56,20 @@ export default function AssignmentsList() {
                     </TableHeader>
                     <TableBody>
                         {
-                            assignmentsData.slice(startIndex, endIndex).map((item) =>(
-                                <TableRow key={item.id} className={`${item.id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
+                            assignmentData.slice(startIndex, endIndex).map((item:any) =>(
+                                <TableRow key={item.assignment_id} className={`${item.assignment_id%2 === 0 ? 'bg-[#F8FAFC]':''}`}>
                                     <TableCell className="text-left">{item.subject}</TableCell>
-                                    <TableCell className="text-left">{item.class}</TableCell>
-                                    <TableCell className="text-left">{item.dueDate}</TableCell>
+                                    <TableCell className="text-left">{item.class_name}</TableCell>
+                                    <TableCell className="text-left">{item.dueDate?.split("T")[0]}</TableCell>
                                     <TableCell className="text-left hidden sm:table-cell">{item.teacher}</TableCell>
                                     {
                                         role === "admin" &&
                                         <TableCell className="flex justify-start items-center gap-2">
                                             <div className="rounded-full bg-purple-300 p-2">
-                                                        <FormUpdate data={item}/>
+                                                        <UpdateAssignment data={item}/>
                                             </div>
                                             <div className="rounded-full bg-red-300 p-2">
-                                                        <FormDelete id={item.id} name={item.subject}/>
+                                                        <DeleteAssignment data={item}/>
                                             </div>
                                         </TableCell>
                                     }
@@ -67,7 +82,7 @@ export default function AssignmentsList() {
                 </Table>
                 <div className="mt-2">
                     <PaginationList 
-                        data={assignmentsData} 
+                        data={assignmentData} 
                         start={startIndex} setStart={setStartIndex} 
                         end={endIndex} setEnd={setEndIndex} 
                         rows={rowsPerPage} />

@@ -27,29 +27,32 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { toast } from "sonner";
 import { SquarePen, Trash2 } from "lucide-react";
+import { assignmentsData, lessonsData } from "@/database/data";
 
-export function CreateExam() {
+export function CreateAssignment() {
   const [open, setOpen] = useState(false);
-  const [examData, setExamData] = useState({
+  const [assignmentData, setAssignmentData] = useState({
     subject:"",
-    date:"",
     class_name:"",
+    dueDate:"",
     teacher:""
   });
 
   async function handleCreate(e: any) {
     e.preventDefault();
-    console.log(examData);
+    console.log(lessonsData);
+    
+    console.log(assignmentData);
     const responsePromise = axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/exam/create`,
-      examData,
+      `${process.env.NEXT_PUBLIC_API_URL}/assignment/create`,
+      assignmentData,
       { withCredentials: true },
     );
 
     toast.promise(responsePromise, {
       loading: "Connecting...",
       success: (res) => {
-        return res.data.message || "exam created";
+        return res.data.message || "lesson created";
       },
       error: (err) => err?.response?.data?.message || "Failed, try again",
 
@@ -62,15 +65,15 @@ export function CreateExam() {
   return (
     <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger className=" hover:cursor-pointer bg-yellow-300 hover:bg-yellow-400 w-full hover:rounded-sm">
-        <h2>Exam</h2>
+        <h2>Assignment</h2>
       </DialogTrigger>
       <DialogContent className="sm:max-w-106 bg-white text-black">
         <form onSubmit={handleCreate}>
           <DialogHeader>
             <DialogTitle className="text-green-500 text-xl capitalize">
-              Add Exam
+              Add Assignment
             </DialogTitle>
-            <DialogDescription>Enter name properly</DialogDescription>
+            <DialogDescription>Enter details properly</DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-3">
             <div className="grid gap-3">
@@ -80,19 +83,8 @@ export function CreateExam() {
                 id="name"
                 name="name"
                 required
-                value={examData.subject}
-                onChange={(e) => setExamData({...examData,subject:e.target.value})}
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="examDate">Exam Date</Label>
-              <Input
-                type="date"
-                id="examDate"
-                name="name"
-                required
-                value={examData.date}
-                onChange={(e) => setExamData({...examData,date:e.target.value})}
+                value={assignmentData.subject}
+                onChange={(e) => setAssignmentData({...assignmentData,subject:e.target.value})}
               />
             </div>
             <div className="grid gap-3">
@@ -102,19 +94,30 @@ export function CreateExam() {
                 id="class"
                 name="name"
                 required
-                value={examData.class_name}
-                onChange={(e) => setExamData({...examData,class_name:e.target.value})}
+                value={assignmentData.class_name}
+                onChange={(e) => setAssignmentData({...assignmentData,class_name:e.target.value})}
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="teacher">Teacher Name</Label>
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                type="date"
+                id="dueDate"
+                name="name"
+                required
+                value={assignmentData.dueDate}
+                onChange={(e) => setAssignmentData({...assignmentData,dueDate:e.target.value})}
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="teacher">Teacher Email</Label>
               <Input
                 type="text"
                 id="teacher"
                 name="name"
                 required
-                value={examData.teacher}
-                onChange={(e) => setExamData({...examData,teacher:e.target.value})}
+                value={assignmentData.teacher}
+                onChange={(e) => setAssignmentData({...assignmentData,teacher:e.target.value})}
               />
             </div>
           </div>
@@ -140,29 +143,32 @@ export function CreateExam() {
   );
 }
 
-export function UpdateExam(prop: { data: any }) {
+export function UpdateAssignment(prop: { data: any }) {
   const [open, setOpen] = useState(false);
-   const [examData, setExamData] = useState({
-    exam_id: 0,
+  
+  
+  
+  const [assignmentData, setAssignmentData] = useState({
+    assignment_id:0,
     subject:"",
-    date:"",
     class_name:"",
-    teacher:""
+    dueDate:"",
+    teacher_email:""
   });
   
   async function handleUpdate(e: any) {
     e.preventDefault();
     try {
       const responsePromise = axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/exam/update`,
-        examData,
+        `${process.env.NEXT_PUBLIC_API_URL}/assignment/update`,
+        assignmentData,
         { withCredentials: true },
       );
       toast.promise(responsePromise, {
         loading: "Connecting...",
         success: (res) => {
           setOpen(false)
-          return res.data.message || "Exam data updated";
+          return res.data.message || "Assignment data updated";
         },
         error: (err) => err?.response?.data?.message || "Failed, try again",
         action: {
@@ -176,18 +182,18 @@ export function UpdateExam(prop: { data: any }) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={() => setOpen(!open)}>
       <DialogTrigger
         className=" hover:cursor-pointer"
         asChild
         onClick={() =>
-          setExamData({
-            ...examData,
-            exam_id: prop.data.exam_id,
+          setAssignmentData({
+            ...assignmentData,
+            assignment_id:prop.data.assignment_id,
             subject: prop.data.subject,
-            class_name: prop.data.class,
-            date: prop.data.date?.split("T")[0],
-            teacher: prop.data.teacher,
+            class_name: prop.data.class_name,
+            dueDate: prop.data.dueDate?.split("T")[0],
+            teacher_email: prop.data.teacher_email,
           })
         }
       >
@@ -197,7 +203,7 @@ export function UpdateExam(prop: { data: any }) {
         <form onSubmit={handleUpdate}>
           <DialogHeader>
             <DialogTitle className="text-purple-400 text-xl capitalize">
-              Update Exam
+              Update Assignment
             </DialogTitle>
             <DialogDescription>Change the details properly</DialogDescription>
           </DialogHeader>
@@ -209,19 +215,8 @@ export function UpdateExam(prop: { data: any }) {
                 id="name"
                 name="name"
                 required
-                value={examData.subject}
-                onChange={(e) => setExamData({...examData,subject:e.target.value})}
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="examDate">Exam Date</Label>
-              <Input
-                type="date"
-                id="examDate"
-                name="name"
-                required
-                value={examData.date}
-                onChange={(e) => setExamData({...examData,date:e.target.value})}
+                value={assignmentData.subject}
+                onChange={(e) => setAssignmentData({...assignmentData,subject:e.target.value})}
               />
             </div>
             <div className="grid gap-3">
@@ -231,19 +226,30 @@ export function UpdateExam(prop: { data: any }) {
                 id="class"
                 name="name"
                 required
-                value={examData.class_name}
-                onChange={(e) => setExamData({...examData,class_name:e.target.value})}
+                value={assignmentData.class_name}
+                onChange={(e) => setAssignmentData({...assignmentData,class_name:e.target.value})}
               />
             </div>
             <div className="grid gap-3">
-              <Label htmlFor="teacher">Teacher Name</Label>
+              <Label htmlFor="dueDate">Due Date</Label>
+              <Input
+                type="date"
+                id="dueDate"
+                name="name"
+                required
+                value={assignmentData.dueDate}
+                onChange={(e) => setAssignmentData({...assignmentData,dueDate:e.target.value})}
+              />
+            </div>
+            <div className="grid gap-3">
+              <Label htmlFor="teacher">Teacher Email</Label>
               <Input
                 type="text"
                 id="teacher"
                 name="name"
                 required
-                value={examData.teacher}
-                onChange={(e) => setExamData({...examData,teacher:e.target.value})}
+                value={assignmentData.teacher_email}
+                onChange={(e) => setAssignmentData({...assignmentData,teacher_email:e.target.value})}
               />
             </div>
           </div>
@@ -269,18 +275,17 @@ export function UpdateExam(prop: { data: any }) {
   );
 }
 
-export function DeleteExam(prop: { data: any }) {
-  const [examData, setExamData] = useState({
+export function DeleteAssignment(prop: { data: any }) {
+  const [assignmentData, setAssignmentData] = useState({
     subject:"",
     class_name:"",
-    date:""
   });
 
   async function handleDelete() {
     try {
       const responsePromise = axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/exam/delete`,
-        { data: examData, withCredentials: true },
+        `${process.env.NEXT_PUBLIC_API_URL}/assignment/delete`,
+        { data: assignmentData, withCredentials: true },
       );
       toast.promise(responsePromise, {
         loading: "Connecting...",
@@ -288,7 +293,7 @@ export function DeleteExam(prop: { data: any }) {
           setTimeout(() => {
             window.location.reload();
           }, 1200);
-          return `${examData.subject} deleted`;
+          return `${assignmentData.subject} deleted`;
         },
         error: (err) => err?.response?.data?.message || "Failed, try again",
       });
@@ -302,10 +307,9 @@ export function DeleteExam(prop: { data: any }) {
         className="hover:cursor-pointer"
         asChild
         onClick={() =>
-          setExamData({
+          setAssignmentData({
             subject: prop.data.subject,
-            class_name: prop.data.class,
-            date: prop.data.date,
+            class_name: prop.data.class_name,
           })
         }
       >
@@ -318,8 +322,7 @@ export function DeleteExam(prop: { data: any }) {
           </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete
-            <span className="font-bold">{` ${examData.subject}(${examData.class_name}) `}</span>{" "}
-            schedueled for {examData.date?.split("T")[0]},
+            <span className="font-bold">{` ${assignmentData.subject}(${assignmentData.class_name}) `}</span>{" "}
             data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
