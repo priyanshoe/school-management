@@ -16,7 +16,7 @@ export default function Home() {
   async function handleSignIn() {
     try {
       const responsePromise = axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/parent/signIn`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signIn`,
         signInData,
         { withCredentials: true },
       );
@@ -49,7 +49,7 @@ export default function Home() {
   async function handleSignUp() {
     try {
       const responsePromise = axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/student/signUp`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/teacher/signUp`,
         signUpData,
         { withCredentials: true },
       );
