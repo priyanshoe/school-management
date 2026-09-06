@@ -20,7 +20,8 @@ async function testConnection() {
     connection.release();
   } catch (error) {
     console.error("❌ Database connection failed:", error.message);
-    process.exit(1);
+    // Keep the process available for diagnostics; individual requests will
+    // return their database error instead of taking down the API server.
   }
 }
 testConnection()

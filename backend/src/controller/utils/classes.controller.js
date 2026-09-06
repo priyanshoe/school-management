@@ -5,7 +5,6 @@ async function getClasses(req, res) {
     const [data] = await pool.query(
       "select ct.class_id, ct.name, ct.class_teacher as class_teacher_id, tt.name as class_teacher from classes ct left join teachers tt on tt.teacher_id = ct.class_teacher",
     );
-    if (data.length === 0) return res.status(409).json({ message: "Data not found" });
     return res.status(200).json({ message: "Data fetched", data: data });
   } catch (err) {
     return res
@@ -17,6 +16,7 @@ async function getClasses(req, res) {
 async function createClass(req, res) {
   try {
     const { name, class_teacher } = req.body;
+    if (!name || !String(name).trim()) return res.status(400).json({ message: "Class name is required" });
 
     if (class_teacher) {
       const [checkTeacher] = await pool.query(
@@ -57,7 +57,7 @@ async function createClass(req, res) {
         return res.status(409).json({ message: "Class not saved" });
     }
 
-    return res.status(200).json({ message: "Class saved" });
+    return res.status(201).json({ message: "Class saved" });
   } catch (err) {
     return res
       .status(500)
@@ -67,20 +67,23 @@ async function createClass(req, res) {
 
 async function updateClass(req, res) {
   try {
-    const { name, class_teacher } = req.body;
+    const { class_id, name, class_teacher } = req.body;
+    if (!class_id || !name) return res.status(400).json({ message: "Class id and name are required" });
+    const [current] = await pool.query("select class_id from classes where class_id = ?", [class_id]);
+    if (current.length === 0) return res.status(404).json({ message: "Class not found" });
     const [check] = await pool.query(
-      "select * from classes where class_teacher = ?",
-      [class_teacher],
+      "select class_id from classes where class_teacher = ? and class_id <> ?",
+      [class_teacher, class_id],
     );
     if (check.length > 0) {
       return res.status(409).json({ message: "Teacher already equiped" });
     }
     const [result] = await pool.query(
-      "update classes set class_teacher=? where name=?",
-      [class_teacher, name],
+      "update classes set name=?, class_teacher=? where class_id=?",
+      [name, class_teacher || null, class_id],
     );
     if (result.affectedRows === 0) {
-      return res.status(409).json({ message: "Class not update" });
+      return res.status(404).json({ message: "Class not found" });
     }
     return res.status(200).json({ message: "Class saved" });
   } catch (err) {
@@ -96,8 +99,8 @@ async function deleteClass(req, res) {
       [id, name],
     );
     if (result.affectedRows === 0)
-      return res.status(409).json({ message: "Class not deleted" });
-    return res.status(200).json({ message: "Class deleted" });
+      return res.status(404).json({ message: "Class not found" });
+    return res.status(204).send();
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

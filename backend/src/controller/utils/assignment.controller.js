@@ -4,7 +4,6 @@ const pool = require("../../db/db")
 async function getAssignments(req,res){
   try{
     const [data] = await pool.query("select ad.assignment_id, ad.dueDate, st.name as subject , ct.name as class_name, tt.name as teacher, tt.email as teacher_email from assignmentData ad left join subjects st on st.subject_id = ad.subject_id left join classes ct on ct.class_id = ad.class_id left join teachers tt on tt.teacher_id = ad.teacher_id ;")
-    if(data.length===0) return res.status(409).json({message:"Data not found"})
     return res.status(200).json({message:"Data fetched", data:data})
   } catch(err){
    return res.status(500).json({ message: "Server error", error: err.message });
@@ -21,8 +20,8 @@ async function createAssignment(req,res){
         const [teacher_id] = await pool.query("select teacher_id from teachers where email=?",[teacher])
         if(teacher_id.length===0) return res.status(404).json({message:"Teacher not found"})
         const [create] = await pool.query('INSERT INTO assignmentData (subject_id, dueDate, class_id, teacher_id) values (?,?,?,?)',[subject_id[0].subject_id,dueDate,class_id[0].class_id,teacher_id[0].teacher_id])
-        if(create.affectedRows===0) return res.status(409).json({message:"assignment data not added"})
-        return res.json({message:"assignment data created", data:create.insertId})
+        if(create.affectedRows===0) return res.status(409).json({message:"Assignment data not added"})
+        return res.status(201).json({message:"Assignment data created", data:create.insertId})
     }catch(err){
    return res.status(500).json({ message: "Server error", error: err.message });
   }
@@ -39,7 +38,7 @@ async function updateAssignment(req,res){
         const [teacher_id] = await pool.query("select teacher_id from teachers where email=?",[teacher_email])
         if(teacher_id.length===0) return res.status(404).json({message:"Teacher not found"})
         const [update] = await pool.query('update assignmentData set subject_id=?, dueDate=?, class_id=?, teacher_id=? where assignment_id=?',[subject_id[0].subject_id,dueDate,class_id[0].class_id,teacher_id[0].teacher_id,assignment_id])
-        if(update.affectedRows===0) return res.status(409).json({message:"assignment data not update"})
+        if(update.affectedRows===0) return res.status(404).json({message:"Assignment not found"})
         return res.json({message:"assignment data updated"})
     }catch(err){
    return res.status(500).json({ message: "Server error", error: err.message });
@@ -55,8 +54,8 @@ async function deleteAssignment(req,res){
         const [class_id] = await pool.query("select class_id from classes where name=?",[class_name])
         if(class_id.length===0) return res.status(404).json({message:"Class not found"})
         const [deleted] = await pool.query('delete from assignmentData where subject_id=? and class_id=?',[subject_id[0].subject_id,class_id[0].class_id])
-        if(deleted.affectedRows===0) return res.status(409).json({message:"assignment data not delete"})
-        return res.json({message:"assignment data deleted",data:{subject:subject,class:class_name}})
+        if(deleted.affectedRows===0) return res.status(404).json({message:"Assignment not found"})
+        return res.status(204).send()
     }catch(err){
    return res.status(500).json({ message: "Server error", error: err.message });
   }

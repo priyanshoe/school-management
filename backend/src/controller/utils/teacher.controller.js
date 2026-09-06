@@ -14,17 +14,19 @@ async function getTeachers(req, res) {
 async function getTeacher(req, res) {
     try {
         const userID = req.params.id
-        const [user] = await pool.query("SELECT * FROM teachers WHERE teacher_id = ?", [userID])
-        return res.json(user[0])
+        const [user] = await pool.query("SELECT teacher_id, name, email, photo, phone, address, dob, blood_group, bio FROM teachers WHERE teacher_id = ?", [userID])
+        if (!user.length) return res.status(404).json({ message: "Teacher not found" });
+        return res.status(200).json(user[0])
     } catch (err) {
-        return res.status(500).json({ message: "Teacher not found", error: err });
+        return res.status(500).json({ message: "Server error" });
     }
 }
 
 async function createTeacher(req, res) {
     const connection = await pool.getConnection();
     try {
-        const { name, email, photo, phone, address, subjects, classes, dob, blood_group, bio, password } = req.body
+        const { name, email, photo, phone, address, subjects = [], classes = [], dob, blood_group, bio, password } = req.body
+        if (!name || !email || !password) return res.status(400).json({ message: "Name, email and password are required" });
         const [user] = await connection.query("SELECT * FROM teachers WHERE email = ?", [email])
         if (user.length > 0) return res.status(409).json({ message: "Teacher already exist" });
         const hashPassword = await bcrypt.hash(password, 10)
@@ -52,7 +54,7 @@ async function createTeacher(req, res) {
             if(result.affectedRows === 0) throw new Error("Class not added");
         }
         await connection.commit();
-        return res.status(200).json({ message: "Teacher added", data: created.insertId });
+        return res.status(201).json({ message: "Teacher added", data: created.insertId });
     } catch (err) {
         await connection.rollback();
         return res.status(500).json({ message: "Creation failed", error: err.message });
@@ -64,35 +66,36 @@ async function createTeacher(req, res) {
 async function updateTeacher(req, res) {
     const connection = await pool.getConnection();
     try {
-        const { name, email, photo, phone, subjects, classes, address, bio, blood_group, dob, teacher_id } = req.body;
+        const { name, email, photo, phone, subjects = [], classes = [], address, bio, blood_group, dob, teacher_id } = req.body;
+        if (!teacher_id || !name || !email) return res.status(400).json({ message: "Teacher id, name and email are required" });
+        await connection.beginTransaction();
         const [result] = await connection.query(
             "UPDATE teachers SET name=?,email=?,photo=?,phone=?,address=?,bio=?,blood_group=?,dob=? WHERE teacher_id=?",
             [name, email, photo, phone, address, bio, blood_group, dob, teacher_id]
         )
-        if (result.affectedRows === 0) return res.status(404).json({ message: "Teacher not found" });
-        if (subjects.length > 0) {
-            await connection.beginTransaction();
+        if (result.affectedRows === 0) {
+            await connection.rollback();
+            return res.status(404).json({ message: "Teacher not found" });
+        }
+        {
             const [result_ids] = await connection.query('select subject_id from subjects where name in(?)', [subjects])
-            if (result_ids.length === 0) return res.status(404).json({ message: "Subjects not found" })
+            if (result_ids.length !== subjects.length) throw new Error("Some subjects not found");
             await connection.query("delete from subjects_teachers where teacher_id = ?", [teacher_id]);
-            const values = result_ids.map((item) => [
-                item.subject_id,
-                teacher_id
-            ])
-            const [insert_subjects] = await connection.query('insert into subjects_teachers (subject_id, teacher_id) values ?', [values])
-            if (insert_subjects.affectedRows === 0) throw new Error("Error in uptating Subjects")
+            if (result_ids.length) {
+                const values = result_ids.map((item) => [item.subject_id, teacher_id]);
+                const [insert_subjects] = await connection.query('insert into subjects_teachers (subject_id, teacher_id) values ?', [values]);
+                if (insert_subjects.affectedRows === 0) throw new Error("Error in updating subjects");
             }
-        if(classes.length>0){
-            await connection.beginTransaction();
+            }
+        {
             const [class_ids] = await connection.query('select class_id from classes where name in(?)',[classes])
-            if(class_ids.length === 0) return res.status(404).json({message:"Classes not found"})
+            if(class_ids.length !== classes.length) throw new Error("Some classes not found");
             await connection.query('delete from classes_teachers where teacher_id = ?',[teacher_id])
-            const values = class_ids.map((item)=>[
-                item.class_id,
-                teacher_id
-            ])
-            const [insert_classes] = await connection.query('insert into classes_teachers (class_id,teacher_id) values ?', [values])
-            if(insert_classes.affectedRows === 0) throw new Error("Error in updating classes")
+            if (class_ids.length) {
+                const values = class_ids.map((item)=>[item.class_id, teacher_id]);
+                const [insert_classes] = await connection.query('insert into classes_teachers (class_id,teacher_id) values ?', [values]);
+                if(insert_classes.affectedRows === 0) throw new Error("Error in updating classes");
+            }
         }
 
         await connection.commit()
@@ -110,11 +113,12 @@ async function updateTeacher(req, res) {
 async function deleteTeacher(req, res) {
     try {
         const { email } = req.body;
-        await pool.query("DELETE FROM teachers WHERE email = ?", [email])
-        return res.status(200).json({ message: "Data delete" });
+        const [result] = await pool.query("DELETE FROM teachers WHERE email = ?", [email])
+        if (!result.affectedRows) return res.status(404).json({ message: "Teacher not found" });
+        return res.status(204).send();
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Teacher deletion failed", error: err });
+        return res.status(500).json({ message: "Teacher deletion failed" });
     }
 }
 

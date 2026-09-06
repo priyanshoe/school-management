@@ -1,5 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const { authenticate } = require('../middleware/auth.middleware')
+
+router.get('/session', authenticate, (req, res) => {
+  res.status(200).json({ message: 'Session active', data: req.user });
+})
 
 // TEACHER
 const authTeacherController = require('../controller/auth/auth.teacher.controller')
