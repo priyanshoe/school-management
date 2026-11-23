@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import {
   Home,
   GraduationCap,
@@ -12,12 +13,11 @@ import {
   ChartCandlestick,
   CalendarCheck,
   CalendarClock,
-  MessageSquareQuote,
   Megaphone,
   Settings,
   CircleUserRound,
   LogOut,
-} from "lucide-react"
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -28,200 +28,169 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarSeparator,
-} from "@/components/ui/sidebar"
-import { role } from "@/database/data"
-import axios from "axios"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
-
-const items = [
-  {
-    title: "Home",
-    url: "/admin",
-    icon: Home,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Teachers",
-    url: "/lists/teachers",
-    icon: GraduationCap,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Students",
-    url: "/lists/students",
-    icon: Users,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Parents",
-    url: "/lists/parents",
-    icon: UsersRound,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Subjects",
-    url: "/lists/subjects",
-    icon: NotebookPen,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Classes",
-    url: "/lists/classes",
-    icon: BookMarked,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Lessons",
-    url: "/lists/lessons",
-    icon: NotepadText,
-    visible: ["admin", "teacher"],
-  },
-  {
-    title: "Exam",
-    url: "/lists/exams",
-    icon: BookOpenCheck,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Assignments",
-    url: "/lists/assignments",
-    icon: Notebook,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Result",
-    url: "/lists/results",
-    icon: ChartCandlestick,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Attendance",
-    url: "/",
-    icon: CalendarCheck,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Event",
-    url: "/lists/events",
-    icon: CalendarClock,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Messages",
-    url: "/",
-    icon: MessageSquareQuote,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-  {
-    title: "Announcements",
-    url: "/lists/announcements",
-    icon: Megaphone,
-    visible: ["admin", "teacher", "student", "parent"],
-  },
-]
-
-const items2 = [
-  {
-    title: "Profile",
-    url: "/",
-    icon: CircleUserRound,
-  },
-  {
-    title: "Settings",
-    url: "/",
-    icon: Settings,
-  },
-  // {
-  //   title: "Logout",
-  //   url: "/",
-  //   icon: LogOut,
-  // },
-]
-
+} from "@/components/ui/sidebar";
+import { useAuth } from "@/lib/auth-context";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
-  const router = useRouter();
+  const { role, user, logout } = useAuth();
+  const pathname = usePathname();
+  const currentRole = (role || user?.role || "admin").toLowerCase();
 
-  async function handleLogout() {
-    try {
-      const responsePromise = axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/parent/signOut`, {}, { withCredentials: true })
-      toast.promise(responsePromise,
-        {
-          loading: 'Connecting...',
-          success: (res) => res.data.message,
-          error: "failed, Try again",
-        }
-      )
-      const response = await responsePromise
-      if (response) {
-        return router.push('/')
-      }
-    } catch (err) {
-      return console.log(err);
-    }
+  const homeUrl = `/${currentRole}`;
 
+  const items = [
+    {
+      title: "Home",
+      url: homeUrl,
+      icon: Home,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+    {
+      title: "Teachers",
+      url: "/lists/teachers",
+      icon: GraduationCap,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Students",
+      url: "/lists/students",
+      icon: Users,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Parents",
+      url: "/lists/parents",
+      icon: UsersRound,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Subjects",
+      url: "/lists/subjects",
+      icon: NotebookPen,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Classes",
+      url: "/lists/classes",
+      icon: BookMarked,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Lessons",
+      url: "/lists/lessons",
+      icon: NotepadText,
+      visible: ["admin", "teacher"],
+    },
+    {
+      title: "Exams",
+      url: "/lists/exams",
+      icon: BookOpenCheck,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+    {
+      title: "Assignments",
+      url: "/lists/assignments",
+      icon: Notebook,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+    {
+      title: "Results",
+      url: "/lists/results",
+      icon: ChartCandlestick,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+    {
+      title: "Events",
+      url: "/lists/events",
+      icon: CalendarClock,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+    {
+      title: "Announcements",
+      url: "/lists/announcements",
+      icon: Megaphone,
+      visible: ["admin", "teacher", "student", "parent"],
+    },
+  ];
 
-  }
+  const items2 = [
+    {
+      title: "Profile",
+      url: user?.id && currentRole === "teacher" 
+        ? `/lists/teachers/${user.id}` 
+        : user?.id && currentRole === "student"
+        ? `/lists/students/${user.id}`
+        : homeUrl,
+      icon: CircleUserRound,
+    },
+  ];
 
   return (
     <Sidebar variant="floating" collapsible="icon">
-
       <SidebarHeader>
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
-            <a href="/">
-              < CircleUserRound />
-              <span>Logo</span>
-            </a>
+            <Link href={homeUrl} className="flex items-center gap-2 font-bold text-base">
+              <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">
+                🎓
+              </div>
+              <span className="font-bold tracking-tight">EduManage</span>
+            </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs uppercase font-semibold text-slate-400">
+            Menu ({currentRole.toUpperCase()})
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {
-                items.map((item) => (
-                  item.visible.includes(role) &&
+              {items.map((item) => {
+                if (!item.visible.includes(currentRole)) return null;
+                const isActive = pathname === item.url;
+                return (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
-                        <item.icon />
+                    <SidebarMenuButton asChild isActive={isActive}>
+                      <Link href={item.url}>
+                        <item.icon className="w-4 h-4" />
                         <span>{item.title}</span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))
-              }
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Others</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xs uppercase font-semibold text-slate-400">
+            Account
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items2.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <Link href={item.url}>
+                      <item.icon className="w-4 h-4" />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
-              {/* LOGOUT BUTTON */}
+
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleLogout} asChild>
-                  <button>
-                    <LogOut />
-                    <span>Logout</span>
-                  </button>
+                <SidebarMenuButton
+                  onClick={logout}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4 text-red-600" />
+                  <span>Logout</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -229,5 +198,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }

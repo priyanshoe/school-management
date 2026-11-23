@@ -24,20 +24,23 @@ type Class = {
 }
 
 // CLASSES MULTIPLE SELECTIONS
-export function DropdownClasses(props: { setClasses: Function, default?: string[] }) {
+export function DropdownClasses(props: { setClasses: (value: any) => void, default?: string[] }) {
   const [classes, setClasses] = React.useState<Class[]>()
   React.useEffect(() => {
     axios.get(`${process.env.NEXT_PUBLIC_API_URL}/class`)
       .then((res) => setClasses(res.data.data))
-      .catch((err) => console.log(err.data))
+      .catch((err) => console.log(err.message))
   }, [])
 
 
-  const [checkedClasses, setCheckedClasses] = React.useState<Record<string, Checked>>({})
-  const [selectedClasses, setSelectedClasses] = React.useState<string[]>(props.default || [])
-  selectedClasses.forEach((item) => {
-    checkedClasses[item] = true;
+  const [checkedClasses, setCheckedClasses] = React.useState<Record<string, Checked>>(() => {
+    const initial: Record<string, Checked> = {}
+    ;(props.default || []).forEach((item) => {
+      initial[item] = true
+    })
+    return initial
   })
+  const [selectedClasses, setSelectedClasses] = React.useState<string[]>(props.default || [])
 
   React.useEffect(() => {
     props.setClasses((prev: object) => ({
@@ -85,7 +88,7 @@ export function DropdownClasses(props: { setClasses: Function, default?: string[
 // CLASS SINGLE SELECTIONS
 type DropdownProp = {
   defaultClass?: string,
-  setClass: Function
+  setClass: (value: any) => void
 }
 export function DropdownClass({ defaultClass, setClass }: DropdownProp) {
   type Class = {
@@ -98,7 +101,7 @@ export function DropdownClass({ defaultClass, setClass }: DropdownProp) {
       axios.get(`${process.env.NEXT_PUBLIC_API_URL}/class`)
       .then((res)=> setClasses(res.data.data))
       .catch((err)=> console.error(err.message))
-    })
+    }, [])
   const [selectedClass, setSelectedClass] = React.useState(defaultClass || "")
   function handleChange(value: string) {
     setSelectedClass(value)
@@ -133,7 +136,7 @@ export function DropdownClass({ defaultClass, setClass }: DropdownProp) {
 }
 
 // SUBJECTS MULTIPLE SELECTIONS
-export function DropdownSubjects(props: { setSubjects: Function, default?: string[] }) {
+export function DropdownSubjects(props: { setSubjects: (value: any) => void, default?: string[] }) {
   type Subjects = {
     subject_id: number,
     name: string
@@ -145,12 +148,15 @@ export function DropdownSubjects(props: { setSubjects: Function, default?: strin
       .catch((err) => console.log(err.message))
   }, [])
 
-  const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>({})
+  const [checkedSubjects, setCheckedSubjects] = React.useState<Record<string, Checked>>(() => {
+    const initial: Record<string, Checked> = {}
+    ;(props.default || []).forEach((item) => {
+      initial[item] = true
+    })
+    return initial
+  })
 
   const [selectedSubjects, setSelectedSubjects] = React.useState<string[]>(props.default || [])
-  selectedSubjects.forEach((item) => {
-    checkedSubjects[item] = true
-  })
 
   React.useEffect(() => {
     props.setSubjects((prev: object) => ({ ...prev, subjects: selectedSubjects }));
