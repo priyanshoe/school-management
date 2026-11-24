@@ -158,7 +158,9 @@ export function CreateTeacher() {
                         <DialogClose asChild>
                             <Button variant="outline" className="bg-transparent text-black hover:cursor-pointer">Cancel</Button>
                         </DialogClose>
+                        <DialogClose asChild>
                         <Button type="submit" className="ml-2 hover:cursor-pointer bg-green-400 hover:bg-green-500 hover:text-white text-black">Save changes</Button>
+                        </DialogClose>
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -52,9 +52,7 @@ export default function NavbarSecondary(prop: { head: string; onSearch?: (q: str
             <div className="bg-yellow-400 hover:bg-yellow-500 text-slate-900 rounded-full flex items-center justify-center p-2 cursor-pointer transition-colors shadow-sm">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button type="button" aria-label="Create item">
                     <Plus size={15} />
-                  </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
@@ -64,31 +62,31 @@ export default function NavbarSecondary(prop: { head: string; onSearch?: (q: str
                     Create New
                   </DropdownMenuLabel>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateTeacher /></div>
+                    <CreateTeacher />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateStudent /></div>
+                    <CreateStudent />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateParent /></div>
+                    <CreateParent />
                   </DropdownMenuItem>
 
                   <DropdownMenuSeparator className="my-1 border-t border-slate-200" />
 
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateSubject /></div>
+                    <CreateSubject />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateClass /></div>
+                    <CreateClass />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateExam /></div>
+                    <CreateExam />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateLesson /></div>
+                    <CreateLesson />
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <div className="w-full"><CreateAssignment /></div>
+                    <CreateAssignment />
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
